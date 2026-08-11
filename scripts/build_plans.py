@@ -64,28 +64,30 @@ def main():
                         detail=f"항공 왕복 4인 · {wl} · 최저 {lo.get('airline','')} 편도 {won(lo.get('price',0))}원")
         return base
 
-    def nearest(target, k, exclude):
-        if not rest or not target: return []
-        cand=[(rid,hav(target,rv)) for rid,rv in rest.items()
-              if rv.get("lat") and rid not in exclude]
-        cand.sort(key=lambda x:x[1])
-        return [rid for rid,_ in cand[:k]]
     def near_pool(target,kmax,exclude):
         if not rest or not target: return []
         c=[(rid,hav(target,rv)) for rid,rv in rest.items() if rv.get("lat") and rid not in exclude]
         c.sort(key=lambda x:x[1]); return [rid for rid,_ in c[:kmax]]
-    def choose(pool,seed,n):
+    # 전수노출 라운드로빈: 시드 나머지연산 대신, 사이트 전체에서 "덜 뽑힌 맛집"을
+    # 우선한다(동률이면 near_pool의 근접순을 그대로 유지 — sorted()가 stable이라 보장됨).
+    # 결정론적이고(입력 순서에만 의존, 랜덤/시드 없음) pool 안의 맛집을 전부 훑을 때까지
+    # 같은 맛집이 2번 뽑히지 않아 커버리지가 자연히 최대화된다.
+    used_global={}
+    def choose(pool,n):
         if not pool: return []
-        r=seed%len(pool); rot=pool[r:]+pool[:r]; out=[]; cats=set()
-        for rid in rot:
+        ranked=sorted(pool, key=lambda rid: used_global.get(rid,0))
+        out=[]; cats=set()
+        for rid in ranked:
             cat=rest[rid].get("category")
             if cat in cats and len(pool)>n: continue
             out.append(rid); cats.add(cat)
             if len(out)==n: break
-        for rid in rot:
+        for rid in ranked:
             if rid not in out: out.append(rid)
             if len(out)==n: break
-        return out[:n]
+        out=out[:n]
+        for rid in out: used_global[rid]=used_global.get(rid,0)+1
+        return out
 
     PAID_LABEL={"lotteworld":"롯데월드 종일권 온라인 예매","sealife":"아쿠아리움 온라인권 예매",
       "aquaplanet":"아쿠아플라넷 온라인권 예매","blueline":"블루라인파크 스카이캡슐 시간대 예약",
@@ -132,11 +134,11 @@ def main():
                 return (best[1],best[2]) if best else (None,None)
             used=set(); meals=[]
             if day["day"]>1 and hp:
-                b=choose(near_pool(hp,12,used), p_idx*13+day["day"]*3+0, 2); used|=set(b)
+                b=choose(near_pool(hp,12,used), 2); used|=set(b)
                 if b: meals.append({"slot":"아침","after":-1,"near":hotel.get("name","숙소"),"buffet":hotel.get("buffet"),"candidates":b})
             li,la=pick(750)   # ~12:30 lunch
             if la:
-                c=choose(near_pool(la,14,used), p_idx*13+day["day"]*3+1, 3); used|=set(c)
+                c=choose(near_pool(la,14,used), 3); used|=set(c)
                 if c: meals.append({"slot":"점심","after":li,"near":la["name"],"candidates":c})
             # dinner: latest POI after lunch; else near hotel; skip on departure day
             last_station = at.get(stops[-1]["ref"],{}).get("category") in TRANSIT
@@ -145,7 +147,7 @@ def main():
             if after_lunch: di,da=after_lunch[-1]; near=da["name"]
             elif hp and not last_station: di,da=len(stops)-1,hp; near=hotel.get("name","숙소")
             if da:
-                c=nearest(da,3,used)
+                c=choose(near_pool(da,14,used), 3)
                 if c: meals.append({"slot":"저녁","after":di,"near":near,"candidates":c})
             day["meals"]=meals
 

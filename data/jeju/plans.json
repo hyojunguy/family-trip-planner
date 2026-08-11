@@ -43,9 +43,9 @@
               "after": 2,
               "near": "함덕해수욕장",
               "candidates": [
-                "dc-je-28",
-                "dc-je-06",
-                "dc-je-20"
+                "dc-je-11",
+                "dc-je-24",
+                "dc-je-02"
               ]
             },
             {
@@ -54,8 +54,8 @@
               "near": "그랜드 하얏트 제주",
               "candidates": [
                 "dc-je-19",
-                "dc-je-02",
-                "dc-je-24"
+                "dc-je-21",
+                "dc-je-28"
               ]
             }
           ]
@@ -91,7 +91,7 @@
                 "naver": "https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%ED%95%98%EC%96%8F%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-06",
+                "dc-je-13",
                 "dc-je-20"
               ]
             },
@@ -100,9 +100,9 @@
               "after": 1,
               "near": "섭지코지",
               "candidates": [
-                "dc-je-03",
-                "dc-je-19",
-                "dc-je-16"
+                "dc-je-17",
+                "dc-je-07",
+                "dc-je-18"
               ]
             },
             {
@@ -110,9 +110,9 @@
               "after": 2,
               "near": "아쿠아플라넷 제주",
               "candidates": [
-                "dc-je-17",
-                "dc-je-07",
-                "dc-je-11"
+                "dc-je-14",
+                "dc-je-06",
+                "dc-je-03"
               ]
             }
           ]
@@ -148,7 +148,7 @@
                 "naver": "https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%ED%95%98%EC%96%8F%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-25",
+                "dc-je-05",
                 "dc-je-04"
               ]
             },
@@ -157,9 +157,9 @@
               "after": 1,
               "near": "에코랜드 테마파크",
               "candidates": [
-                "dc-je-15",
-                "dc-je-05",
-                "dc-je-24"
+                "dc-je-16",
+                "dc-je-01",
+                "dc-je-08"
               ]
             }
           ]
@@ -233,16 +233,16 @@
       ],
       "highlights": [
         {
-          "name": "성산일출봉",
-          "blurb": "완만한 계단 왕복 1시간, 유네스코 분화구. 성취감+자연학습."
-        },
-        {
           "name": "에코랜드 테마파크",
           "blurb": "곶자왈 꼬마기차+오리배, 걷기 부담 없이 자연."
         },
         {
-          "name": "아쿠아플라넷 제주",
-          "blurb": "돌고래 공연+대형 수조, 하루 종일 실내."
+          "name": "성산일출봉",
+          "blurb": "완만한 계단 왕복 1시간, 유네스코 분화구. 성취감+자연학습."
+        },
+        {
+          "name": "섭지코지",
+          "blurb": "평탄한 잔디 언덕 산책로, 8세도 편하게 바다뷰."
         }
       ],
       "kml": null,
@@ -297,9 +297,9 @@
               "after": 2,
               "near": "협재해수욕장",
               "candidates": [
-                "dc-je-27",
-                "dc-je-09",
-                "dc-je-10"
+                "dc-je-22",
+                "dc-je-23",
+                "dc-je-12"
               ]
             },
             {
@@ -307,9 +307,9 @@
               "after": 2,
               "near": "파르나스 호텔 제주",
               "candidates": [
-                "dc-je-03",
-                "dc-je-18",
-                "dc-je-14"
+                "dc-je-09",
+                "dc-je-10",
+                "dc-je-25"
               ]
             }
           ]
@@ -346,7 +346,7 @@
               },
               "candidates": [
                 "dc-je-15",
-                "dc-je-16"
+                "dc-je-09"
               ]
             },
             {
@@ -354,9 +354,9 @@
               "after": 1,
               "near": "오설록 티뮤지엄",
               "candidates": [
-                "dc-je-27",
-                "dc-je-21",
-                "dc-je-05"
+                "dc-je-26",
+                "dc-je-22",
+                "dc-je-23"
               ]
             },
             {
@@ -364,9 +364,9 @@
               "after": 2,
               "near": "카멜리아힐",
               "candidates": [
-                "dc-je-09",
                 "dc-je-10",
-                "dc-je-22"
+                "dc-je-12",
+                "dc-je-08"
               ]
             }
           ]
@@ -397,8 +397,8 @@
                 "naver": "https://map.naver.com/p/search/%ED%8C%8C%EB%A5%B4%EB%82%98%EC%8A%A4%20%ED%98%B8%ED%85%94%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-05",
-                "dc-je-13"
+                "dc-je-03",
+                "dc-je-18"
               ]
             },
             {
@@ -406,9 +406,9 @@
               "after": 0,
               "near": "제주항공우주박물관",
               "candidates": [
-                "dc-je-01",
-                "dc-je-08",
-                "dc-je-16"
+                "dc-je-27",
+                "dc-je-21",
+                "dc-je-05"
               ]
             }
           ]
@@ -472,19 +472,23 @@
           "note": "현재 예상 총액 3,008,620원 · 예산 4,000,000원"
         },
         {
-          "label": "항공우주박물관 입장권",
-          "note": "온라인 예매가 현장보다 저렴/시간지정"
-        },
-        {
           "label": "카멜리아힐 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         },
         {
           "label": "한림공원 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
+        },
+        {
+          "label": "항공우주박물관 입장권",
+          "note": "온라인 예매가 현장보다 저렴/시간지정"
         }
       ],
       "highlights": [
+        {
+          "name": "한림공원",
+          "blurb": "용암동굴+아열대 식물원+공작새, 오래 걸어도 안 지루."
+        },
         {
           "name": "협재해수욕장",
           "blurb": "얕고 완만한 수심, 저학년도 안전한 물놀이."
@@ -492,10 +496,6 @@
         {
           "name": "제주항공우주박물관",
           "blurb": "실물 조종석·우주선 체험, 비행기 좋아하면 최고."
-        },
-        {
-          "name": "한림공원",
-          "blurb": "용암동굴+아열대 식물원+공작새, 오래 걸어도 안 지루."
         }
       ],
       "kml": null,
@@ -550,9 +550,9 @@
               "after": 1,
               "near": "함덕해수욕장",
               "candidates": [
-                "dc-je-02",
-                "dc-je-28",
-                "dc-je-06"
+                "dc-je-11",
+                "dc-je-24",
+                "dc-je-02"
               ]
             },
             {
@@ -562,7 +562,7 @@
               "candidates": [
                 "dc-je-17",
                 "dc-je-07",
-                "dc-je-14"
+                "dc-je-28"
               ]
             }
           ]
@@ -593,8 +593,8 @@
                 "naver": "https://map.naver.com/p/search/%ED%95%B4%EB%B9%84%EC%B9%98%20%ED%98%B8%ED%85%94%EC%95%A4%EB%93%9C%EB%A6%AC%EC%A1%B0%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-20",
-                "dc-je-04"
+                "dc-je-14",
+                "dc-je-06"
               ]
             },
             {
@@ -602,9 +602,9 @@
               "after": 1,
               "near": "섭지코지",
               "candidates": [
-                "dc-je-02",
-                "dc-je-18",
-                "dc-je-03"
+                "dc-je-19",
+                "dc-je-20",
+                "dc-je-01"
               ]
             },
             {
@@ -612,9 +612,9 @@
               "after": 1,
               "near": "해비치 호텔앤드리조트 제주",
               "candidates": [
-                "dc-je-17",
-                "dc-je-07",
-                "dc-je-14"
+                "dc-je-04",
+                "dc-je-16",
+                "dc-je-15"
               ]
             }
           ]
@@ -650,8 +650,8 @@
                 "naver": "https://map.naver.com/p/search/%ED%95%B4%EB%B9%84%EC%B9%98%20%ED%98%B8%ED%85%94%EC%95%A4%EB%93%9C%EB%A6%AC%EC%A1%B0%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-01",
-                "dc-je-17"
+                "dc-je-17",
+                "dc-je-07"
               ]
             },
             {
@@ -659,9 +659,9 @@
               "after": 1,
               "near": "만장굴",
               "candidates": [
-                "dc-je-04",
-                "dc-je-16",
-                "dc-je-08"
+                "dc-je-25",
+                "dc-je-24",
+                "dc-je-02"
               ]
             }
           ]
@@ -735,12 +735,12 @@
           "blurb": "완만한 계단 왕복 1시간, 유네스코 분화구. 성취감+자연학습."
         },
         {
-          "name": "아쿠아플라넷 제주",
-          "blurb": "돌고래 공연+대형 수조, 하루 종일 실내."
+          "name": "섭지코지",
+          "blurb": "평탄한 잔디 언덕 산책로, 8세도 편하게 바다뷰."
         },
         {
-          "name": "함덕해수욕장",
-          "blurb": "에메랄드빛 얕은 바다, 아이 물놀이 최적."
+          "name": "아쿠아플라넷 제주",
+          "blurb": "돌고래 공연+대형 수조, 하루 종일 실내."
         }
       ],
       "kml": null,
@@ -795,9 +795,9 @@
               "after": 1,
               "near": "아쿠아플라넷 제주",
               "candidates": [
-                "dc-je-07",
                 "dc-je-11",
-                "dc-je-24"
+                "dc-je-19",
+                "dc-je-14"
               ]
             },
             {
@@ -805,9 +805,9 @@
               "after": 2,
               "near": "그랜드 하얏트 제주",
               "candidates": [
-                "dc-je-19",
-                "dc-je-02",
-                "dc-je-21"
+                "dc-je-13",
+                "dc-je-28",
+                "dc-je-20"
               ]
             }
           ]
@@ -838,8 +838,8 @@
                 "naver": "https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%ED%95%98%EC%96%8F%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-25",
-                "dc-je-04"
+                "dc-je-21",
+                "dc-je-05"
               ]
             },
             {
@@ -847,9 +847,9 @@
               "after": 1,
               "near": "테디베어뮤지엄",
               "candidates": [
-                "dc-je-14",
-                "dc-je-01",
-                "dc-je-08"
+                "dc-je-10",
+                "dc-je-09",
+                "dc-je-03"
               ]
             },
             {
@@ -857,9 +857,9 @@
               "after": 1,
               "near": "그랜드 하얏트 제주",
               "candidates": [
-                "dc-je-19",
-                "dc-je-02",
-                "dc-je-24"
+                "dc-je-13",
+                "dc-je-25",
+                "dc-je-04"
               ]
             }
           ]
@@ -890,8 +890,8 @@
                 "naver": "https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%ED%95%98%EC%96%8F%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-19",
-                "dc-je-24"
+                "dc-je-06",
+                "dc-je-16"
               ]
             },
             {
@@ -899,9 +899,9 @@
               "after": 0,
               "near": "오설록 티뮤지엄",
               "candidates": [
-                "dc-je-21",
-                "dc-je-05",
-                "dc-je-08"
+                "dc-je-26",
+                "dc-je-22",
+                "dc-je-23"
               ]
             }
           ]
@@ -965,11 +965,11 @@
           "note": "현재 예상 총액 2,885,520원 · 예산 4,000,000원"
         },
         {
-          "label": "항공우주박물관 입장권",
+          "label": "테디베어뮤지엄 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         },
         {
-          "label": "테디베어뮤지엄 입장권",
+          "label": "항공우주박물관 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         },
         {
@@ -979,12 +979,12 @@
       ],
       "highlights": [
         {
-          "name": "제주항공우주박물관",
-          "blurb": "실물 조종석·우주선 체험, 비행기 좋아하면 최고."
-        },
-        {
           "name": "테디베어뮤지엄",
           "blurb": "실내 곰인형 전시·공연, 날씨 무관."
+        },
+        {
+          "name": "제주항공우주박물관",
+          "blurb": "실물 조종석·우주선 체험, 비행기 좋아하면 최고."
         },
         {
           "name": "아쿠아플라넷 제주",
@@ -1043,9 +1043,9 @@
               "after": 2,
               "near": "함덕해수욕장",
               "candidates": [
+                "dc-je-01",
                 "dc-je-11",
-                "dc-je-24",
-                "dc-je-02"
+                "dc-je-24"
               ]
             },
             {
@@ -1053,9 +1053,9 @@
               "after": 2,
               "near": "롯데호텔 제주",
               "candidates": [
-                "dc-je-09",
-                "dc-je-10",
-                "dc-je-03"
+                "dc-je-18",
+                "dc-je-08",
+                "dc-je-15"
               ]
             }
           ]
@@ -1091,8 +1091,8 @@
                 "naver": "https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%ED%98%B8%ED%85%94%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-05",
-                "dc-je-13"
+                "dc-je-09",
+                "dc-je-10"
               ]
             },
             {
@@ -1100,8 +1100,8 @@
               "after": 1,
               "near": "성산일출봉",
               "candidates": [
-                "dc-je-24",
-                "dc-je-02",
+                "dc-je-17",
+                "dc-je-07",
                 "dc-je-28"
               ]
             },
@@ -1143,8 +1143,8 @@
                 "naver": "https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%ED%98%B8%ED%85%94%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-10",
-                "dc-je-03"
+                "dc-je-01",
+                "dc-je-08"
               ]
             },
             {
@@ -1152,7 +1152,7 @@
               "after": 0,
               "near": "만장굴",
               "candidates": [
-                "dc-je-28",
+                "dc-je-02",
                 "dc-je-06",
                 "dc-je-20"
               ]
@@ -1224,12 +1224,12 @@
           "blurb": "완만한 계단 왕복 1시간, 유네스코 분화구. 성취감+자연학습."
         },
         {
-          "name": "천지연폭포",
-          "blurb": "짧고 평탄한 산책로 끝 폭포, 야간 조명도."
+          "name": "섭지코지",
+          "blurb": "평탄한 잔디 언덕 산책로, 8세도 편하게 바다뷰."
         },
         {
-          "name": "함덕해수욕장",
-          "blurb": "에메랄드빛 얕은 바다, 아이 물놀이 최적."
+          "name": "천지연폭포",
+          "blurb": "짧고 평탄한 산책로 끝 폭포, 야간 조명도."
         }
       ],
       "kml": null,
@@ -1284,9 +1284,9 @@
               "after": 2,
               "near": "중문색달해수욕장",
               "candidates": [
-                "dc-je-04",
-                "dc-je-09",
-                "dc-je-10"
+                "dc-je-15",
+                "dc-je-16",
+                "dc-je-25"
               ]
             },
             {
@@ -1294,9 +1294,9 @@
               "after": 2,
               "near": "제주신라호텔",
               "candidates": [
-                "dc-je-03",
-                "dc-je-18",
-                "dc-je-14"
+                "dc-je-05",
+                "dc-je-13",
+                "dc-je-04"
               ]
             }
           ]
@@ -1332,8 +1332,8 @@
                 "naver": "https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%EC%8B%A0%EB%9D%BC%ED%98%B8%ED%85%94%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-13",
-                "dc-je-09"
+                "dc-je-09",
+                "dc-je-10"
               ]
             },
             {
@@ -1341,9 +1341,9 @@
               "after": 1,
               "near": "섭지코지",
               "candidates": [
-                "dc-je-11",
-                "dc-je-14",
-                "dc-je-02"
+                "dc-je-19",
+                "dc-je-17",
+                "dc-je-11"
               ]
             },
             {
@@ -1351,9 +1351,9 @@
               "after": 2,
               "near": "아쿠아플라넷 제주",
               "candidates": [
-                "dc-je-17",
                 "dc-je-07",
-                "dc-je-24"
+                "dc-je-24",
+                "dc-je-18"
               ]
             }
           ]
@@ -1390,7 +1390,7 @@
               },
               "candidates": [
                 "dc-je-03",
-                "dc-je-18"
+                "dc-je-14"
               ]
             },
             {
@@ -1398,9 +1398,9 @@
               "after": 1,
               "near": "테디베어뮤지엄",
               "candidates": [
-                "dc-je-15",
-                "dc-je-16",
-                "dc-je-25"
+                "dc-je-21",
+                "dc-je-08",
+                "dc-je-16"
               ]
             }
           ]
@@ -1482,8 +1482,8 @@
           "blurb": "실내 곰인형 전시·공연, 날씨 무관."
         },
         {
-          "name": "아쿠아플라넷 제주",
-          "blurb": "돌고래 공연+대형 수조, 하루 종일 실내."
+          "name": "섭지코지",
+          "blurb": "평탄한 잔디 언덕 산책로, 8세도 편하게 바다뷰."
         }
       ],
       "kml": null,
@@ -1538,9 +1538,9 @@
               "after": 2,
               "near": "에코랜드 테마파크",
               "candidates": [
-                "dc-je-25",
-                "dc-je-24",
-                "dc-je-02"
+                "dc-je-02",
+                "dc-je-28",
+                "dc-je-06"
               ]
             },
             {
@@ -1548,9 +1548,9 @@
               "after": 2,
               "near": "랜딩관 제주신화월드",
               "candidates": [
+                "dc-je-27",
                 "dc-je-22",
-                "dc-je-23",
-                "dc-je-12"
+                "dc-je-23"
               ]
             }
           ]
@@ -1581,8 +1581,8 @@
                 "naver": "https://map.naver.com/p/search/%EB%9E%9C%EB%94%A9%EA%B4%80%20%EC%A0%9C%EC%A3%BC%EC%8B%A0%ED%99%94%EC%9B%94%EB%93%9C%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-22",
-                "dc-je-23"
+                "dc-je-12",
+                "dc-je-22"
               ]
             },
             {
@@ -1591,8 +1591,8 @@
               "near": "한림공원",
               "candidates": [
                 "dc-je-27",
-                "dc-je-09",
-                "dc-je-10"
+                "dc-je-23",
+                "dc-je-21"
               ]
             },
             {
@@ -1600,9 +1600,9 @@
               "after": 1,
               "near": "랜딩관 제주신화월드",
               "candidates": [
-                "dc-je-12",
                 "dc-je-26",
-                "dc-je-21"
+                "dc-je-13",
+                "dc-je-05"
               ]
             }
           ]
@@ -1633,8 +1633,8 @@
                 "naver": "https://map.naver.com/p/search/%EB%9E%9C%EB%94%A9%EA%B4%80%20%EC%A0%9C%EC%A3%BC%EC%8B%A0%ED%99%94%EC%9B%94%EB%93%9C%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-09",
-                "dc-je-10"
+                "dc-je-12",
+                "dc-je-25"
               ]
             },
             {
@@ -1642,9 +1642,9 @@
               "after": 0,
               "near": "아쿠아플라넷 제주",
               "candidates": [
-                "dc-je-02",
-                "dc-je-14",
-                "dc-je-18"
+                "dc-je-19",
+                "dc-je-20",
+                "dc-je-17"
               ]
             }
           ]
@@ -1712,23 +1712,19 @@
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         },
         {
-          "label": "에코랜드 입장권",
-          "note": "온라인 예매가 현장보다 저렴/시간지정"
-        },
-        {
           "label": "한림공원 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         },
         {
           "label": "아쿠아플라넷 온라인권 예매",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
+        },
+        {
+          "label": "에코랜드 입장권",
+          "note": "온라인 예매가 현장보다 저렴/시간지정"
         }
       ],
       "highlights": [
-        {
-          "name": "에코랜드 테마파크",
-          "blurb": "곶자왈 꼬마기차+오리배, 걷기 부담 없이 자연."
-        },
         {
           "name": "한림공원",
           "blurb": "용암동굴+아열대 식물원+공작새, 오래 걸어도 안 지루."
@@ -1736,6 +1732,10 @@
         {
           "name": "아쿠아플라넷 제주",
           "blurb": "돌고래 공연+대형 수조, 하루 종일 실내."
+        },
+        {
+          "name": "에코랜드 테마파크",
+          "blurb": "곶자왈 꼬마기차+오리배, 걷기 부담 없이 자연."
         }
       ],
       "kml": null,
@@ -1790,9 +1790,9 @@
               "after": 1,
               "near": "함덕해수욕장",
               "candidates": [
-                "dc-je-05",
+                "dc-je-04",
                 "dc-je-01",
-                "dc-je-24"
+                "dc-je-11"
               ]
             },
             {
@@ -1800,8 +1800,8 @@
               "after": 2,
               "near": "롯데호텔 제주",
               "candidates": [
+                "dc-je-15",
                 "dc-je-09",
-                "dc-je-10",
                 "dc-je-03"
               ]
             }
@@ -1834,7 +1834,7 @@
               },
               "candidates": [
                 "dc-je-10",
-                "dc-je-03"
+                "dc-je-18"
               ]
             },
             {
@@ -1842,9 +1842,9 @@
               "after": 0,
               "near": "협재해수욕장",
               "candidates": [
+                "dc-je-27",
                 "dc-je-22",
-                "dc-je-23",
-                "dc-je-12"
+                "dc-je-23"
               ]
             },
             {
@@ -1852,9 +1852,9 @@
               "after": 1,
               "near": "중문색달해수욕장",
               "candidates": [
-                "dc-je-09",
-                "dc-je-18",
-                "dc-je-14"
+                "dc-je-14",
+                "dc-je-01",
+                "dc-je-08"
               ]
             }
           ]
@@ -1885,8 +1885,8 @@
                 "naver": "https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%ED%98%B8%ED%85%94%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-14",
-                "dc-je-01"
+                "dc-je-15",
+                "dc-je-16"
               ]
             },
             {
@@ -1894,9 +1894,9 @@
               "after": 0,
               "near": "섭지코지",
               "candidates": [
+                "dc-je-07",
                 "dc-je-24",
-                "dc-je-02",
-                "dc-je-18"
+                "dc-je-28"
               ]
             }
           ]
@@ -1962,16 +1962,16 @@
       ],
       "highlights": [
         {
+          "name": "섭지코지",
+          "blurb": "평탄한 잔디 언덕 산책로, 8세도 편하게 바다뷰."
+        },
+        {
           "name": "협재해수욕장",
           "blurb": "얕고 완만한 수심, 저학년도 안전한 물놀이."
         },
         {
           "name": "함덕해수욕장",
           "blurb": "에메랄드빛 얕은 바다, 아이 물놀이 최적."
-        },
-        {
-          "name": "섭지코지",
-          "blurb": "평탄한 잔디 언덕 산책로, 8세도 편하게 바다뷰."
         }
       ],
       "kml": null,
@@ -2026,9 +2026,9 @@
               "after": 2,
               "near": "섭지코지",
               "candidates": [
+                "dc-je-02",
                 "dc-je-06",
-                "dc-je-20",
-                "dc-je-04"
+                "dc-je-20"
               ]
             },
             {
@@ -2036,9 +2036,9 @@
               "after": 2,
               "near": "해비치 호텔앤드리조트 제주",
               "candidates": [
-                "dc-je-17",
-                "dc-je-07",
-                "dc-je-14"
+                "dc-je-04",
+                "dc-je-25",
+                "dc-je-17"
               ]
             }
           ]
@@ -2069,8 +2069,8 @@
                 "naver": "https://map.naver.com/p/search/%ED%95%B4%EB%B9%84%EC%B9%98%20%ED%98%B8%ED%85%94%EC%95%A4%EB%93%9C%EB%A6%AC%EC%A1%B0%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-14",
-                "dc-je-18"
+                "dc-je-07",
+                "dc-je-14"
               ]
             },
             {
@@ -2078,9 +2078,9 @@
               "after": 1,
               "near": "아쿠아플라넷 제주",
               "candidates": [
-                "dc-je-08",
-                "dc-je-17",
-                "dc-je-07"
+                "dc-je-19",
+                "dc-je-11",
+                "dc-je-24"
               ]
             },
             {
@@ -2088,9 +2088,9 @@
               "after": 1,
               "near": "해비치 호텔앤드리조트 제주",
               "candidates": [
-                "dc-je-03",
-                "dc-je-11",
-                "dc-je-28"
+                "dc-je-05",
+                "dc-je-13",
+                "dc-je-03"
               ]
             }
           ]
@@ -2121,7 +2121,7 @@
                 "naver": "https://map.naver.com/p/search/%ED%95%B4%EB%B9%84%EC%B9%98%20%ED%98%B8%ED%85%94%EC%95%A4%EB%93%9C%EB%A6%AC%EC%A1%B0%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-11",
+                "dc-je-18",
                 "dc-je-28"
               ]
             },
@@ -2130,9 +2130,9 @@
               "after": 0,
               "near": "천지연폭포",
               "candidates": [
-                "dc-je-14",
                 "dc-je-10",
-                "dc-je-09"
+                "dc-je-09",
+                "dc-je-08"
               ]
             }
           ]
@@ -2206,12 +2206,12 @@
           "blurb": "완만한 계단 왕복 1시간, 유네스코 분화구. 성취감+자연학습."
         },
         {
-          "name": "아쿠아플라넷 제주",
-          "blurb": "돌고래 공연+대형 수조, 하루 종일 실내."
+          "name": "섭지코지",
+          "blurb": "평탄한 잔디 언덕 산책로, 8세도 편하게 바다뷰."
         },
         {
-          "name": "천지연폭포",
-          "blurb": "짧고 평탄한 산책로 끝 폭포, 야간 조명도."
+          "name": "아쿠아플라넷 제주",
+          "blurb": "돌고래 공연+대형 수조, 하루 종일 실내."
         }
       ],
       "kml": null,
@@ -2266,9 +2266,9 @@
               "after": 2,
               "near": "에코랜드 테마파크",
               "candidates": [
-                "dc-je-01",
-                "dc-je-08",
-                "dc-je-25"
+                "dc-je-02",
+                "dc-je-06",
+                "dc-je-20"
               ]
             },
             {
@@ -2276,9 +2276,9 @@
               "after": 2,
               "near": "그랜드 하얏트 제주",
               "candidates": [
-                "dc-je-19",
-                "dc-je-02",
-                "dc-je-24"
+                "dc-je-26",
+                "dc-je-21",
+                "dc-je-19"
               ]
             }
           ]
@@ -2310,7 +2310,7 @@
               },
               "candidates": [
                 "dc-je-21",
-                "dc-je-28"
+                "dc-je-05"
               ]
             },
             {
@@ -2318,9 +2318,9 @@
               "after": 1,
               "near": "성산일출봉",
               "candidates": [
-                "dc-je-15",
-                "dc-je-14",
-                "dc-je-07"
+                "dc-je-04",
+                "dc-je-16",
+                "dc-je-01"
               ]
             },
             {
@@ -2328,9 +2328,9 @@
               "after": 1,
               "near": "그랜드 하얏트 제주",
               "candidates": [
-                "dc-je-19",
-                "dc-je-02",
-                "dc-je-24"
+                "dc-je-26",
+                "dc-je-13",
+                "dc-je-25"
               ]
             }
           ]
@@ -2366,8 +2366,8 @@
                 "naver": "https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%ED%95%98%EC%96%8F%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-06",
-                "dc-je-20"
+                "dc-je-19",
+                "dc-je-24"
               ]
             },
             {
@@ -2375,8 +2375,8 @@
               "after": 1,
               "near": "카멜리아힐",
               "candidates": [
-                "dc-je-10",
                 "dc-je-12",
+                "dc-je-22",
                 "dc-je-23"
               ]
             }
@@ -2441,11 +2441,11 @@
           "note": "현재 예상 총액 2,790,520원 · 예산 4,000,000원"
         },
         {
-          "label": "에코랜드 입장권",
+          "label": "카멜리아힐 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         },
         {
-          "label": "카멜리아힐 입장권",
+          "label": "에코랜드 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         }
       ],
@@ -2459,8 +2459,8 @@
           "blurb": "곶자왈 꼬마기차+오리배, 걷기 부담 없이 자연."
         },
         {
-          "name": "만장굴",
-          "blurb": "평탄 1km 용암동굴, 서늘·신비 탐험."
+          "name": "카멜리아힐",
+          "blurb": "평탄 산책로·폭포·생태연못, 짧은 다리도 편하게."
         }
       ],
       "kml": null,
@@ -2515,9 +2515,9 @@
               "after": 2,
               "near": "함덕해수욕장",
               "candidates": [
-                "dc-je-16",
-                "dc-je-21",
-                "dc-je-05"
+                "dc-je-11",
+                "dc-je-02",
+                "dc-je-28"
               ]
             },
             {
@@ -2525,9 +2525,9 @@
               "after": 2,
               "near": "해비치 호텔앤드리조트 제주",
               "candidates": [
+                "dc-je-15",
                 "dc-je-17",
-                "dc-je-07",
-                "dc-je-14"
+                "dc-je-07"
               ]
             }
           ]
@@ -2558,8 +2558,8 @@
                 "naver": "https://map.naver.com/p/search/%ED%95%B4%EB%B9%84%EC%B9%98%20%ED%98%B8%ED%85%94%EC%95%A4%EB%93%9C%EB%A6%AC%EC%A1%B0%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-03",
-                "dc-je-11"
+                "dc-je-14",
+                "dc-je-18"
               ]
             },
             {
@@ -2567,9 +2567,9 @@
               "after": 1,
               "near": "우도(성산항 도항선)",
               "candidates": [
-                "dc-je-08",
-                "dc-je-15",
-                "dc-je-25"
+                "dc-je-06",
+                "dc-je-20",
+                "dc-je-04"
               ]
             },
             {
@@ -2577,9 +2577,9 @@
               "after": 1,
               "near": "해비치 호텔앤드리조트 제주",
               "candidates": [
-                "dc-je-17",
-                "dc-je-07",
-                "dc-je-14"
+                "dc-je-03",
+                "dc-je-16",
+                "dc-je-01"
               ]
             }
           ]
@@ -2610,8 +2610,8 @@
                 "naver": "https://map.naver.com/p/search/%ED%95%B4%EB%B9%84%EC%B9%98%20%ED%98%B8%ED%85%94%EC%95%A4%EB%93%9C%EB%A6%AC%EC%A1%B0%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-06",
-                "dc-je-20"
+                "dc-je-17",
+                "dc-je-07"
               ]
             },
             {
@@ -2619,9 +2619,9 @@
               "after": 0,
               "near": "만장굴",
               "candidates": [
-                "dc-je-11",
-                "dc-je-07",
-                "dc-je-17"
+                "dc-je-08",
+                "dc-je-15",
+                "dc-je-25"
               ]
             }
           ]
@@ -2687,12 +2687,12 @@
       ],
       "highlights": [
         {
-          "name": "우도(성산항 도항선)",
-          "blurb": "배 타고 들어가는 섬 여행. 홍조단괴 백사장·등대, 전기차로 섬 한 바퀴."
-        },
-        {
           "name": "성산일출봉",
           "blurb": "완만한 계단 왕복 1시간, 유네스코 분화구. 성취감+자연학습."
+        },
+        {
+          "name": "우도(성산항 도항선)",
+          "blurb": "배 타고 들어가는 섬 여행. 홍조단괴 백사장·등대, 전기차로 섬 한 바퀴."
         },
         {
           "name": "함덕해수욕장",
@@ -2751,9 +2751,9 @@
               "after": 2,
               "near": "애월 해안도로 드라이브",
               "candidates": [
-                "dc-je-05",
-                "dc-je-01",
-                "dc-je-08"
+                "dc-je-27",
+                "dc-je-23",
+                "dc-je-22"
               ]
             },
             {
@@ -2761,9 +2761,9 @@
               "after": 2,
               "near": "그랜드 하얏트 제주",
               "candidates": [
-                "dc-je-19",
-                "dc-je-02",
-                "dc-je-24"
+                "dc-je-21",
+                "dc-je-05",
+                "dc-je-19"
               ]
             }
           ]
@@ -2795,7 +2795,7 @@
               },
               "candidates": [
                 "dc-je-13",
-                "dc-je-20"
+                "dc-je-02"
               ]
             },
             {
@@ -2803,9 +2803,9 @@
               "after": 1,
               "near": "가파도(운진항 배)",
               "candidates": [
-                "dc-je-01",
-                "dc-je-08",
-                "dc-je-25"
+                "dc-je-12",
+                "dc-je-09",
+                "dc-je-10"
               ]
             },
             {
@@ -2813,9 +2813,9 @@
               "after": 1,
               "near": "그랜드 하얏트 제주",
               "candidates": [
-                "dc-je-19",
-                "dc-je-02",
-                "dc-je-24"
+                "dc-je-24",
+                "dc-je-21",
+                "dc-je-28"
               ]
             }
           ]
@@ -2846,8 +2846,8 @@
                 "naver": "https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%ED%95%98%EC%96%8F%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-05",
-                "dc-je-04"
+                "dc-je-13",
+                "dc-je-20"
               ]
             },
             {
@@ -2855,7 +2855,7 @@
               "after": 0,
               "near": "오설록 티뮤지엄",
               "candidates": [
-                "dc-je-16",
+                "dc-je-26",
                 "dc-je-22",
                 "dc-je-23"
               ]
@@ -2988,8 +2988,8 @@
               "near": "제주항공우주박물관",
               "candidates": [
                 "dc-je-27",
-                "dc-je-21",
-                "dc-je-05"
+                "dc-je-09",
+                "dc-je-10"
               ]
             },
             {
@@ -2997,9 +2997,9 @@
               "after": 2,
               "near": "랜딩관 제주신화월드",
               "candidates": [
-                "dc-je-22",
-                "dc-je-23",
-                "dc-je-12"
+                "dc-je-12",
+                "dc-je-05",
+                "dc-je-01"
               ]
             }
           ]
@@ -3035,8 +3035,8 @@
                 "naver": "https://map.naver.com/p/search/%EB%9E%9C%EB%94%A9%EA%B4%80%20%EC%A0%9C%EC%A3%BC%EC%8B%A0%ED%99%94%EC%9B%94%EB%93%9C%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-27",
-                "dc-je-21"
+                "dc-je-26",
+                "dc-je-25"
               ]
             },
             {
@@ -3044,9 +3044,9 @@
               "after": 1,
               "near": "테디베어뮤지엄",
               "candidates": [
-                "dc-je-25",
-                "dc-je-13",
-                "dc-je-04"
+                "dc-je-03",
+                "dc-je-18",
+                "dc-je-14"
               ]
             },
             {
@@ -3054,9 +3054,9 @@
               "after": 2,
               "near": "랜딩관 제주신화월드",
               "candidates": [
-                "dc-je-22",
-                "dc-je-23",
-                "dc-je-12"
+                "dc-je-27",
+                "dc-je-08",
+                "dc-je-15"
               ]
             }
           ]
@@ -3087,8 +3087,8 @@
                 "naver": "https://map.naver.com/p/search/%EB%9E%9C%EB%94%A9%EA%B4%80%20%EC%A0%9C%EC%A3%BC%EC%8B%A0%ED%99%94%EC%9B%94%EB%93%9C%20%EB%B7%94%ED%8E%98"
               },
               "candidates": [
-                "dc-je-05",
-                "dc-je-01"
+                "dc-je-12",
+                "dc-je-22"
               ]
             },
             {
@@ -3096,9 +3096,9 @@
               "after": 0,
               "near": "9.81파크",
               "candidates": [
-                "dc-je-06",
-                "dc-je-20",
-                "dc-je-26"
+                "dc-je-26",
+                "dc-je-16",
+                "dc-je-04"
               ]
             }
           ]
@@ -3162,26 +3162,26 @@
           "note": "현재 예상 총액 2,201,520원 · 예산 4,000,000원"
         },
         {
-          "label": "항공우주박물관 입장권",
-          "note": "온라인 예매가 현장보다 저렴/시간지정"
-        },
-        {
           "label": "9.81파크 레이싱 예약",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
         },
         {
           "label": "테디베어뮤지엄 입장권",
           "note": "온라인 예매가 현장보다 저렴/시간지정"
+        },
+        {
+          "label": "항공우주박물관 입장권",
+          "note": "온라인 예매가 현장보다 저렴/시간지정"
         }
       ],
       "highlights": [
         {
-          "name": "제주항공우주박물관",
-          "blurb": "실물 조종석·우주선 체험, 비행기 좋아하면 최고."
-        },
-        {
           "name": "테디베어뮤지엄",
           "blurb": "실내 곰인형 전시·공연, 날씨 무관."
+        },
+        {
+          "name": "제주항공우주박물관",
+          "blurb": "실물 조종석·우주선 체험, 비행기 좋아하면 최고."
         },
         {
           "name": "9.81파크",
