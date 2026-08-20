@@ -19,6 +19,11 @@ const round100 = n => Math.round(n/100)*100;
 function leg(a,b){ if(!a||!b||!a.lat||!b.lat) return null;
   const d=haversine(a,b),t=S.city.transport;
   if(d<0.45) return {icon:"🚶",mode:"도보",mins:Math.max(2,Math.round(d*15)),cost:0,note:"가까워요"};
+  // 렌터카가 확정된 여행(trip.rentcar)은 구간을 자차 기준으로 계산한다.
+  // 직선거리 × 1.3 = 도로거리, 평균 50km/h, 연비 9km/L·휘발유 1,700원/L 가정.
+  if(S.drive){ const km=d*1.3;
+    return {icon:"🚗",mode:"렌터카",mins:Math.max(5,Math.round(km/50*60+5)),cost:round100(km/9*1700),
+      link:kakaoTo(b),linklabel:"카카오내비",note:"도로거리·연료비 추정 · 제주는 통행료 없음"}; }
   if(t.has_subway&&d<=12) return {icon:"🚇",mode:"지하철",mins:Math.round(d*4+8),cost:t.subway4,link:kakaoTo(b),linklabel:"길찾기",note:"4인(추정)"};
   const cost=round100(t.taxi_base+d*t.taxi_per_km);
   return {icon:"🚕",mode:"택시",mins:Math.round(d*3+5),cost,link:kakaoTo(b),linklabel:"카카오T 호출",note:t.has_subway?"택시비(추정)":"택시비 추정 · 렌터카도 편해요"}; }
@@ -134,6 +139,7 @@ function renderPlanPicker(){ const el=$("#planPicker"); el.innerHTML="";
 function selectPlan(id){ S.cur=id; location.hash=`${S.city.id}/${id}`; $("#compare").hidden=true; $("#builder").hidden=true; const lv=$("#live"); if(lv) lv.hidden=true;
   document.querySelectorAll(".plan-btn").forEach(b=>b.classList.toggle("active",b.dataset.id===id));
   const p=S.plans.find(x=>x.id===id); if(!p) return;
+  S.drive=!!(p.trip&&p.trip.rentcar);   // 구간 계산 모드(자차 vs 대중교통)
   renderHead(p); renderMap(p); renderSide(p); renderCost(p); renderConfirm(p);
   broadcastCtx(p);
   window.scrollTo({top:0,behavior:"smooth"}); }
@@ -153,6 +159,7 @@ function renderHead(p){ $("#planHead").innerHTML=`
   <h2>${p.title}</h2>
   <p class="pintro">${p.intro||p.subtitle||""}</p>
   ${p.recommended_for?`<p class="recfor">👨‍👩‍👧‍👧 이런 가족에게 &nbsp;<b>${p.recommended_for}</b></p>`:""}
+  ${p.trip?`<p class="phdate">🗓️ ${kdate(p.trip.start)} ~ ${kdate(p.trip.end)} <b>${DDAY(p.trip.start)}</b></p>`:""}
   <div class="chips">
     ${(p.chips||[]).map(c=>`<span class="chip">${c}</span>`).join("")}
     ${p.total!=null?`<span class="chip total">예상 총경비 ${won(p.total)}원</span>`:""}
@@ -277,18 +284,55 @@ function restCard(id,open){ const r=S.rest[id]; if(!r) return "";
 
 function mealBlock(mm,domId){ const b=mm.buffet?`<details class="rest buffet"><summary><span class="rest-nm">🏨 ${mm.buffet.name}</span><span class="rest-sum">호텔 조식·뷔페</span></summary><div class="rest-in">${mm.buffet.price?`<div class="rest-mn">${mm.buffet.price}</div>`:""}<div class="lnks">${mm.buffet.naver?`<a class="lnk" href="${mm.buffet.naver}" target="_blank" rel="noopener">네이버</a>`:""}</div></div></details>`:"";
   const n=(mm.candidates||[]).length;
-  return `<div class="meal"${domId?` id="${domId}"`:""}><div class="meal-slot">🍽️ ${mm.slot} <span class="meal-near">${mm.near} 근처</span>
+  return `<div class="meal"${domId?` id="${domId}"`:""}><div class="meal-slot">${mm.time?`<span class="meal-t">${mm.time}</span>`:""}🍽️ ${mm.slot} <span class="meal-near">${mm.near} 근처</span>
       ${n>1?`<button class="meal-all" type="button" data-all="1">모두 펼치기</button>`:""}</div>
+    ${mm.note?`<p class="meal-no">${linkify(mm.note)}</p>`:""}
     ${b}${mm.candidates.map((id,i)=>restCard(id,i===0)).join("")}</div>`; }
+
+/* 메모 안의 https:// 링크를 실제 링크로. 데이터에 URL 을 넣어두면 그대로 눌린다. */
+function linkify(t){ return String(t).replace(/(https?:\/\/[^\s<]+)/g,'<a class="lnk" href="$1" target="_blank" rel="noopener">🗺️ 지도에서 찾기</a>'); }
+
+/* ---------- 확정 일정(trip): 날짜/항공/숙소/렌터카/주의/차 안 놀이 ---------- */
+const DDAY=iso=>{ const t=new Date(iso+"T00:00:00"), n=new Date(); n.setHours(0,0,0,0);
+  const d=Math.round((t-n)/86400000); return d>0?`D-${d}`:d===0?"D-DAY":`D+${-d}`; };
+const kdate=iso=>{ const d=new Date(iso+"T00:00:00");
+  return `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} (${"일월화수목금토"[d.getDay()]})`; };
+
+function tripCards(p){ const t=p.trip; if(!t) return "";
+  const h=S.hotels[(t.lodging||{}).ref]||S.hotels[p.base_hotel]||{};
+  const fl=(t.flights||[]).map(f=>`<div class="tg"><b>✈️ ${f.dir}</b>
+      <span class="tg-v">${f.date.slice(5).replace("-","/")} · ${f.airline} · ${f.from} <i>${f.dep}</i> → ${f.to} <i>${f.arr}</i></span>
+      ${f.note?`<em>${f.note}</em>`:""}</div>`).join("");
+  const lg=t.lodging?`<div class="tg"><b>🏨 숙소</b><span class="tg-v">${h.name||""} · ${t.lodging.nights_label||(t.nights+"박")} · 체크인 ${t.lodging.checkin} / 체크아웃 ${t.lodging.checkout}</span>${t.lodging.note?`<em>${t.lodging.note}</em>`:""}</div>`:"";
+  const rc=t.rentcar||{};
+  let out=`<div class="card trip"><div class="trip-hd">📌 확정 일정<span class="trip-dd">${DDAY(t.start)}</span></div>
+    <div class="trip-when">${kdate(t.start)} ~ ${kdate(t.end)} · ${t.nights}박 ${t.nights+1}일 · ${(t.party||{}).label||""}</div>
+    <div class="trip-grid">${fl}${lg}
+      ${rc.vendor?`<div class="tg"><b>🚗 렌터카</b><span class="tg-v">${rc.vendor} · ${rc.car||""}</span></div>`:""}</div></div>`;
+
+  if(rc.pickup_steps) out+=`<div class="card rentcar"><div class="rc-hd">🚗 ${rc.pickup_title||"렌터카 인수"}</div>
+    <ol class="rc-steps">${rc.pickup_steps.map(x=>`<li>${x}</li>`).join("")}</ol>
+    ${rc.pickup_note?`<p class="rc-no">${rc.pickup_note}</p>`:""}
+    ${rc.check?`<div class="rc-chk"><b>차 받을 때 확인할 것</b><ul>${rc.check.map(x=>`<li>${x}</li>`).join("")}</ul></div>`:""}
+    ${rc.return_note?`<p class="rc-no ret"><b>반납</b> ${rc.return_note}</p>`:""}</div>`;
+
+  if(t.alerts&&t.alerts.length) out+=`<div class="card alerts">${t.alerts.map(a=>
+    `<div class="al ${a.level||"info"}"><b>${a.level==="warn"?"⚠️":"ℹ️"} ${a.title}</b><p>${a.body}</p></div>`).join("")}</div>`;
+
+  const kp=t.kid_play;
+  if(kp&&kp.games) out+=`<div class="card kidplay"><div class="kp-hd">🎲 ${kp.title||"차 안에서 노는 법"}</div>
+    ${kp.games.map(g=>`<div class="kp"><b>${g.name}</b><span>${g.how}</span></div>`).join("")}</div>`;
+  return out; }
 
 function renderSide(p){ const el=$("#side"); el.innerHTML="";
   const h=S.hotels[p.base_hotel];
   // 긴 컬럼을 훑지 않고 바로 뛸 수 있게 — 오른쪽이 1만 px 이라 스크롤만으론 길을 잃는다
   el.insertAdjacentHTML("beforeend",`<nav class="daynav" aria-label="일정 바로가기">
     <a href="#top" data-jump="top">🏨 숙소·예매</a>
-    ${p.days.map(d=>`<a href="#day${d.day}" data-jump="day${d.day}" style="--dc:${DAYCOL[d.day]||'#333'}">${d.day}일차</a>`).join("")}
+    ${p.days.map(d=>`<a href="#day${d.day}" data-jump="day${d.day}" style="--dc:${DAYCOL[d.day]||'#333'}">${d.date_label||(d.day+"일차")}</a>`).join("")}
     <a href="#cost" data-jump="cost">💳 비용</a></nav>`);
-  if(h) el.insertAdjacentHTML("beforeend",`<div class="card hotel"><div class="hd">🏨 베이스 숙소 · 2박</div>
+  el.insertAdjacentHTML("beforeend",tripCards(p));
+  if(h) el.insertAdjacentHTML("beforeend",`<div class="card hotel"><div class="hd">🏨 베이스 숙소 · ${p.nights||2}박</div>
     ${resolveImg(h)?`<img class="hbanner" src="${resolveImg(h)}" alt="${h.name}" onerror="this.style.display='none'">`:""}<div class="in"><div class="grow"><p class="nm">${h.name}</p>${ratingLine(h)}${h.pool?`<p class="pool">🏊 ${h.pool}</p>`:""}<p class="meta">${h.family_note||""}</p><p class="price">${h.price_range||""}</p>
     <div class="lnks">${h.naver_map?`<a class="lnk" href="${h.naver_map}" target="_blank" rel="noopener">네이버 지도</a>`:""}${h.booking?`<a class="lnk" href="${h.booking}" target="_blank" rel="noopener">예약</a>`:""}${h.phone?`<a class="lnk" href="tel:${h.phone}">📞 ${h.phone}</a>`:""}<a class="lnk" href="${kakaoTo(h)}" target="_blank" rel="noopener">🚕 카카오T</a></div>
     ${reviewLinks(h.name,"hotel")}</div></div></div>`);
@@ -319,7 +363,7 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
     const stripHtml=strip.length?`<div class="dstrip" role="list" aria-label="${d.day}일차 흐름 요약">${
       strip.map(x=>`<button type="button" role="listitem" class="dchip${x.food?" food":""}" data-goto="${x.k}">${
         x.food?`🍴 ${x.t}`:`${x.time?`<i>${x.time}</i>`:`<i>${x.num}</i>`}${x.t}`}</button>`).join('<span class="darr" aria-hidden="true">›</span>')}</div>`:"";
-    el.insertAdjacentHTML("beforeend",`<div class="card day-block" id="day${d.day}"><div class="day-hd" style="background:${col}"><h3>${d.day}일차 · ${d.label||""}</h3>${g?`<a class="zone" href="${g}" target="_blank" rel="noopener">🧭 길찾기</a>`:""}</div>${stripHtml}<div class="day-body">${rows}</div></div>`);
+    el.insertAdjacentHTML("beforeend",`<div class="card day-block" id="day${d.day}"><div class="day-hd" style="background:${col}"><h3>${d.date_label?`<span class="dh-dt">${d.date_label}</span>`:""}<span class="dh-n">${d.day}일차</span> · ${d.label||""}</h3>${g?`<a class="zone" href="${g}" target="_blank" rel="noopener">🧭 길찾기</a>`:""}</div>${d.dad_tip?`<p class="dad-tip">👨‍👧‍👧 ${d.dad_tip}</p>`:""}${stripHtml}<div class="day-body">${rows}</div></div>`);
   });
   if(p.highlights&&p.highlights.length) el.insertAdjacentHTML("beforeend",`<div class="card hilite"><div class="hl-hd">✨ 이 여행의 하이라이트</div>${p.highlights.map(x=>`<div class="hl"><b>${x.name}</b> — ${x.blurb}</div>`).join("")}</div>`);
   el.insertAdjacentHTML("beforeend",packingCard());
@@ -341,7 +385,7 @@ function numFor(p,day,idx){ let n=0; for(const d of p.days){ for(let i=0;i<d.sto
 function renderCost(p){ const el=$("#cost"); if(!p.cost||!p.cost.length){ el.innerHTML=""; return; }
   const rows=p.cost.map(c=>`<tr><td class="cat">${c.cat}</td><td class="detail">${c.detail||""}</td><td class="n">${won(c.amount)}</td><td>${c.type?`<span class="badge ${c.type==='확정'?'f':'e'}">${c.type}</span>`:""}</td></tr>`).join("");
   const left=p.budget?p.budget-p.total:null;
-  el.innerHTML=`<div class="card"><h3>💰 전체 경비 (4인 기준) · 식비는 위 맛집 참고</h3>
+  el.innerHTML=`<div class="card"><h3>💰 전체 경비 (${p.people||4}인 기준) · 식비는 위 맛집 참고</h3>
     <div class="tbl-wrap"><table><thead><tr><th>항목</th><th>내역</th><th class="n">금액(원)</th><th>구분</th></tr></thead><tbody>${rows}</tbody>
     <tfoot><tr><td>합계</td><td class="detail">${p.budget?`예산 ${won(p.budget)}원 이내`:""}</td><td class="n">${won(p.total)}</td><td></td></tr>
     ${left!=null?`<tr class="buf"><td>남는 여유</td><td class="detail">업그레이드 여력</td><td class="n">+${won(left)}</td><td></td></tr>`:""}</tfoot></table></div></div>`; }
@@ -454,7 +498,7 @@ function openPrint(p){
     d.stops.forEach(s=>{ const a=place(s.ref); if(!a) return; const isH=s.ref.startsWith("hotel:");
       stops+=`<li>${s.time?`<b>${s.time}</b> `:""}${isH?"🏨 ":""}${a.name}${s.note?` <span class="pg">— ${s.note}</span>`:""}</li>`; });
     const meals=["아침","점심","저녁"].map(meal).filter(Boolean).join(" · ");
-    daysHtml+=`<div class="pd"><h3>${d.day}일차 · ${d.label||""}</h3><ol>${stops}</ol>${meals?`<div class="pm">🍽️ ${meals}</div>`:""}</div>`;
+    daysHtml+=`<div class="pd"><h3>${d.date_label?d.date_label+" · ":""}${d.day}일차 · ${d.label||""}</h3><ol>${stops}</ol>${meals?`<div class="pm">🍽️ ${meals}</div>`:""}</div>`;
   });
   const cost=(p.cost||[]).map(x=>`<tr><td>${x.cat}</td><td>${x.detail||""}</td><td style="text-align:right">${won(x.amount)}</td></tr>`).join("");
   const pk=c.packing?[...c.packing.common,...c.packing.specific]:[];
@@ -462,10 +506,10 @@ function openPrint(p){
   let sheet=$("#printSheet"); if(!sheet){ sheet=document.createElement("div"); sheet.id="printSheet"; document.body.appendChild(sheet); }
   sheet.innerHTML=`
     <div class="ps-head"><h1>${p.title}</h1>
-      <p>${c.emoji} ${c.name} · 어른 2 + 아이 2 · 2박 3일 · 예상 총경비 <b>${won(p.total)}원</b> (예산 ${won(p.budget)}원 이내)</p>
+      <p>${c.emoji} ${c.name} · ${p.trip?((p.trip.party||{}).label||""):"어른 2 + 아이 2"} · ${p.nights||2}박 ${(p.nights||2)+1}일${p.trip?` · ${kdate(p.trip.start)} ~ ${kdate(p.trip.end)}`:""} · 예상 총경비 <b>${won(p.total)}원</b> (예산 ${won(p.budget)}원 이내)</p>
       <p>🏨 숙소: ${h?h.name:""}${h&&h.pool?` (${h.pool})`:""} · 🚄/✈️ ${c.arrival}</p></div>
     <div class="ps-days">${daysHtml}</div>
-    <div class="ps-cost"><h3>💰 경비 (4인)</h3><table>${cost}<tr class="tot"><td>합계</td><td></td><td style="text-align:right">${won(p.total)}원</td></tr></table></div>
+    <div class="ps-cost"><h3>💰 경비 (${p.people||4}인)</h3><table>${cost}<tr class="tot"><td>합계</td><td></td><td style="text-align:right">${won(p.total)}원</td></tr></table></div>
     <div class="ps-two">
       <div><h3>🎫 예매 & 이동</h3><p>${c.cost.intercity_label}: ${book}</p><p>${c.home_transfer?c.home_transfer.label+" (왕복 약 "+won(c.home_transfer.amount)+"원)":""}</p></div>
       <div><h3>🧳 준비물</h3><p>${pk.join(" · ")}</p></div>

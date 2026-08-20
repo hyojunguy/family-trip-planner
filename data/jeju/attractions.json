@@ -317,5 +317,20 @@
     "naver": "https://map.naver.com/p/search/%EC%95%A0%EC%9B%94%20%ED%95%9C%EB%8B%B4%ED%95%B4%EC%95%88%EC%82%B0%EC%B1%85%EB%A1%9C",
     "review": "https://map.naver.com/p/search/%EC%95%A0%EC%9B%94%20%ED%95%B4%EC%95%88%EB%8F%84%EB%A1%9C",
     "photo": "assets/img/aewol-drive.png"
+  },
+  "daepo": {
+    "name": "대포주상절리대",
+    "lat": 33.2378,
+    "lon": 126.4266,
+    "category": "view",
+    "img": null,
+    "price_hours": "성인 2,000·청소년/어린이 1,000원 · 09:00~18:00(매표 17:40 마감)",
+    "official": "https://www.visitjeju.net/",
+    "blurb": "용암이 식으며 생긴 육각 기둥 절벽에 파도가 부딪힙니다. 데크 한 바퀴 20분이라 도착 첫날에도 부담 없어요.",
+    "kid_fit": "상",
+    "naver": "https://map.naver.com/p/search/%EB%8C%80%ED%8F%AC%EC%A3%BC%EC%83%81%EC%A0%88%EB%A6%AC%EB%8C%80",
+    "review": "https://map.naver.com/p/search/%EB%8C%80%ED%8F%AC%EC%A3%BC%EC%83%81%EC%A0%88%EB%A6%AC%EB%8C%80",
+    "price4": 6000,
+    "sentiment": "짧고 임팩트 큼. 난간 아래는 절벽이라 아이 손 꼭"
   }
 }

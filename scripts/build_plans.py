@@ -3,11 +3,20 @@
 Auto-computes: cost table, per-day meals (nearest kid-friendly restaurants),
 decision checklist, family highlights, compare metrics.
 
+날짜 기반(trip) 플랜: plan-specs 의 plan 에 `trip` 블록이 있으면
+  - days[].date / dow / date_label 을 start 날짜에서 결정론적으로 계산
+  - 숙박 박수(nights)·인원(party.people)을 비용표에 반영
+  - day.meal_plan 힌트가 있으면 그 앵커/시각으로 식사를 배정(없으면 기존 자동 배정)
+날짜·요일·박수 계산은 전부 코드가 소유한다 (모델이 쓰지 않는다).
+
 Usage: python3 scripts/build_plans.py data/busan
 Reads:  <dir>/attractions.json, hotels.json, plan-specs.json, [restaurants.json]
 Writes: <dir>/plans.json
 """
 import json, sys, math
+from datetime import date as _date, timedelta as _td
+
+DOW = "월화수목금토일"
 
 TRANSIT={'station','airport'}
 def won(n): return f"{n:,}"
@@ -33,8 +42,12 @@ def main():
     PCFG = m.get("price_config", "one-room")
     PBF = m.get("price_breakfast", "without_breakfast")
 
-    def measured_lodging(hid, hotel):
-        """실측 우선. (금액, 표기문구, 확정/추정) 반환. 실측 없으면 nightly 추정치로 폴백."""
+    def measured_lodging(hid, hotel, nights=2):
+        """실측 우선. (금액, 표기문구, 확정/추정) 반환. 실측 없으면 nightly 추정치로 폴백.
+        실측 창(hotel-prices.json)은 2박 기준이라 nights!=2 면 추정으로 폴백한다."""
+        if nights != 2:
+            nightly = hotel.get("nightly", 220000)
+            return nightly * nights, f"{hotel.get('name','')} {nights}박 (1박 {won(nightly)}원 추정)", "추정"
         c = (((prices.get("hotels") or {}).get(hid) or {}).get("windows") or {}).get(PW, {})
         lo = ((c.get("configs") or {}).get(PCFG) or {}).get("lowest") or {}
         pick = lo.get(PBF) or lo.get("without_breakfast") or lo.get("with_breakfast")
@@ -45,7 +58,7 @@ def main():
                     "조식 포함" if PBF == "with_breakfast" else "조식 미포함", wlabel]
             return pick["family_total"], " · ".join(b for b in bits if b), "실측"
         nightly = hotel.get("nightly", 220000)
-        return nightly * 2, f"{hotel.get('name','')} (1박 {won(nightly)}원)", "추정"
+        return nightly * nights, f"{hotel.get('name','')} (1박 {won(nightly)}원)", "추정"
 
     def measured_intercity():
         """도시간 교통비도 실측 우선(항공=날짜창별, SRT=고정운임). 없으면 plan-specs.meta 값 유지."""
@@ -64,10 +77,15 @@ def main():
                         detail=f"항공 왕복 4인 · {wl} · 최저 {lo.get('airline','')} 편도 {won(lo.get('price',0))}원")
         return base
 
-    def near_pool(target,kmax,exclude):
+    def near_pool(target,kmax,exclude,maxkm=None,strict=False):
         if not rest or not target: return []
         c=[(rid,hav(target,rv)) for rid,rv in rest.items() if rv.get("lat") and rid not in exclude]
-        c.sort(key=lambda x:x[1]); return [rid for rid,_ in c[:kmax]]
+        c.sort(key=lambda x:x[1])
+        if maxkm is not None:
+            near=[x for x in c if x[1]<=maxkm]
+            if strict: c=near            # 반경 밖으로는 절대 안 나간다
+            else: c = near or c[:kmax]   # 반경 안에 하나도 없으면 최근접으로 폴백
+        return [rid for rid,_ in c[:kmax]]
     # 전수노출 라운드로빈: 시드 나머지연산 대신, 사이트 전체에서 "덜 뽑힌 맛집"을
     # 우선한다(동률이면 near_pool의 근접순을 그대로 유지 — sorted()가 stable이라 보장됨).
     # 결정론적이고(입력 순서에만 의존, 랜덤/시드 없음) pool 안의 맛집을 전부 훑을 때까지
@@ -89,6 +107,21 @@ def main():
         for rid in out: used_global[rid]=used_global.get(rid,0)+1
         return out
 
+    def choose_near(pool,n):
+        """확정 일정(meal_plan)용: 전수노출 회전 대신 **가까운 순** + 카테고리 다양성.
+        실제로 가는 날짜·시간이 정해진 끼니에 먼 식당을 끼워 넣으면 동선이 깨진다.
+        used_global 을 건드리지 않아 다른 여행안의 커버리지 회전에도 영향이 없다."""
+        out=[]; cats=set()
+        for rid in pool:
+            cat=rest[rid].get("category")
+            if cat in cats and len(pool)>n: continue
+            out.append(rid); cats.add(cat)
+            if len(out)==n: break
+        for rid in pool:
+            if rid not in out: out.append(rid)
+            if len(out)==n: break
+        return out[:n]
+
     PAID_LABEL={"lotteworld":"롯데월드 종일권 온라인 예매","sealife":"아쿠아리움 온라인권 예매",
       "aquaplanet":"아쿠아플라넷 온라인권 예매","blueline":"블루라인파크 스카이캡슐 시간대 예약",
       "yacht":"광안리 요트투어 사전예약","samjin":"삼진어묵 만들기 체험 예약",
@@ -97,6 +130,22 @@ def main():
       "aerospace":"항공우주박물관 입장권","teddybear":"테디베어뮤지엄 입장권","centum":"센텀 아이스링크/아쿠아필드 예약"}
 
     for p_idx,p in enumerate(spec["plans"]):
+        trip = p.get("trip")
+        nights = int(trip.get("nights", len(p["days"])-1)) if trip else 2
+        people = int((trip.get("party") or {}).get("people", 4)) if trip else 4
+        ndays  = len(p["days"])
+        ov = (trip or {}).get("cost_override") or {}
+
+        # ---- 날짜 부여: start + (day-1). 요일/표기까지 코드가 소유한다. ----
+        if trip and trip.get("start"):
+            y,mo,dd = (int(x) for x in trip["start"].split("-"))
+            base = _date(y,mo,dd)
+            for day in p["days"]:
+                dt = base + _td(days=day["day"]-1)
+                day["date"] = dt.isoformat()
+                day["dow"] = DOW[dt.weekday()]
+                day["date_label"] = f"{dt.month}/{dt.day} ({DOW[dt.weekday()]})"
+
         seen,paid_names,paid_sum=set(),[],0
         for day in p["days"]:
             for s in day["stops"]:
@@ -106,23 +155,69 @@ def main():
                 if a and a.get("price4",0)>0: paid_sum+=a["price4"]; paid_names.append(a["name"])
         hotel=ho.get(p["base_hotel"],{})
         # 숙박비: 실측(hotel-prices.json)이 있으면 그것을 쓰고, 없을 때만 nightly 추정치로 폴백.
-        lodging, lodge_detail, lodge_type = measured_lodging(p["base_hotel"], hotel)
-        cost=[measured_intercity(),
-          *([{"cat":"집↔출발지 이동","detail":"잠실↔수서/공항 벤 왕복(4인+짐)","amount":m["home_transfer"],"type":"추정"}] if m.get("home_transfer") else []),
-          {"cat":"현지 교통","detail":m.get("local_note","지하철·택시·버스 3일(구간별 표시)"),"amount":m["local"],"type":"추정"},
-          {"cat":"숙박 2박","detail":lodge_detail,"amount":lodging,"type":lodge_type},
-          {"cat":"입장·체험","detail":", ".join(paid_names) or "무료 위주","amount":paid_sum,"type":"추정"},
-          {"cat":"식비","detail":"4인·3일 (끼니별 맛집 참고)","amount":m["food"],"type":"추정"},
-          {"cat":"예비·기념품","detail":"버퍼","amount":m["misc"],"type":"추정"}]
+        lodging, lodge_detail, lodge_type = measured_lodging(p["base_hotel"], hotel, nights)
+        # 입장료 데이터는 4인 기준(price4)이라 인원이 다르면 환산해 [추정]으로 표기한다.
+        adm = round(paid_sum*people/4/100)*100 if people!=4 else paid_sum
+        adm_detail = (", ".join(paid_names) or "무료 위주") + (f" · {people}인 환산" if people!=4 else "")
+        ht = ov.get("home_transfer", m.get("home_transfer"))
+        cost=[ov.get("intercity") or measured_intercity(),
+          *([{"cat":"집↔출발지 이동","detail":f"잠실↔수서/공항 벤 왕복({people}인+짐)","amount":ht,"type":"추정"}] if ht else []),
+          ov.get("local") or {"cat":"현지 교통","detail":m.get("local_note","지하철·택시·버스 3일(구간별 표시)"),"amount":m["local"],"type":"추정"},
+          (dict(ov["lodging"], cat=f"숙박 {nights}박") if ov.get("lodging") else
+           {"cat":f"숙박 {nights}박","detail":lodge_detail,"amount":lodging,"type":lodge_type}),
+          {"cat":"입장·체험","detail":adm_detail,"amount":adm,"type":"추정"},
+          ov.get("food") or {"cat":"식비","detail":f"{people}인·{ndays}일 (끼니별 맛집 참고)","amount":m["food"],"type":"추정"},
+          ov.get("misc") or {"cat":"예비·기념품","detail":"버퍼","amount":m["misc"],"type":"추정"}]
         total=sum(c["amount"] for c in cost)
 
         # ---- meals wired INTO route order (each meal has `after` = stop index) ----
         hp=hotel if hotel.get("lat") else None
+        trip_used=set()          # 확정 일정(meal_plan) 전용: 여행 전체에서 끼니 중복 방지
         def tmin(s):
             try: h,m=s.get("time","").split(":"); return int(h)*60+int(m)
             except Exception: return None
+        def anchor_of(ref):
+            """meal_plan 힌트가 가리키는 앵커(호텔 or 관광지)를 좌표 있는 객체로."""
+            if ref.startswith("hotel:"):
+                h=ho.get(ref[6:],{});  return h if h.get("lat") else None
+            a=at.get(ref)
+            if a and a.get("lat"): return a
+            r=rest.get(ref)                     # 식당 id 를 앵커로 줄 수도 있다(경유 저녁 등)
+            return r if r and r.get("lat") else None
+
         for day in p["days"]:
             stops=day["stops"]
+            # 확정 일정(trip)은 끼니 시각·장소가 이미 정해져 있다 → 힌트대로 배정하고
+            # 후보 식당만 near_pool+choose(전수노출 라운드로빈)로 코드가 고른다.
+            hints=day.get("meal_plan")
+            if hints:
+                meals=[]
+                for hnt in hints:
+                    tgt=anchor_of(hnt["near_ref"])
+                    n=hnt.get("n", 2 if hnt["slot"]=="아침" else 3)
+                    km=hnt.get("maxkm", 15 if hnt["near_ref"].startswith("hotel:") else 12)
+                    # 확정 일정은 끼니 중복을 여행 전체에서 피한다(trip_used). 다만 마지막 밤
+                    # 재방문처럼 일부러 중복을 허용해야 하는 끼니는 "fresh": true 로 푼다.
+                    excl=set() if hnt.get("fresh") else trip_used
+                    pin=[r for r in (hnt.get("pin") or []) if r in rest]
+                    # 반경 > 중복회피 > 반경확장 순으로 완화한다. 반경을 먼저 풀면
+                    # "중문 저녁"에 제주시 식당이 끼어든다(실제로 그렇게 샜었다).
+                    pool=near_pool(tgt,14,excl|set(pin),km,strict=True)
+                    if not pool: pool=near_pool(tgt,14,set(pin),km,strict=True)
+                    if not pool: pool=near_pool(tgt,14,excl|set(pin),km)
+                    cands=(pin+choose_near(pool, max(0,n-len(pin))))[:n]
+                    trip_used|=set(cands)
+                    mm={"slot":hnt["slot"],"after":hnt.get("after",-1),
+                        "near":hnt.get("near_label") or (tgt or {}).get("name",""),
+                        "candidates":cands}
+                    if hnt.get("time"): mm["time"]=hnt["time"]
+                    if hnt.get("note"): mm["note"]=hnt["note"]
+                    if hnt["near_ref"].startswith("hotel:"):
+                        bf=ho.get(hnt["near_ref"][6:],{}).get("buffet")
+                        if bf and hnt["slot"]=="아침": mm["buffet"]=bf
+                    meals.append(mm)
+                day["meals"]=meals
+                continue
             # candidate anchor stops = real POIs (not hotel/station), keep index
             anc=[(i,at[st["ref"]]) for i,st in enumerate(stops)
                  if not st["ref"].startswith("hotel:") and at.get(st["ref"]) and at[st["ref"]].get("lat") and at[st["ref"]].get("category") not in TRANSIT]
@@ -153,7 +248,7 @@ def main():
 
         # ---- decision checklist ----
         decisions=[{"label":m["intercity"]["cat"]+" 예매","note":m.get("book_note","예매 오픈 즉시(성수기 조기 매진)")},
-                   {"label":"숙소 최종 예약","note":f"{hotel.get('name','')} 또는 대안, 8월말 4인"},
+                   {"label":"숙소 최종 예약","note":f"{hotel.get('name','')} · {nights}박 · {people}인"},
                    {"label":"예산 상한 확정","note":f"현재 예상 총액 {won(total)}원 · 예산 {won(m['budget'])}원"}]
         for r in seen:
             if r in PAID_LABEL: decisions.append({"label":PAID_LABEL[r],"note":"온라인 예매가 현장보다 저렴/시간지정"})
@@ -173,6 +268,7 @@ def main():
           "chips":p.get("chips",[]),"intro":p.get("intro") or p.get("subtitle",""),"recommended_for":p.get("recommended_for") or "、".join(p.get("chips",[])[:2]),
           "days":p["days"],"cost":cost,"decisions":decisions,"highlights":highlights,
           "kml":p.get("kml"),"mymaps":p.get("mymaps"),
+          **({"trip":trip,"nights":nights,"people":people} if trip else {}),
           "metrics":{"stops":n_stops,"indoor":n_indoor,"kid":round(sum(kv)/len(kv),1) if kv else 0,"meals":sum(len(dd["meals"]) for dd in p["days"])}})
     json.dump({"plans":out},open(f"{d}/plans.json","w",encoding="utf-8"),ensure_ascii=False,indent=2)
     print(json.dumps({"dir":d,"plans":len(out),"restaurants":len(rest),

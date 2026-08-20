@@ -2,6 +2,7 @@
 """Exit gate for the family-trip-planner build loop. Exit 0 = green.
 Checks: cities index, >=10 plans/city, ref integrity, numeric fields, JSON valid, app.js syntax."""
 import json, os, subprocess, sys
+from datetime import date as _date, timedelta as _td
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def p(*a): return os.path.join(ROOT, *a)
@@ -47,6 +48,31 @@ for c in cities["cities"]:
                     if rid not in rest: errs.append(f"[{c['id']}] {pl['id']} meal ref {rid} missing")
         if not any(day.get("meals") for day in pl["days"]):
             warns.append(f"[{c['id']}] {pl['id']} has no meals")
+        # ---- 확정 일정(trip): 날짜 구조 게이트 ----
+        t = pl.get("trip")
+        if t:
+            tag = f"[{c['id']}] {pl['id']} trip"
+            if t.get("lodging",{}).get("ref") not in hotels:
+                errs.append(f"{tag} lodging.ref {t.get('lodging',{}).get('ref')} missing")
+            n = t.get("nights")
+            if n is None or len(pl["days"]) != n + 1:
+                errs.append(f"{tag} nights={n} but {len(pl['days'])} days (need nights+1)")
+            try:
+                y,mo,dd = (int(x) for x in t["start"].split("-")); base=_date(y,mo,dd)
+                ey,em,ed = (int(x) for x in t["end"].split("-"))
+                if base + _td(days=n) != _date(ey,em,ed):
+                    errs.append(f"{tag} start+{n}d != end ({t['start']} .. {t['end']})")
+                for day in pl["days"]:
+                    want = (base + _td(days=day["day"]-1)).isoformat()
+                    if day.get("date") != want:
+                        errs.append(f"{tag} day{day['day']} date {day.get('date')} != {want}")
+                    if not day.get("date_label"): errs.append(f"{tag} day{day['day']} no date_label")
+            except Exception as e:
+                errs.append(f"{tag} bad start/end date: {e}")
+            for f in t.get("flights", []):
+                for k in ("date","dep","from","to","airline"):
+                    if not f.get(k): errs.append(f"{tag} flight missing {k}")
+            if not t.get("party",{}).get("people"): errs.append(f"{tag} party.people missing")
 
 # app.js syntax
 r = subprocess.run(["node","--check",p("assets","app.js")], capture_output=True, text=True)

@@ -50,6 +50,14 @@ python3 scripts/new_city.py <city> --name <이름> --emoji 🌅 --arrival "..." 
 - **`hotels.json`** — 호텔(전화·네이버·예약·nightly·family_note)
 - **`restaurants.json`** — 맛집(name,lat,lon,category,menu,price,naver,phone,kid_note,wait)
 - **`plan-specs.json`** — 여행안 뼈대(meta + days[].stops[].ref). `ref`가 `hotel:<id>`면 숙소, 그 외 관광지.
+- **날짜 기반 확정 일정(`trip`)** — plan 에 `trip` 블록을 넣으면 그 여행안은 "고르는 안"이 아니라
+  "실제로 가는 날짜별 계획"이 된다. `trip.start`/`nights` 에서 `days[].date`·`dow`·`date_label` 을
+  빌드가 계산하고(모델이 날짜를 쓰지 않는다), 비용표는 `party.people`·`nights` 를 따른다.
+  `trip.rentcar` 가 있으면 구간 계산이 자차(도로거리×1.3, 50km/h, 연비 9km/L) 모드로 바뀐다.
+  `trip.flights` / `lodging` / `rentcar.pickup_steps` / `alerts` / `kid_play` 는 사이드 카드로 렌더된다.
+- **`days[].meal_plan`** — 확정 일정용 끼니 힌트(`slot`·`after`·`near_ref`·`time`·`note`·`pin`·`fresh`·`maxkm`).
+  힌트가 있으면 그 앵커 반경 안에서 **가까운 순**으로 후보를 뽑고 여행 전체에서 중복을 피한다
+  (`fresh: true` 면 중복 허용). 힌트가 없으면 기존 자동 배정(전수노출 라운드로빈)이 그대로 돈다.
 - 편집 후 **생성기**로 plans.json 재생성 → 비용·식사동선·결정·하이라이트가 자동 계산됩니다:
   ```bash
   python3 scripts/build_plans.py data/busan   # data/jeju
