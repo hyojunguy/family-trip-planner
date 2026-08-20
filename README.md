@@ -66,6 +66,55 @@ python3 scripts/new_city.py <city> --name <이름> --emoji 🌅 --arrival "..." 
   ```
 - 새 도시는 `data/<도시>/` 4파일 + `data/cities.json`에 항목 추가.
 
+## 기록 · 일기 · 영상 (2026-08-20 신설)
+
+여행은 "가는 것"만으로 끝나지 않는다. 장소마다 **미션**이 있고, 하루가 끝나면 셋이 모여
+**마감 의식**을 하고, 그 기록이 **일기와 영상**으로 남는다. 설계 근거는 전부 원문을 확인했다.
+
+| 원칙 | 출처 | 구현 |
+|---|---|---|
+| 하루 의무는 1초/1장뿐이어야 지속된다 | Cesar Kuriyama, [1 Second Everyday (TED 2012)](https://www.ted.com/talks/cesar_kuriyama_one_second_every_day) | "오늘의 1초" 카드. 나머지 미션은 전부 보너스 |
+| 손(무엇을) → 얼굴(누가) → 넓게(어디서) | Michael Rosenblum, [BBC 5-shot](https://matthias-suessen.de/en/2017/04/michael-rosenblums-five-shot-method-for-meaningful-video-sequences/) | 매일 3장 훈련 카드. 어깨너머·특이각 2장은 아빠 몫 |
+| "봐"가 아니라 "찾아라" | [Rick Steves Europe Scavenger Hunt](https://www.ricksteves.com/europe/scavenger-hunt) (15 items) | 미션 종류 5종(찾기·찍기·물어보기·해보기·모으기), 찾기형이 기본 |
+| 좋았던 것 / 힘들었던 것 / 내일 기대 | [Rose · Thorn · Bud](https://www.catholicmom.com/articles/roses-thorns-and-buds-a-tool-for-family-members-to-reflect-each-day) | 하루 마감 3문답, 셋이 각자 |
+| 아이가 직접 찍고 그 사진에 한 문장 | Wendy Ewald, [Literacy Through Photography](https://documentarystudies.duke.edu/literacy-through-photography) | 사진마다 캡션 한 줄. 사진이 먼저, 글이 그 다음 |
+
+### 사이트에서 (폰)
+낮에는 미션 체크만. 저녁에 셋이 모여 오늘 사진을 고르고 → `🌙 하루 마감하기` → 표지·동선·
+사진·미션·3문답·내일 예고가 전체화면으로 넘어간다 → `⬇️ 오늘 기록 내보내기` 로
+`jeju-YYYY-MM-DD.zip` 저장. 사진 원본은 사진첩에 그대로 두고 줄인 사본만 IndexedDB 에 담는다.
+
+### 맥에서 (로컬, 비용 0)
+```bash
+python3 scripts/make_recap_video.py jeju-2026-09-23.zip          # 하루 리캡 영상
+python3 scripts/make_recap_video.py jeju-2026-09-2*.zip -o 여행전체.mp4
+python3 scripts/make_recap_video.py *.zip --reel                 # 1초씩 넘기는 하이라이트
+python3 scripts/diary/triage.py ~/Pictures/0923 -n 12            # 수십 장 → 대표 12장
+```
+필요한 것은 `ffmpeg` 과 `Pillow` 뿐. API 키·계정·네트워크 전부 불필요.
+
+### AI 일기 (유료 API, 기본은 호출 안 함)
+```bash
+# ① 계획만 본다 — 네트워크 0, 비용 0
+python3 scripts/family_diary.py ~/Pictures/0923 --zip jeju-2026-09-23.zip --art 2 --veo 1
+# ② 로컬만 실행 — 일기 PDF + 리캡 영상 (여전히 비용 0)
+python3 scripts/family_diary.py ~/Pictures/0923 --zip ... --local
+# ③ 유료 API 까지 (여기서만 돈이 나간다)
+python3 scripts/family_diary.py ~/Pictures/0923 --zip ... --go --look watercolor --veo 1
+```
+`--go` 없이는 **한 바이트도 나가지 않는다.** 무엇을 몇 번 부르고 얼마가 들지 표로 먼저 보여준다.
+
+| 단계 | 엔진 | 비용 |
+|---|---|---|
+| 선별 (수십 장 → 대표 N장) | 로컬 (흔들림·노출·중복·시간분산) | 0 |
+| 조판 (일기 PDF) | 로컬 Pillow | 0 |
+| 삽화 (수채화·크레용·스티커·포스터·합성) | OpenAI `gpt-image-2` / Google `gemini-3.1-flash-image-preview` | 유료 |
+| 클립 (스틸 → 4~8초) | Google `veo-3.1-*-generate-preview` | 유료 |
+| 영상 조립 | 로컬 ffmpeg | 0 |
+
+스타일은 `scripts/diary/looks.json`, 요금 추정치는 `scripts/diary/pricing.json` 에서 고친다.
+⛔ pricing.json 의 숫자는 **전부 추정**이다. 공식 요금표를 실시간으로 읽지 않는다.
+
 ## 사진·가격 원칙 (정직)
 
 사진은 자유 라이선스 **위키미디어 커먼스**만 임베드(없으면 링크). 가격·영업시간·이동요금은 `[추정]` 포함 — 예약·탑승 전 공식/네이버에서 재확인하세요. 수치·연락처 날조 금지.

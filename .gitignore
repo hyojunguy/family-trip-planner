@@ -1,2 +1,7 @@
 .DS_Store
 .price-logs/
+
+# 로컬 산출물(일기·영상)
+out/
+scripts/diary/__pycache__/
+**/__pycache__/

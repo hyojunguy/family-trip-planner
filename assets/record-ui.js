@@ -84,7 +84,9 @@ function panelHtml(d){
       <button type="button" class="rp-close">🌙 하루 마감하기</button>
       <button type="button" class="rp-exp">⬇️ 오늘 기록 내보내기</button>
     </div>
-    <p class="rp-stat"></p></div>`;
+    <p class="rp-stat"></p>
+    <p class="rp-next">내보낸 zip 을 맥으로 옮기면 그날의 <b>일기 PDF</b>와 <b>리캡 영상</b>이 만들어집니다.
+      <code>python3 scripts/make_recap_video.py jeju-${d.date}.zip</code></p></div>`;
 }
 
 /* ---------------- 담긴 사진 그리드 ---------------- */

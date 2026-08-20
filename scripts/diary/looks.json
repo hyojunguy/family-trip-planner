@@ -1,0 +1,19 @@
+{
+  "_note": "일기 삽화 스타일 프리셋. 프롬프트만 바꾸면 룩이 바뀐다. 아이 얼굴이 들어가는 사진을 다루므로 '실제 인물처럼 보이는 다른 사람'을 만들지 않게 identity 보존을 명시한다.",
+  "looks": [
+    {"id":"watercolor","name":"수채화 일기","provider":"openai",
+     "prompt":"Turn this family travel photo into a soft watercolor journal illustration. Keep the people's identities, poses, clothing colors and the composition exactly as in the photo. Loose pencil underdrawing, gentle washes, paper grain, generous white space. No text, no logos, no added people."},
+    {"id":"crayon","name":"아이 크레용 그림","provider":"openai",
+     "prompt":"Redraw this photo the way a 9-year-old would draw it with crayons in a travel diary: chunky waxy strokes, slightly wobbly outlines, bright flat colors, visible paper texture. Keep the same subjects, count of people and the scene layout. No text, no logos."},
+    {"id":"sticker","name":"스티커북","provider":"gemini",
+     "prompt":"Cut the main subject out of this photo and make it a glossy die-cut sticker with a thick white border and a soft drop shadow on a warm cream background. Keep faces and clothing exactly as they are. No text."},
+    {"id":"poster","name":"오늘의 포스터","provider":"gemini",
+     "prompt":"Compose these photos from one family travel day into a single vintage travel-poster style illustration: limited 4-colour risograph palette, bold simple shapes, grainy print texture. Keep the recognizable landmark and the same three family members. Absolutely no text, no letters, no numbers anywhere in the image."},
+    {"id":"oneframe","name":"하루 한 장 (합성)","provider":"openai","multi":true,
+     "prompt":"Combine the moments in these photos into ONE illustrated scene that reads as a single memory of this family's day. Keep each person's identity, hair and clothing consistent with the reference photos. Warm storybook illustration, hand-painted, soft light. No text, no logos, no extra people."}
+  ],
+  "veo": {
+    "name":"움직이는 한 컷",
+    "prompt":"Gentle cinematic push-in on this still photograph of a family travel moment. Very subtle parallax, soft natural light, dust motes drifting. The people stay exactly as they are and do not change appearance. Handheld micro-movement only, no camera whip, no scene change.\n\n[AUDIO] soft ambient room tone and distant sea breeze. No speech, no singing, no humming, no music."
+  }
+}

@@ -868,3 +868,8 @@ body.pl-open{overflow:hidden}
   .pl-cover h2{font-size:24px}
   .pl-img{height:52vh}
 }
+.rp-next{font-size:12px; color:var(--soft); line-height:1.7; margin-top:8px;
+  border-top:1px dashed var(--line); padding-top:8px}
+.rp-next code{display:block; margin-top:4px; font-size:11px; background:var(--card);
+  border:1px solid var(--line); border-radius:6px; padding:6px 8px; overflow-x:auto;
+  white-space:nowrap; font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
