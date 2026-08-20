@@ -379,7 +379,10 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
   el.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{ e.preventDefault();
     const k=a.dataset.jump, t=k==="top"?document.querySelector(".layout"):document.getElementById(k);
     t?.scrollIntoView({behavior:"smooth",block:"start"}); });
-  bindFavs(el); fillLive(p); syncStickyH(); }
+  bindFavs(el); fillLive(p); syncStickyH();
+  // 기록 레이어(미션·사진·하루 마감)는 별도 파일이 소유한다. 없으면 그냥 지나간다.
+  window.__tripPlace=place;
+  if(window.TripRecordUI) window.TripRecordUI.mount(p).catch(e=>console.error("record mount",e)); }
 function numFor(p,day,idx){ let n=0; for(const d of p.days){ for(let i=0;i<d.stops.length;i++){ if(!d.stops[i].ref.startsWith("hotel:")) n++; if(d===day&&i===idx) return n; } } return n; }
 
 function renderCost(p){ const el=$("#cost"); if(!p.cost||!p.cost.length){ el.innerHTML=""; return; }

@@ -73,10 +73,40 @@ for c in cities["cities"]:
                 for k in ("date","dep","from","to","airline"):
                     if not f.get(k): errs.append(f"{tag} flight missing {k}")
             if not t.get("party",{}).get("people"): errs.append(f"{tag} party.people missing")
+            # ---- 기록 계약(미션·3샷·마감 3문답) ----
+            rec = t.get("record")
+            if not rec:
+                errs.append(f"{tag} record 블록 없음 (미션·마감 의식 계약)")
+            else:
+                for k in ("roles","one_second","shot_cards","closing","mission_kinds"):
+                    if not rec.get(k): errs.append(f"{tag} record.{k} 없음")
+                if len(((rec.get("closing") or {}).get("questions")) or []) != 3:
+                    errs.append(f"{tag} closing.questions 는 3개(Rose/Thorn/Bud)여야 함")
+                for src in ("one_second","shot_cards","closing"):
+                    u = (rec.get(src) or {}).get("src")
+                    if u and not u.startswith("http"): errs.append(f"{tag} record.{src}.src 가 URL 이 아님")
+            mids, kinds = [], set((rec or {}).get("mission_kinds", {}))
+            for day in pl["days"]:
+                if not day.get("goal"): errs.append(f"{tag} day{day['day']} goal 없음")
+                for st in day.get("stops", []):
+                    for mm in st.get("missions", []):
+                        if not mm.get("id"): errs.append(f"{tag} 미션 id 없음: {mm.get('t','')[:20]}")
+                        mids.append(mm.get("id"))
+                        if kinds and mm.get("k") not in kinds:
+                            errs.append(f"{tag} 미션 종류 '{mm.get('k')}' 는 mission_kinds 에 없음")
+                        if mm.get("who") not in ((rec or {}).get("roles") or {}):
+                            errs.append(f"{tag} 미션 who '{mm.get('who')}' 는 roles 에 없음")
+            if len(mids) != len(set(mids)):
+                errs.append(f"{tag} 미션 id 중복 (체크 기록이 섞인다)")
+            if len(mids) < 4 * len(pl["days"]):
+                warns.append(f"{tag} 미션이 {len(mids)}개뿐 (하루 4개 미만)")
 
 # app.js syntax
-r = subprocess.run(["node","--check",p("assets","app.js")], capture_output=True, text=True)
-if r.returncode != 0: errs.append("app.js syntax: "+r.stderr.strip())
+for js in ("app.js","record.js","record-ui.js","calc.js"):
+    fpj = p("assets", js)
+    if not os.path.exists(fpj): errs.append(f"assets/{js} 없음"); continue
+    r = subprocess.run(["node","--check",fpj], capture_output=True, text=True)
+    if r.returncode != 0: errs.append(f"{js} syntax: "+r.stderr.strip())
 
 print("=== VALIDATE ===")
 for w in warns: print("WARN:", w)

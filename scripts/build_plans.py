@@ -13,7 +13,7 @@ Usage: python3 scripts/build_plans.py data/busan
 Reads:  <dir>/attractions.json, hotels.json, plan-specs.json, [restaurants.json]
 Writes: <dir>/plans.json
 """
-import json, sys, math
+import json, sys, math, hashlib
 from datetime import date as _date, timedelta as _td
 
 DOW = "월화수목금토일"
@@ -135,6 +135,13 @@ def main():
         people = int((trip.get("party") or {}).get("people", 4)) if trip else 4
         ndays  = len(p["days"])
         ov = (trip or {}).get("cost_override") or {}
+
+        # ---- 미션 id: 본문 해시 기반. 순서를 바꿔도 체크 기록이 안 날아간다. ----
+        if trip:
+            for day in p["days"]:
+                for st in day.get("stops", []):
+                    for mm in st.get("missions", []):
+                        mm["id"] = "m" + hashlib.sha1(mm["t"].encode("utf-8")).hexdigest()[:8]
 
         # ---- 날짜 부여: start + (day-1). 요일/표기까지 코드가 소유한다. ----
         if trip and trip.get("start"):
@@ -269,7 +276,9 @@ def main():
           "days":p["days"],"cost":cost,"decisions":decisions,"highlights":highlights,
           "kml":p.get("kml"),"mymaps":p.get("mymaps"),
           **({"trip":trip,"nights":nights,"people":people} if trip else {}),
-          "metrics":{"stops":n_stops,"indoor":n_indoor,"kid":round(sum(kv)/len(kv),1) if kv else 0,"meals":sum(len(dd["meals"]) for dd in p["days"])}})
+          "metrics":{"stops":n_stops,"indoor":n_indoor,"kid":round(sum(kv)/len(kv),1) if kv else 0,
+                     "meals":sum(len(dd["meals"]) for dd in p["days"]),
+                     "missions":sum(len(st.get("missions",[])) for dd in p["days"] for st in dd["stops"])}})
     json.dump({"plans":out},open(f"{d}/plans.json","w",encoding="utf-8"),ensure_ascii=False,indent=2)
     print(json.dumps({"dir":d,"plans":len(out),"restaurants":len(rest),
       "meals_per_plan":[sum(len(dd["meals"]) for dd in p["days"]) for p in out]},ensure_ascii=False))
