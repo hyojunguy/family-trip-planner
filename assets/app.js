@@ -88,7 +88,10 @@ function bookingCard(){ const c=S.city, b=c.booking||[], ht=c.home_transfer, rc=
   return `<div class="card book"><div class="book-hd">🎫 예매 & 출발 준비</div>
     <div class="book-row"><b>${c.cost.intercity_label} 예매</b><div class="lnks">${b.map(x=>`<a class="lnk" href="${x.url}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</div></div>
     ${rc?`<div class="book-row"><b>🚗 ${rc.label}</b>${rc.note?`<div class="bt-note">${rc.note}</div>`:""}<div class="lnks">${(rc.book||[]).map(x=>`<a class="lnk" href="${x.url}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</div></div>`:""}
-    ${ht?`<div class="book-row"><b>🚐 ${ht.label}</b><div class="bt-note">${ht.note}</div><div class="lnks">${(ht.book||[]).map(x=>`<a class="lnk" href="${x.url}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</div></div>`:""}</div>`; }
+    ${ht?`<div class="book-row"><b>🚐 ${ht.label}</b><div class="bt-note">${ht.note}</div>
+      ${(ht.options||[]).length?`<div class="ht-opts">${ht.options.map(o=>`<div class="ht-o${o.best?" best":""}"><div class="ht-t"><b>${o.label}</b>${o.best?`<span class="ht-bg">추천</span>`:""}</div><div class="ht-p">${o.price}</div><div class="ht-w">${o.why}</div></div>`).join("")}</div>`:""}
+      ${ht.lead?`<div class="dl-ct">⚠️ ${ht.lead}</div>`:""}
+      <div class="lnks">${(ht.book||[]).map(x=>`<a class="lnk" href="${x.url}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</div></div>`:""}</div>`; }
 
 /* ---------- 🍊 꼭 먹을 것 · 간식 ------------------------------------------
    "제주 가면 뭘 먹어야 하나"는 끼니 카드(가까운 집 3곳)로는 절대 안 보인다.

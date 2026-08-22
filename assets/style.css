@@ -1031,3 +1031,12 @@ body.pl-open{overflow:hidden}
 .meal.bfast{background:#EEF5FF; border-color:#D8E5F7}
 .meal.bfast .meal-slot{color:#1F4E86}
 .dchip.food{white-space:nowrap}
+/* 이동수단 비교 — "콜밴이 싸다"는 통념을 숫자로 나란히 놓고 사람이 고르게 한다 */
+.ht-opts{display:flex; flex-direction:column; gap:6px; margin:var(--s2) 0}
+.ht-o{border:1px solid var(--line); border-radius:8px; padding:8px var(--s3); background:var(--card)}
+.ht-o.best{border-color:var(--sea); background:var(--sea-tint)}
+.ht-t{display:flex; align-items:center; gap:6px; font-size:13px}
+.ht-bg{flex:none; font-size:10.5px; font-weight:800; color:#fff; background:var(--sea);
+  border-radius:999px; padding:1px 7px}
+.ht-p{font-size:12.5px; font-weight:700; color:var(--ink); margin-top:2px; font-variant-numeric:tabular-nums}
+.ht-w{font-size:12px; color:var(--soft); margin-top:2px}
