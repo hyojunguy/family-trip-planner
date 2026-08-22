@@ -32,6 +32,47 @@ for c in cities["cities"]:
         if v.get("lat") is None: warns.append(f"[{c['id']}] attraction {k} no lat")
     for k,v in hotels.items():
         if "nightly" not in v: errs.append(f"[{c['id']}] hotel {k} missing nightly")
+    # ---- 시설 온라인 예약(booking): 링크·요금이 화면에서 그대로 눌린다 ----
+    # 지어낸 URL 은 404 로만 드러나므로(사용자가 클릭할 때) 형식을 코드가 검사한다.
+    for k,v in at.items():
+        b = v.get("booking")
+        if not b: continue
+        btag = f"[{c['id']}] attraction {k} booking"
+        for uk in ("url","official"):
+            u = b.get(uk)
+            if u is not None and not str(u).startswith("http"):
+                errs.append(f"{btag}.{uk} 가 URL 이 아님: {u}")
+        for pk_ in ("gate","online"):
+            blk = b.get(pk_)
+            if blk is None: continue
+            if not isinstance(blk, dict):
+                errs.append(f"{btag}.{pk_} 는 {{adult,child}} 객체여야 함"); continue
+            for who in ("adult","child"):
+                val = blk.get(who)
+                if val is not None and not isinstance(val,(int,float)):
+                    errs.append(f"{btag}.{pk_}.{who} 가 숫자가 아님: {val!r}")
+        g,o = b.get("gate") or {}, b.get("online") or {}
+        for who in ("adult","child"):
+            if isinstance(g.get(who),(int,float)) and isinstance(o.get(who),(int,float)) and o[who] > g[who]:
+                errs.append(f"{btag} 온라인가({o[who]})가 현장가({g[who]})보다 비쌈 — {who}")
+        if not b.get("refund"): warns.append(f"{btag} refund(취소·환불) 없음")
+    # ---- 🍊 꼭 먹을 것 ----
+    me = (c.get("must_eat") or {})
+    for i,x in enumerate(me.get("items") or []):
+        mtag = f"[{c['id']}] must_eat[{i}]"
+        if not x.get("food"): errs.append(f"{mtag} food 없음")
+        if x.get("kid") not in (None,"상","중","하"): errs.append(f"{mtag} kid 는 상/중/하 여야 함: {x.get('kid')}")
+        for rid in x.get("refs") or []:
+            if rid not in rest: errs.append(f"{mtag} refs {rid} 가 restaurants 에 없음")
+        if not x.get("why"): warns.append(f"{mtag} why 없음")
+    # ---- ✈️ 출발 허브(공항 식당가) ----
+    hub = c.get("departure_hub")
+    if hub:
+        if not hub.get("name"): errs.append(f"[{c['id']}] departure_hub.name 없음")
+        for i,f_ in enumerate(hub.get("food") or []):
+            if not f_.get("name"): errs.append(f"[{c['id']}] departure_hub.food[{i}] name 없음")
+            if f_.get("kid") not in (None,"상","중","하"):
+                errs.append(f"[{c['id']}] departure_hub.food[{i}] kid 는 상/중/하 여야 함")
     # ref integrity + budget
     for pl in plans.get("plans",[]):
         if pl.get("total",0) > pl.get("budget",3000000):
@@ -46,6 +87,13 @@ for c in cities["cities"]:
             for mm in day.get("meals",[]):
                 for rid in mm.get("candidates",[]):
                     if rid not in rest: errs.append(f"[{c['id']}] {pl['id']} meal ref {rid} missing")
+                # 확정 일정의 아침은 "전부 호텔 조식"이 사용자 결정이다(2026-08-23).
+                # 프롬프트로 부탁하면 다음 빌드에서 조용히 식당이 다시 끼어든다 → 코드가 막는다.
+                if pl.get("trip") and mm.get("slot") == "아침":
+                    if not mm.get("buffet"):
+                        errs.append(f"[{c['id']}] {pl['id']} day{day['day']} 아침에 호텔 조식(buffet)이 없음")
+                    if mm.get("candidates"):
+                        errs.append(f"[{c['id']}] {pl['id']} day{day['day']} 아침에 식당 후보가 {len(mm['candidates'])}개 (조식만 있어야 함)")
             # ---- 고르기(picks): 아이가 누르는 선택 후보 ----
             # ref 오타는 화면에서 '빈 줄'로만 보여서 눈으로 못 잡는다 → 코드가 막는다.
             pk = day.get("picks")

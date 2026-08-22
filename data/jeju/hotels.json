@@ -38,7 +38,10 @@
     "buffet": {
       "name": "롯데호텔 제주 조식·뷔페",
       "price": "성인 약 4~7만원, 아동 할인 · 숙박 시 조식 패키지가 대개 유리",
-      "naver": "https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%ED%98%B8%ED%85%94%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98"
+      "naver": "https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%ED%98%B8%ED%85%94%20%EC%A0%9C%EC%A3%BC%20%EB%B7%94%ED%8E%98",
+      "hours": "조식 오픈 시각은 체크인 때 프런트에 확인하세요 [확인필요]",
+      "place": "호텔 뷔페 레스토랑 (체크인 시 위치 안내받기)",
+      "kid_note": "아이는 시리얼·계란·과일·주스만으로도 한 끼가 됩니다. 아동 요금이 따로 있으니 인원 말할 때 나이를 알려주세요."
     }
   },
   "grand-hyatt-jeju": {

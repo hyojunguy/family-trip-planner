@@ -90,6 +90,78 @@ function bookingCard(){ const c=S.city, b=c.booking||[], ht=c.home_transfer, rc=
     ${rc?`<div class="book-row"><b>🚗 ${rc.label}</b>${rc.note?`<div class="bt-note">${rc.note}</div>`:""}<div class="lnks">${(rc.book||[]).map(x=>`<a class="lnk" href="${x.url}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</div></div>`:""}
     ${ht?`<div class="book-row"><b>🚐 ${ht.label}</b><div class="bt-note">${ht.note}</div><div class="lnks">${(ht.book||[]).map(x=>`<a class="lnk" href="${x.url}" target="_blank" rel="noopener">${x.label}</a>`).join("")}</div></div>`:""}</div>`; }
 
+/* ---------- 🍊 꼭 먹을 것 · 간식 ------------------------------------------
+   "제주 가면 뭘 먹어야 하나"는 끼니 카드(가까운 집 3곳)로는 절대 안 보인다.
+   그건 "어디서" 이고 이건 "무엇을" 이다. 그래서 별도 카드로 세운다.
+   아이 입맛(상/중/하)과 "우리 일정 중 언제 먹는지"를 같이 붙여, 리스트가
+   구경거리로 끝나지 않고 실제 끼니에 연결되게 한다. */
+function mustEatCard(){ const me=S.city.must_eat; if(!me||!(me.items||[]).length) return "";
+  const K={"상":"아이도 잘 먹음","중":"반반","하":"어른 입맛"};
+  const it=x=>`<details class="me-it">
+    <summary><span class="me-nm">${x.food}</span>
+      ${x.kid?`<span class="me-kid k-${x.kid}" title="${K[x.kid]||""}">${x.kid}</span>`:""}
+      ${x.when?`<span class="me-when">${x.when}</span>`:""}
+      ${x.planned?`<span class="me-plan">${x.planned}</span>`:`<span class="me-plan off">일정 밖</span>`}</summary>
+    <div class="me-in">${x.why?`<p>${x.why}</p>`:""}
+      ${x.kid_note?`<div class="rest-kid">👶 ${x.kid_note}</div>`:""}
+      ${x.where?`<div class="me-wh">📍 ${x.where}</div>`:""}
+      <div class="lnks">${(x.refs||[]).filter(id=>S.rest[id]).map(id=>
+        `<button type="button" class="lnk" data-focus="${id}">📍 ${S.rest[id].name}</button>`).join("")}
+        <a class="lnk" href="https://map.kakao.com/?q=${enc(x.query||x.food+" 제주")}" target="_blank" rel="noopener">🗺️ 파는 곳 찾기</a></div>
+    </div></details>`;
+  return `<div class="card must" id="musteat"><div class="me-hd">🍊 제주 가면 꼭 먹는 것
+      <span class="deck-sub">아이 입맛 · 우리 일정에서 언제 먹는지</span></div>
+    ${me.note?`<p class="me-no">${me.note}</p>`:""}
+    <div class="me-list">${me.items.map(it).join("")}</div>
+    ${me.snack_note?`<p class="me-no snack">🍡 ${me.snack_note}</p>`:""}</div>`; }
+
+/* ---------- 🎟️ 온라인 예약 할인 · 취소/환불 --------------------------------
+   현장 정가와 온라인가를 나란히 놓고 "이 여행에서 얼마 아끼는지"를 코드가 계산한다.
+   모델이 쓴 숫자를 그대로 싣지 않는다 — 합계는 항상 데이터에서 다시 더한다.
+   환불 규정을 같은 카드에 두는 이유: 아이 동반 여행은 취소가 실제로 일어난다. */
+function dealsRefs(p){ const seen=new Set(), out=[];
+  const add=r=>{ if(!r||r.startsWith("hotel:")||seen.has(r)) return;
+    const a=S.at[r]; if(!a||!a.booking) return; seen.add(r); out.push([r,a]); };
+  (p.days||[]).forEach(d=>{ (d.stops||[]).forEach(s=>add(s.ref));
+    ((d.picks||{}).options||[]).forEach(o=>add(o.ref)); });
+  return out; }
+
+function dealsCard(p){ const rows=dealsRefs(p); if(!rows.length) return "";
+  const party=(p.trip||{}).party||{}, ad=party.adults??2, kd=party.kids??2;
+  const sum=(b,k)=>{ const o=b[k]||{}; const a=+o.adult||0, c=+o.child||0;
+    return (a||c)?(a*ad+c*kd):null; };
+  let save=0, unknown=0;
+  const body=rows.map(([id,a])=>{ const b=a.booking||{};
+    const g=sum(b,"gate"), o=sum(b,"online");
+    if(g!=null&&o!=null&&o<g) save+=g-o; else if(g==null&&o==null) unknown++;
+    const money=(g!=null||o!=null)?`<div class="dl-pr">${g!=null?`<s>${won(g)}원</s>`:""}${o!=null?`<b>${won(o)}원</b>`:""}${(g!=null&&o!=null&&o<g)?`<span class="dl-sv">−${won(g-o)}</span>`:""}<i>${ad}인+아이${kd}</i></div>`:`<div class="dl-pr none">요금 확인 필요</div>`;
+    return `<details class="dl">
+      <summary><span class="dl-nm">${a.name}</span>${b.channel?`<span class="dl-ch">${b.channel}</span>`:""}${b.discount?`<span class="dl-dc">${b.discount}</span>`:""}</summary>
+      <div class="dl-in">${money}
+        ${b.refund?`<div class="dl-rf"><b>취소·환불</b> ${b.refund}</div>`:""}
+        ${b.validity?`<div class="dl-vd"><b>유효기간</b> ${b.validity}</div>`:""}
+        ${b.caution?`<div class="dl-ct">⚠️ ${b.caution}</div>`:""}
+        <div class="lnks">${b.url?`<a class="lnk go" href="${b.url}" target="_blank" rel="noopener">🎟️ 바로 예약</a>`:""}${b.official?`<a class="lnk" href="${b.official}" target="_blank" rel="noopener">공식</a>`:""}<a class="lnk" href="https://map.naver.com/p/search/${enc(a.name)}" target="_blank" rel="noopener">네이버 지도</a></div>
+      </div></details>`; }).join("");
+  return `<div class="card deals" id="deals"><div class="dl-hd">🎟️ 온라인 예약 · 취소/환불
+      <span class="deck-sub">현장가 대비 절감 ${save?`약 ${won(save)}원`:"확인 중"}${unknown?` · 미확인 ${unknown}곳`:""}</span></div>
+    <p class="me-no">현장 매표보다 싼 곳만 모았습니다. 환불 규정이 시설마다 달라 아이가 아플 때를 대비해 같이 적어 두었어요.</p>
+    ${body}</div>`; }
+
+/* ---------- ✈️ 출발 공항 허브(김포) — 게이트 전에 뭘 먹나 ------------------ */
+function hubCard(){ const h=S.city.departure_hub; if(!h) return "";
+  const f=(h.food||[]).map(x=>`<details class="hb-f">
+      <summary><span class="me-nm">${x.name}</span>${x.floor?`<span class="hb-fl">${x.floor}</span>`:""}${x.kid?`<span class="me-kid k-${x.kid}">${x.kid}</span>`:""}${x.open?`<span class="me-when">${x.open}~</span>`:""}</summary>
+      <div class="me-in">${x.type||x.price?`<div class="rest-mn">${[x.type,x.price].filter(Boolean).join(" · ")}</div>`:""}${x.note?`<div class="rest-kid">👶 ${x.note}</div>`:""}
+      <div class="lnks"><a class="lnk" href="https://map.naver.com/p/search/${enc(h.map_prefix?h.map_prefix+" "+x.name:x.name)}" target="_blank" rel="noopener">네이버 지도</a></div></div></details>`).join("");
+  return `<div class="card hub" id="hub"><div class="hb-hd">✈️ ${h.name}
+      ${h.subtitle?`<span class="deck-sub">${h.subtitle}</span>`:""}</div>
+    ${h.reality?`<p class="hb-real">⚠️ ${h.reality}</p>`:""}
+    ${(h.timeline||[]).length?`<ol class="hb-tl">${h.timeline.map(t=>`<li><b>${t.t}</b> ${t.what}</li>`).join("")}</ol>`:""}
+    ${(h.floors||[]).length?`<div class="hb-fls">${h.floors.map(x=>`<div><b>${x.f}</b> ${x.what}</div>`).join("")}</div>`:""}
+    ${f?`<div class="hb-flist">${f}</div>`:""}
+    ${h.note?`<p class="me-no">${h.note}</p>`:""}</div>`; }
+
 function packingCard(){ const pk=S.city.packing; if(!pk) return "";
   const item=(x,i,g)=>{const k=`pk_${S.city.id}_${g}_${i}`;return `<label class="pk"><input type="checkbox" data-k="${k}" ${localStorage.getItem(k)?"checked":""}><span>${x}</span></label>`;};
   return `<div class="card pack"><div class="pack-hd">🧳 여행 준비물 <span class="deck-sub">체크하며 챙기세요</span></div>
@@ -285,9 +357,17 @@ function restCard(id,open){ const r=S.rest[id]; if(!r) return "";
       ${reviewLinks(r.name,"food")}
     </div></details>`; }
 
-function mealBlock(mm,domId){ const b=mm.buffet?`<details class="rest buffet"><summary><span class="rest-nm">🏨 ${mm.buffet.name}</span><span class="rest-sum">호텔 조식·뷔페</span></summary><div class="rest-in">${mm.buffet.price?`<div class="rest-mn">${mm.buffet.price}</div>`:""}<div class="lnks">${mm.buffet.naver?`<a class="lnk" href="${mm.buffet.naver}" target="_blank" rel="noopener">네이버</a>`:""}</div></div></details>`:"";
+/* 끼니 아이콘 — 아침은 호텔 조식, 간식은 따로 보이게 한다.
+   전부 🍽️ 로 뭉개면 "간식을 넣었다"는 사실 자체가 화면에서 안 보인다. */
+const SLOT_IC={"아침":"🏨","간식":"🍡","야식":"🌙","커피":"☕"};
+const slotIc=s=>SLOT_IC[s]||"🍽️";
+
+function mealBlock(mm,domId){ const bf=mm.buffet;
+  /* 아침을 전부 호텔 조식으로 못 박았으므로, 조식 카드는 접힌 채로 두면 안 된다 —
+     그날 아침에 실제로 필요한 정보(여는 시각·어디로 가나)가 안 보인다. 기본 펼침. */
+  const b=bf?`<details class="rest buffet" open><summary><span class="rest-nm">🏨 ${bf.name}</span><span class="rest-sum">호텔 조식·뷔페</span></summary><div class="rest-in">${bf.hours?`<div class="rest-wt">⏱️ ${bf.hours}</div>`:""}${bf.place?`<div class="me-wh">📍 ${bf.place}</div>`:""}${bf.price?`<div class="rest-mn">${bf.price}</div>`:""}${bf.kid_note?`<div class="rest-kid">👶 ${bf.kid_note}</div>`:""}<div class="lnks">${bf.naver?`<a class="lnk" href="${bf.naver}" target="_blank" rel="noopener">네이버</a>`:""}</div></div></details>`:"";
   const n=(mm.candidates||[]).length;
-  return `<div class="meal"${domId?` id="${domId}"`:""}><div class="meal-slot">${mm.time?`<span class="meal-t">${mm.time}</span>`:""}🍽️ ${mm.slot} <span class="meal-near">${mm.near} 근처</span>
+  return `<div class="meal${mm.slot==="간식"?" snack":""}${mm.slot==="아침"?" bfast":""}"${domId?` id="${domId}"`:""}><div class="meal-slot">${mm.time?`<span class="meal-t">${mm.time}</span>`:""}${slotIc(mm.slot)} ${mm.slot} <span class="meal-near">${mm.near}${mm.near_suffix||" 근처"}</span>
       ${n>1?`<button class="meal-all" type="button" data-all="1">모두 펼치기</button>`:""}</div>
     ${mm.note?`<p class="meal-no">${linkify(mm.note)}</p>`:""}
     ${b}${mm.candidates.map((id,i)=>restCard(id,i===0)).join("")}</div>`; }
@@ -332,6 +412,9 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
   // 긴 컬럼을 훑지 않고 바로 뛸 수 있게 — 오른쪽이 1만 px 이라 스크롤만으론 길을 잃는다
   el.insertAdjacentHTML("beforeend",`<nav class="daynav" aria-label="일정 바로가기">
     <a href="#top" data-jump="top">🏨 숙소·예매</a>
+    ${S.city.departure_hub?`<a href="#hub" data-jump="hub">✈️ 출발</a>`:""}
+    ${dealsRefs(p).length?`<a href="#deals" data-jump="deals">🎟️ 예약</a>`:""}
+    ${(S.city.must_eat&&(S.city.must_eat.items||[]).length)?`<a href="#musteat" data-jump="musteat">🍊 먹거리</a>`:""}
     ${p.days.map(d=>`<a href="#day${d.day}" data-jump="day${d.day}" style="--dc:${DAYCOL[d.day]||'#333'}">${d.date_label||(d.day+"일차")}</a>`).join("")}
     <a href="#cost" data-jump="cost">💳 비용</a></nav>`);
   el.insertAdjacentHTML("beforeend",tripCards(p));
@@ -340,6 +423,9 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
     <div class="lnks">${h.naver_map?`<a class="lnk" href="${h.naver_map}" target="_blank" rel="noopener">네이버 지도</a>`:""}${h.booking?`<a class="lnk" href="${h.booking}" target="_blank" rel="noopener">예약</a>`:""}${h.phone?`<a class="lnk" href="tel:${h.phone}">📞 ${h.phone}</a>`:""}<a class="lnk" href="${kakaoTo(h)}" target="_blank" rel="noopener">🚕 카카오T</a></div>
     ${reviewLinks(h.name,"hotel")}</div></div></div>`);
   el.insertAdjacentHTML("beforeend",bookingCard());
+  el.insertAdjacentHTML("beforeend",hubCard());
+  el.insertAdjacentHTML("beforeend",dealsCard(p));
+  el.insertAdjacentHTML("beforeend",mustEatCard());
   if(p.decisions&&p.decisions.length) el.insertAdjacentHTML("beforeend",`<div class="card deck"><div class="deck-hd">✅ 결정 체크리스트 <span class="deck-sub">배우자 컨펌용</span></div>
     ${p.decisions.map((x,i)=>{const k=`chk_${S.city.id}_${p.id}_${i}`;return `<label class="deci"><input type="checkbox" data-k="${k}" ${localStorage.getItem(k)?"checked":""}><span><b>${x.label}</b><em>${x.note||""}</em></span></label>`;}).join("")}</div>`);
   const ct=S.city.city_tour;
@@ -365,14 +451,14 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
     }
     const stripHtml=strip.length?`<div class="dstrip" role="list" aria-label="${d.day}일차 흐름 요약">${
       strip.map(x=>`<button type="button" role="listitem" class="dchip${x.food?" food":""}" data-goto="${x.k}">${
-        x.food?`🍴 ${x.t}`:`${x.time?`<i>${x.time}</i>`:`<i>${x.num}</i>`}${x.t}`}</button>`).join('<span class="darr" aria-hidden="true">›</span>')}</div>`:"";
+        x.food?`${slotIc(x.t)} ${x.t}`:`${x.time?`<i>${x.time}</i>`:`<i>${x.num}</i>`}${x.t}`}</button>`).join('<span class="darr" aria-hidden="true">›</span>')}</div>`:"";
     el.insertAdjacentHTML("beforeend",`<div class="card day-block" id="day${d.day}"><div class="day-hd" style="background:${col}"><h3>${d.date_label?`<span class="dh-dt">${d.date_label}</span>`:""}<span class="dh-n">${d.day}일차</span> · ${d.label||""}</h3>${g?`<a class="zone" href="${g}" target="_blank" rel="noopener">🧭 길찾기</a>`:""}</div>${d.dad_tip?`<p class="dad-tip">👨‍👧‍👧 ${d.dad_tip}</p>`:""}${stripHtml}<div class="day-body">${rows}</div>${picksBlock(p,d)}</div>`);
   });
   if(p.highlights&&p.highlights.length) el.insertAdjacentHTML("beforeend",`<div class="card hilite"><div class="hl-hd">✨ 이 여행의 하이라이트</div>${p.highlights.map(x=>`<div class="hl"><b>${x.name}</b> — ${x.blurb}</div>`).join("")}</div>`);
   el.insertAdjacentHTML("beforeend",packingCard());
   el.querySelectorAll("input[data-k]").forEach(cb=>cb.onchange=()=>{ cb.checked?localStorage.setItem(cb.dataset.k,"1"):localStorage.removeItem(cb.dataset.k); });
   // 📍 지도 보기 — summary 안의 버튼이라 details 토글로 새지 않게 막는다
-  el.querySelectorAll(".rest-map").forEach(b=>b.onclick=e=>{ e.preventDefault(); e.stopPropagation(); focusRest(b.dataset.focus); });
+  el.querySelectorAll("[data-focus]").forEach(b=>b.onclick=e=>{ e.preventDefault(); e.stopPropagation(); focusRest(b.dataset.focus); });
   el.querySelectorAll(".meal-all").forEach(b=>b.onclick=()=>{ const box=b.closest(".meal");
     const ds=[...box.querySelectorAll("details.rest")], open=ds.some(d=>!d.open);
     ds.forEach(d=>{ d.open=open; }); b.textContent=open?"모두 접기":"모두 펼치기"; });

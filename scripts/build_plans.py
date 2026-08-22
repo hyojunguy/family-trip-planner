@@ -219,9 +219,13 @@ def main():
                         "candidates":cands}
                     if hnt.get("time"): mm["time"]=hnt["time"]
                     if hnt.get("note"): mm["note"]=hnt["note"]
+                    # "롯데호텔 제주 근처" 가 아니라 "롯데호텔 제주 조식" 처럼 읽히게.
+                    if hnt.get("near_suffix") is not None: mm["near_suffix"]=hnt["near_suffix"]
+                    # 호텔 조식: 슬롯이 아침이거나 hint 가 명시적으로 요청하면 붙인다.
+                    # (n=0 으로 두면 후보 식당 없이 조식 카드만 남는다 — 아침은 그게 정답)
                     if hnt["near_ref"].startswith("hotel:"):
                         bf=ho.get(hnt["near_ref"][6:],{}).get("buffet")
-                        if bf and hnt["slot"]=="아침": mm["buffet"]=bf
+                        if bf and (hnt["slot"]=="아침" or hnt.get("buffet")): mm["buffet"]=bf
                     meals.append(mm)
                 day["meals"]=meals
                 continue

@@ -969,3 +969,65 @@ body.pl-open{overflow:hidden}
 .pk-print:hover{border-color:var(--sun); color:#8A5A12}
 .pk-print:focus-visible{outline:3px solid var(--sea); outline-offset:2px}
 @media print{ .pk-print{display:none} }
+
+/* ---------- 🍊 꼭 먹을 것 / 🎟️ 예약 할인 / ✈️ 출발 허브 ---------------------
+   셋 다 "접힌 요약행 + 펼침 상세" 라는 맛집 카드와 같은 리듬을 쓴다.
+   새 시각언어를 만들지 않는다 — 오른쪽 컬럼에서 눈이 다시 배울 게 없어야 한다. */
+.must,.deals,.hub{padding:var(--s4)}
+.me-hd,.dl-hd,.hb-hd{font-size:14px; font-weight:800; margin-bottom:var(--s2)}
+.me-no{font-size:12.5px; color:var(--soft); margin:0 0 var(--s2)}
+.me-no.snack{color:#B26B12}
+.me-list,.hb-flist{display:flex; flex-direction:column; gap:6px}
+.me-it,.dl,.hb-f{background:#FFF9EE; border:1px solid var(--line); border-radius:8px}
+.deals .dl{background:var(--sea-tint)}
+.me-it>summary,.dl>summary,.hb-f>summary{display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+  cursor:pointer; list-style:none; padding:9px var(--s3); min-height:44px}
+.me-it>summary::-webkit-details-marker,.dl>summary::-webkit-details-marker,
+.hb-f>summary::-webkit-details-marker{display:none}
+.me-it>summary::before,.dl>summary::before,.hb-f>summary::before{content:"▸"; color:var(--soft);
+  font-size:13px; width:11px; flex:none; transition:transform .15s}
+.me-it[open]>summary::before,.dl[open]>summary::before,.hb-f[open]>summary::before{transform:rotate(90deg)}
+.me-it>summary:focus-visible,.dl>summary:focus-visible,.hb-f>summary:focus-visible{
+  outline:2px solid var(--sea); outline-offset:-2px}
+.me-nm{font-size:14px; font-weight:800; min-width:0}
+.me-kid{flex:none; font-size:11px; font-weight:800; border-radius:999px; padding:1px 7px}
+.me-kid.k-상{background:#E3F3E8; color:#1E6B3A}
+.me-kid.k-중{background:#FFF1D6; color:#8A5A05}
+.me-kid.k-하{background:#F3E7E3; color:#8A331A}
+.me-when,.hb-fl{flex:none; font-size:11px; font-weight:700; color:var(--soft)}
+.me-plan{flex:none; margin-left:auto; font-size:11px; font-weight:800; color:#0A5A59;
+  background:var(--sea-tint); border-radius:999px; padding:1px 8px}
+.me-plan.off{color:var(--unk-ink); background:#F1EFE8}
+.me-in,.dl-in{padding:0 var(--s3) var(--s3); font-size:12.5px; color:var(--soft)}
+.me-in p{margin:0 0 6px; color:var(--ink)}
+.me-wh{font-size:12px; margin-top:4px}
+/* 예약 카드 */
+.dl-ch{flex:none; font-size:11px; font-weight:700; color:var(--soft)}
+.dl-dc{flex:none; margin-left:auto; font-size:11px; font-weight:800; color:#A8331A; background:#FBE9E4;
+  border-radius:999px; padding:1px 8px}
+.dl-pr{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:6px}
+.dl-pr s{color:var(--unk-ink)}
+.dl-pr b{font-size:15px; color:var(--ink)}
+.dl-pr i{font-style:normal; font-size:11px; color:var(--unk-ink)}
+.dl-pr.none{color:var(--unk-ink); font-size:12px}
+.dl-sv{font-size:11.5px; font-weight:800; color:#1E6B3A; background:#E3F3E8; border-radius:999px; padding:1px 8px}
+.dl-rf,.dl-vd{font-size:12px; margin-top:3px}
+.dl-rf b,.dl-vd b{color:var(--ink)}
+.dl-ct{font-size:12px; margin-top:4px; color:#A8331A}
+.lnk.go{background:var(--sea); color:#fff; border-color:var(--sea)}
+.lnk.go:hover{background:var(--sea-deep)}
+/* 출발 허브(김포) */
+.hb-real{font-size:12.5px; color:#A8331A; background:#FBE9E4; border-radius:8px;
+  padding:8px var(--s3); margin:0 0 var(--s2)}
+.hb-tl{margin:0 0 var(--s2); padding-left:18px; font-size:12.5px; color:var(--soft)}
+.hb-tl li{margin:2px 0}
+.hb-tl b{color:var(--ink); font-variant-numeric:tabular-nums}
+.hb-fls{display:flex; flex-direction:column; gap:2px; font-size:12px; color:var(--soft);
+  border-left:3px solid var(--line); padding-left:var(--s3); margin-bottom:var(--s3)}
+.hb-fls b{color:var(--ink); margin-right:6px}
+/* 끼니 종류 구분 — 간식·조식이 점심/저녁과 같은 색이면 넣은 티가 안 난다 */
+.meal.snack{background:#FDF1F6; border-color:#F3D9E4}
+.meal.snack .meal-slot{color:#A03A63}
+.meal.bfast{background:#EEF5FF; border-color:#D8E5F7}
+.meal.bfast .meal-slot{color:#1F4E86}
+.dchip.food{white-space:nowrap}
