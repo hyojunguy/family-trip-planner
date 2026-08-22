@@ -46,6 +46,29 @@ for c in cities["cities"]:
             for mm in day.get("meals",[]):
                 for rid in mm.get("candidates",[]):
                     if rid not in rest: errs.append(f"[{c['id']}] {pl['id']} meal ref {rid} missing")
+            # ---- 고르기(picks): 아이가 누르는 선택 후보 ----
+            # ref 오타는 화면에서 '빈 줄'로만 보여서 눈으로 못 잡는다 → 코드가 막는다.
+            pk = day.get("picks")
+            if pk:
+                ptag = f"[{c['id']}] {pl['id']} day{day['day']} picks"
+                opts = pk.get("options") or []
+                if not opts: errs.append(f"{ptag} options 가 비어 있음")
+                oids = []
+                for o in opts:
+                    oid = o.get("id") or o.get("ref")
+                    if not oid: errs.append(f"{ptag} 후보에 id/ref 둘 다 없음: {o.get('name','?')}")
+                    oids.append(oid)
+                    if o.get("ref") and o["ref"] not in at:
+                        errs.append(f"{ptag} ref {o['ref']} 가 attractions 에 없음")
+                    if not (o.get("name") or (o.get("ref") and at.get(o["ref"],{}).get("name"))):
+                        errs.append(f"{ptag} 후보 {oid} 이름 없음")
+                    if not o.get("why"): warns.append(f"{ptag} 후보 {oid} why(고를 이유) 없음")
+                    if not o.get("dur"): warns.append(f"{ptag} 후보 {oid} dur(소요시간) 없음")
+                if len(oids) != len(set(oids)):
+                    errs.append(f"{ptag} 후보 id 중복 (선택 기록이 섞인다)")
+                mx = pk.get("max")
+                if mx is not None and (not isinstance(mx,int) or mx < 1 or mx > len(opts)):
+                    errs.append(f"{ptag} max={mx} 가 후보 수({len(opts)})와 안 맞음")
         if not any(day.get("meals") for day in pl["days"]):
             warns.append(f"[{c['id']}] {pl['id']} has no meals")
         # ---- 확정 일정(trip): 날짜 구조 게이트 ----

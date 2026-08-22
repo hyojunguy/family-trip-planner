@@ -252,8 +252,11 @@ function renderMapActions(p){ const el=$("#mapActions"); el.innerHTML="";
   if(g) el.insertAdjacentHTML("beforeend",`<a href="${g}" target="_blank" rel="noopener">🧭 구글맵 전체 길찾기</a>`);
   if(p.kml) el.insertAdjacentHTML("beforeend",`<a href="${p.kml}" download>⬇️ KML(구글 마이맵)</a>`);
   el.insertAdjacentHTML("beforeend",`<a href="${S.city.dir}/all.kml" download title="다운로드 후 구글 마이맵(mymaps.google.com)에서 가져오기→업로드">🗺️ 구글 마이맵용 KML (${S.city.name} 전체)</a>`);
-  el.insertAdjacentHTML("beforeend",`<button id="printBtn">🖨️ PDF·인쇄</button>`);
+  el.insertAdjacentHTML("beforeend",`<button id="printBtn">🖨️ 전체 요약 인쇄</button>`);
   $("#printBtn").onclick=()=>openPrint(p);
+  if(p.days.some(d=>(d.picks&&(d.picks.options||[]).length))){
+    el.insertAdjacentHTML("beforeend",`<button id="pickBtn" class="pickbtn">🙋 고르기 시트 (A4)</button>`);
+    $("#pickBtn").onclick=()=>openPickSheet(p); }
   if(planRestIds(p).length){
     el.insertAdjacentHTML("afterbegin",`<button id="foodBtn" class="foodbtn" aria-pressed="true">🍴 맛집 핀 켬</button>`);
     syncFoodBtn();
@@ -363,7 +366,7 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
     const stripHtml=strip.length?`<div class="dstrip" role="list" aria-label="${d.day}일차 흐름 요약">${
       strip.map(x=>`<button type="button" role="listitem" class="dchip${x.food?" food":""}" data-goto="${x.k}">${
         x.food?`🍴 ${x.t}`:`${x.time?`<i>${x.time}</i>`:`<i>${x.num}</i>`}${x.t}`}</button>`).join('<span class="darr" aria-hidden="true">›</span>')}</div>`:"";
-    el.insertAdjacentHTML("beforeend",`<div class="card day-block" id="day${d.day}"><div class="day-hd" style="background:${col}"><h3>${d.date_label?`<span class="dh-dt">${d.date_label}</span>`:""}<span class="dh-n">${d.day}일차</span> · ${d.label||""}</h3>${g?`<a class="zone" href="${g}" target="_blank" rel="noopener">🧭 길찾기</a>`:""}</div>${d.dad_tip?`<p class="dad-tip">👨‍👧‍👧 ${d.dad_tip}</p>`:""}${stripHtml}<div class="day-body">${rows}</div></div>`);
+    el.insertAdjacentHTML("beforeend",`<div class="card day-block" id="day${d.day}"><div class="day-hd" style="background:${col}"><h3>${d.date_label?`<span class="dh-dt">${d.date_label}</span>`:""}<span class="dh-n">${d.day}일차</span> · ${d.label||""}</h3>${g?`<a class="zone" href="${g}" target="_blank" rel="noopener">🧭 길찾기</a>`:""}</div>${d.dad_tip?`<p class="dad-tip">👨‍👧‍👧 ${d.dad_tip}</p>`:""}${stripHtml}<div class="day-body">${rows}</div>${picksBlock(p,d)}</div>`);
   });
   if(p.highlights&&p.highlights.length) el.insertAdjacentHTML("beforeend",`<div class="card hilite"><div class="hl-hd">✨ 이 여행의 하이라이트</div>${p.highlights.map(x=>`<div class="hl"><b>${x.name}</b> — ${x.blurb}</div>`).join("")}</div>`);
   el.insertAdjacentHTML("beforeend",packingCard());
@@ -379,7 +382,7 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
   el.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{ e.preventDefault();
     const k=a.dataset.jump, t=k==="top"?document.querySelector(".layout"):document.getElementById(k);
     t?.scrollIntoView({behavior:"smooth",block:"start"}); });
-  bindFavs(el); fillLive(p); syncStickyH();
+  bindPicks(el,p); bindFavs(el); fillLive(p); syncStickyH();
   // 기록 레이어(미션·사진·하루 마감)는 별도 파일이 소유한다. 없으면 그냥 지나간다.
   window.__tripPlace=place;
   if(window.TripRecordUI) window.TripRecordUI.mount(p).catch(e=>console.error("record mount",e)); }
@@ -507,6 +510,7 @@ function openPrint(p){
   const pk=c.packing?[...c.packing.common,...c.packing.specific]:[];
   const book=(c.booking||[]).map(x=>x.label).join(", ");
   let sheet=$("#printSheet"); if(!sheet){ sheet=document.createElement("div"); sheet.id="printSheet"; document.body.appendChild(sheet); }
+  sheet.className="";   // 고르기 시트를 먼저 뽑았다면 .pick 이 남아 있다 — 모드는 매번 다시 정한다
   sheet.innerHTML=`
     <div class="ps-head"><h1>${p.title}</h1>
       <p>${c.emoji} ${c.name} · ${p.trip?((p.trip.party||{}).label||""):"어른 2 + 아이 2"} · ${p.nights||2}박 ${(p.nights||2)+1}일${p.trip?` · ${kdate(p.trip.start)} ~ ${kdate(p.trip.end)}`:""} · 예상 총경비 <b>${won(p.total)}원</b> (예산 ${won(p.budget)}원 이내)</p>
@@ -520,6 +524,103 @@ function openPrint(p){
     <div class="ps-foot">가족여행 플래너 · 가격·시간은 추정 포함, 예약 전 재확인</div>`;
   document.body.classList.add("printing");
   const done=()=>{ document.body.classList.remove("printing"); window.removeEventListener("afterprint",done); };
+  window.addEventListener("afterprint",done);
+  setTimeout(()=>window.print(),200);
+}
+
+/* ---------- 고르기(picks) — 아이들이 직접 선택하는 후보 ----------------------
+   확정 일정(비행기·체크인·앵커 관광지)은 아빠가 정하고, 그 위에 얹을 것은
+   아이들이 고른다. 결정권을 주면 이동 시간 불평이 줄어든다(kid_play "하루 대장"과 같은 원리).
+   - 언니/동생이 각자 누르고, 둘 다 누르면 '확정'으로 굳는다.
+   - 화면에서 고른 결과가 A4 고르기 시트에 그대로 찍힌다(●). 종이로만 고를 거면 빈 ○ 에 색칠.
+   - 상태는 여행·날짜 단위 키로 격리한다(rec_* 와 같은 규율). */
+const PICK_WHO=["k1","k2"];
+const pickKey=(p,d)=>`pick_${S.city.id}_${p.id}_d${d.day}`;
+function picksOf(p,d){ try{ return JSON.parse(localStorage.getItem(pickKey(p,d))||"{}"); }catch(e){ return {}; } }
+function optId(o){ return o.id||o.ref; }
+function pickRole(p,w){ const r=((p.trip||{}).record||{}).roles||{}; return r[w]||(w==="k1"?"언니":"동생"); }
+function togglePick(p,d,oid,w){ const s=picksOf(p,d); s[oid]=s[oid]||{}; s[oid][w]=!s[oid][w];
+  localStorage.setItem(pickKey(p,d),JSON.stringify(s)); return s[oid][w]; }
+
+/* 후보 한 줄에 필요한 표시값을 attractions 에서 끌어온다(이름·요금·링크를 두 번 적지 않는다). */
+function pickView(o){ const a=o.ref?place(o.ref):null;
+  return { name:o.name||(a&&a.name)||"", why:o.why||(a&&a.blurb)||"",
+    dur:o.dur||"", cost:o.cost||"", move:o.move||"", tag:o.tag||"",
+    naver:(a&&(a.naver||a.naver_map))||o.naver||"", official:(a&&a.official)||o.official||"" }; }
+
+function picksBlock(p,d){ const pk=d.picks; if(!pk||!(pk.options||[]).length) return "";
+  const sel=picksOf(p,d);
+  const rows=pk.options.map(o=>{ const oid=optId(o), v=pickView(o), s=sel[oid]||{};
+    const both=s.k1&&s.k2;
+    return `<div class="pkr${both?" both":""}" data-oid="${oid}">
+      <div class="pk-main">
+        <div class="pk-top"><span class="pk-nm">${v.name}</span>${v.tag?`<span class="pk-tag">${v.tag}</span>`:""}${both?`<span class="pk-ok">둘 다 골랐어요</span>`:""}</div>
+        ${v.why?`<p class="pk-why">${v.why}</p>`:""}
+        <div class="pk-meta">${[v.dur&&`⏱️ ${v.dur}`,v.cost&&`💰 ${v.cost}`,v.move&&`🚗 ${v.move}`].filter(Boolean).join("<span class='pk-dot'>·</span>")}</div>
+        ${(v.naver||v.official)?`<div class="lnks">${v.naver?`<a class="lnk" href="${v.naver}" target="_blank" rel="noopener">네이버</a>`:""}${v.official?`<a class="lnk" href="${v.official}" target="_blank" rel="noopener">예매·홈페이지</a>`:""}</div>`:""}
+      </div>
+      <div class="pk-vote" role="group" aria-label="${v.name} 고르기">
+        ${PICK_WHO.map(w=>`<button type="button" class="pk-b${s[w]?" on":""}" data-w="${w}" aria-pressed="${!!s[w]}">${pickRole(p,w)}</button>`).join("")}
+      </div></div>`; }).join("");
+  const n=pk.options.length;
+  return `<div class="picks" id="picks${d.day}">
+    <div class="pk-hd">🙋 ${pk.title||"오늘 뭐 할지 골라 보자"}${pk.max?`<span class="pk-max">${n}개 중 ${pk.max}개까지</span>`:""}
+      <button type="button" class="pk-print" data-day="${d.day}">🖨️ 이 날만 A4</button></div>
+    ${pk.note?`<p class="pk-no">${pk.note}</p>`:""}
+    <div class="pk-list">${rows}</div></div>`; }
+
+function bindPicks(el,p){ el.querySelectorAll(".picks .pk-b").forEach(b=>b.onclick=()=>{
+    const row=b.closest(".pkr"), dnum=+b.closest(".picks").id.replace("picks","");
+    const d=p.days.find(x=>x.day===dnum); if(!d) return;
+    const on=togglePick(p,d,row.dataset.oid,b.dataset.w);
+    b.classList.toggle("on",on); b.setAttribute("aria-pressed",String(on));
+    const s=picksOf(p,d)[row.dataset.oid]||{}; row.classList.toggle("both",!!(s.k1&&s.k2)); });
+  el.querySelectorAll(".picks .pk-print").forEach(b=>b.onclick=()=>openPickSheet(p,+b.dataset.day)); }
+
+/* ---------- A4 고르기 시트 (핵심만 + 아이 선택란) ---------------------------
+   종이 한 장으로 결정을 받는 도구다. 그래서 전체 정보를 다 넣지 않는다.
+   각 날짜에 (1) 이미 정해진 뼈대 한 줄, (2) 고를 것만 남긴다. 비용표·준비물·
+   렌터카 안내는 전부 뺐다 — 그건 openPrint(전체 요약)가 소유한다. */
+function openPickSheet(p,only){
+  const t=p.trip||{}, c=S.city;
+  const days=only?p.days.filter(d=>d.day===only):p.days;
+  const dayBlocks=days.map(d=>{
+    const spine=d.stops.map(s=>{ const a=place(s.ref); if(!a) return null;
+      const nm=s.ref.startsWith("hotel:")?"숙소":a.name; return `${s.time?s.time+" ":""}${nm}`; }).filter(Boolean).join(" › ");
+    const pk=d.picks||{}; const opts=(pk.options||[]);
+    const sel=picksOf(p,d);
+    const list=opts.map(o=>{ const oid=optId(o), v=pickView(o), s=sel[oid]||{};
+      // 동그라미는 CSS 로 그린다 — ○ 글자를 겹쳐 넣으면 테두리와 이중으로 보인다(◎).
+      const box=w=>`<span class="kbox${s[w]?" on":""}" aria-hidden="true"></span><span class="kwho">${pickRole(p,w)}</span>`;
+      const meta=[v.dur,v.cost,v.move].filter(Boolean).join(" · ");
+      return `<tr><td class="kv">${PICK_WHO.map(box).join("")}</td>
+        <td class="kn"><b>${v.name}</b>${v.tag?` <i>${v.tag}</i>`:""}${meta?`<span class="km">${meta}</span>`:""}
+          ${v.why?`<span class="kw">${v.why}</span>`:""}</td></tr>`; }).join("");
+    // 고를 것이 없는 날(도착·귀가처럼 이동만 하는 날)은 한 줄로 접는다.
+    // A4 한 장에 들어가야 아이가 손에 들고 동그라미를 친다 — 빈 블록이 자리를 먹으면 안 된다.
+    if(!opts.length) return `<div class="kd slim"><div class="kd-h"><b>${d.date_label||(d.day+"일차")}</b> ${d.label||""}<span class="kd-x">고를 것 없음 · ${spine||"이동"}</span></div></div>`;
+    return `<div class="kd">
+      <div class="kd-h"><b>${d.date_label||(d.day+"일차")}</b> ${d.label||""}</div>
+      ${spine?`<div class="kd-s"><span>정해진 것</span>${spine}</div>`:""}
+      <div class="kd-p"><span>고를 것${pk.max?` — ${pk.max}개까지`:""}</span>${pk.note?`<em>${pk.note}</em>`:""}</div><table class="ktb">${list}</table>
+    </div>`; }).join("");
+
+  let sheet=$("#printSheet"); if(!sheet){ sheet=document.createElement("div"); sheet.id="printSheet"; document.body.appendChild(sheet); }
+  sheet.className="pick";
+  sheet.innerHTML=`
+    <div class="ks-head">
+      <h1>🧭 ${only?`${(days[0]||{}).date_label||""} 뭐 할지 골라 보자`:"우리 제주 여행, 뭐 할지 골라 보자"}</h1>
+      <p>${only?`${(days[0]||{}).label||""} · `:""}${t.start?`${kdate(t.start)} ~ ${kdate(t.end)}`:""} · ${(t.party||{}).label||""} · 베이스 ${((S.hotels[p.base_hotel]||{}).name)||""}</p>
+      <p class="ks-how"><b>고르는 법</b> ① 하고 싶은 것 옆의 동그라미를 색칠한다 ② 언니·동생이 <b>둘 다</b> 고른 건 그냥 간다 ③ 한 명만 고른 건 저녁에 같이 정한다 ④ 제일 하고 싶은 것 하나에 ★ 를 그린다</p>
+    </div>
+    <div class="ks-days">${dayBlocks}</div>
+    <div class="ks-sign">
+      <div><b>우리가 정한 것</b><span class="sl"></span><span class="sl"></span><span class="sl"></span></div>
+      <div class="ks-nm"><b>${pickRole(p,"k1")}</b><span class="sl"></span><b>${pickRole(p,"k2")}</b><span class="sl"></span><b>아빠</b><span class="sl"></span></div>
+    </div>
+    <div class="ps-foot">가족여행 플래너 · 요금·시간은 바뀔 수 있으니 예약 전에 다시 확인하세요</div>`;
+  document.body.classList.add("printing");
+  const done=()=>{ document.body.classList.remove("printing"); sheet.className=""; window.removeEventListener("afterprint",done); };
   window.addEventListener("afterprint",done);
   setTimeout(()=>window.print(),200);
 }

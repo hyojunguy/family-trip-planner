@@ -873,3 +873,99 @@ body.pl-open{overflow:hidden}
 .rp-next code{display:block; margin-top:4px; font-size:11px; background:var(--card);
   border:1px solid var(--line); border-radius:6px; padding:6px 8px; overflow-x:auto;
   white-space:nowrap; font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* ============================================================================
+   고르기(picks) — 아이가 직접 누르는 선택 후보
+   확정 일정과 시각적으로 구분되게 따뜻한 종이톤 + 점선 테두리. 확정 동선은
+   실선 카드, 고를 것은 점선 = "아직 안 정해졌다"가 형태로 읽힌다.
+   ========================================================================== */
+.picks{margin:var(--s3) var(--s4) var(--s4); padding:var(--s4);
+  border:1.5px dashed var(--sun); border-radius:var(--r-sm); background:#FFFBF2}
+.pk-hd{display:flex; align-items:baseline; gap:var(--s2); flex-wrap:wrap;
+  font-size:14.5px; font-weight:800; color:#8A5A12}
+.pk-max{font-size:11.5px; font-weight:700; color:var(--soft); background:#fff;
+  border:1px solid var(--line); border-radius:999px; padding:2px 9px}
+.pk-no{margin:var(--s1) 0 var(--s3); font-size:12.5px; color:var(--soft); line-height:1.55}
+.pk-list{display:flex; flex-direction:column; gap:var(--s2)}
+.pkr{display:flex; align-items:flex-start; gap:var(--s3); background:var(--card);
+  border:1px solid var(--line); border-radius:var(--r-sm); padding:var(--s3);
+  transition:border-color .15s, box-shadow .15s}
+.pkr.both{border-color:var(--sea); box-shadow:0 0 0 2px var(--sea-tint)}
+.pk-main{flex:1; min-width:0}
+.pk-top{display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.pk-nm{font-size:14.5px; font-weight:800; letter-spacing:-.01em}
+.pk-tag{font-size:11px; font-weight:800; color:var(--sea-deep); background:var(--sea-tint);
+  border-radius:999px; padding:2px 8px}
+.pk-ok{font-size:11px; font-weight:800; color:#fff; background:var(--sea); border-radius:999px; padding:2px 9px}
+.pk-why{margin:4px 0 0; font-size:12.5px; color:var(--soft); line-height:1.6}
+.pk-meta{margin-top:5px; font-size:12px; color:var(--ink); font-weight:700}
+.pk-dot{margin:0 5px; color:var(--faint); font-weight:400}
+.pk-vote{flex:none; display:flex; flex-direction:column; gap:6px}
+.pk-b{min-width:64px; min-height:44px; border:1.5px solid var(--line); background:#fff;
+  color:var(--soft); border-radius:var(--r-sm); font-size:13px; font-weight:800; cursor:pointer;
+  transition:background .15s, border-color .15s, color .15s}
+.pk-b:hover{border-color:var(--sun)}
+.pk-b:focus-visible{outline:3px solid var(--sea); outline-offset:2px}
+.pk-b.on{background:var(--sun); border-color:var(--sun); color:#fff}
+.pk-b.on::before{content:"✓ "}
+.pickbtn{border:1px solid var(--sun); background:#FFF6E4; color:#8A5A12; font-weight:800}
+.pickbtn:hover{background:#FDEBC8}
+@media (max-width:560px){
+  .picks{margin:var(--s3) var(--s3) var(--s3); padding:var(--s3)}
+  .pkr{flex-direction:column; gap:var(--s2)}
+  .pk-vote{flex-direction:row; width:100%}
+  .pk-b{flex:1}
+}
+
+/* ---- A4 고르기 시트 (인쇄 전용) ------------------------------------------
+   핵심만. 비용표·준비물·렌터카는 넣지 않는다 — 아이가 손에 들고 동그라미를
+   칠 종이라 정보가 많아지면 결정이 안 난다. ○ 는 펜으로 칠하는 칸이다. */
+@media print{
+  #printSheet.pick{ font-size:11px; line-height:1.5 }
+  #printSheet.pick .ks-head{ border-bottom:2.5px solid #0E7C7B; padding-bottom:7px; margin-bottom:9px }
+  #printSheet.pick .ks-head h1{ font-size:20px; margin:0 0 3px }
+  #printSheet.pick .ks-head p{ margin:1px 0; font-size:11px; color:#333 }
+  #printSheet.pick .ks-how{ margin-top:5px !important; font-size:10.5px; background:#F3F8F8;
+    border-left:3px solid #0E7C7B; padding:5px 8px; line-height:1.7 }
+  #printSheet.pick .kd{ break-inside:avoid; margin:0 0 11px; padding-bottom:8px; border-bottom:1px dotted #bbb }
+  #printSheet.pick .kd-h{ font-size:13.5px; color:#0A5A59; margin-bottom:3px }
+  #printSheet.pick .kd-h b{ font-size:14.5px }
+  #printSheet.pick .kd-s{ font-size:10px; color:#555; margin-bottom:5px }
+  #printSheet.pick .kd-s span{ display:inline-block; font-weight:800; color:#111; background:#EEE;
+    border-radius:3px; padding:1px 5px; margin-right:5px }
+  #printSheet.pick .kd-p{ font-size:10.5px; margin:5px 0 3px }
+  #printSheet.pick .kd-p span{ font-weight:800; color:#B26B12 }
+  #printSheet.pick .kd-p em{ color:#555; margin-left:5px }
+  #printSheet.pick .kd-n{ font-size:10px; color:#888; font-style:italic }
+  #printSheet.pick .ktb{ width:100%; border-collapse:collapse }
+  #printSheet.pick .ktb td{ border:none; border-bottom:1px solid #E4E4E4; padding:4px 2px; vertical-align:top }
+  #printSheet.pick .kv{ width:104px; white-space:nowrap }
+  #printSheet.pick .kbox{ display:inline-block; width:14px; height:14px;
+    border:1.5px solid #333; border-radius:50%; margin-right:3px; vertical-align:middle }
+  #printSheet.pick .kbox.on{ background:#111; border-color:#111 }
+  body.printing{ background:#fff }
+  #printSheet.pick .kwho{ font-size:9px; margin-right:7px; vertical-align:middle }
+  #printSheet.pick .kn b{ font-size:12px }
+  #printSheet.pick .kn i{ font-size:9px; font-style:normal; background:#E7F2F1; color:#0A5A59;
+    border-radius:8px; padding:1px 5px }
+  #printSheet.pick .km{ display:block; font-size:9.5px; color:#B26B12; font-weight:700; margin-top:1px }
+  #printSheet.pick .kw{ display:block; font-size:10px; color:#555; margin-top:1px }
+  #printSheet.pick .ks-sign{ break-inside:avoid; margin-top:6px; font-size:10.5px }
+  #printSheet.pick .ks-sign .sl{ display:block; border-bottom:1px solid #999; height:17px; margin:4px 0 }
+  #printSheet.pick .ks-nm{ display:flex; gap:14px; margin-top:8px }
+  #printSheet.pick .ks-nm b{ font-size:10px; white-space:nowrap }
+  #printSheet.pick .ks-nm .sl{ flex:1; display:inline-block; min-width:70px; margin:0 0 0 4px }
+  #printSheet.pick .picks{ display:none }
+}
+@media print{
+  @page{ size:A4 }
+  #printSheet.pick .kd.slim{ margin:0 0 5px; padding-bottom:3px }
+  #printSheet.pick .kd.slim .kd-h{ font-size:11px; color:#555; margin:0 }
+  #printSheet.pick .kd.slim .kd-h b{ font-size:11.5px; color:#0A5A59 }
+  #printSheet.pick .kd-x{ color:#888; font-size:9.5px; margin-left:6px }
+}
+.pk-print{margin-left:auto; border:1px solid var(--line); background:#fff; color:var(--soft);
+  border-radius:999px; padding:5px 11px; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap}
+.pk-print:hover{border-color:var(--sun); color:#8A5A12}
+.pk-print:focus-visible{outline:3px solid var(--sea); outline-offset:2px}
+@media print{ .pk-print{display:none} }
