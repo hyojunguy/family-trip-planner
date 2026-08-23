@@ -77,9 +77,13 @@ def main():
                         detail=f"항공 왕복 4인 · {wl} · 최저 {lo.get('airline','')} 편도 {won(lo.get('price',0))}원")
         return base
 
-    def near_pool(target,kmax,exclude,maxkm=None,strict=False):
+    def near_pool(target,kmax,exclude,maxkm=None,strict=False,kind=None):
+        """kind="snack" 이면 간식 가게만, None 이면 끼니 가게만 고른다.
+        푸딩집이 저녁 후보로 뽑히면 화면은 멀쩡한데 계획이 틀린다 — 코드가 가른다."""
         if not rest or not target: return []
-        c=[(rid,hav(target,rv)) for rid,rv in rest.items() if rv.get("lat") and rid not in exclude]
+        def ok(rv): return kind is None or (rv.get("kind") or "meal") == kind
+        c=[(rid,hav(target,rv)) for rid,rv in rest.items()
+           if rv.get("lat") and rid not in exclude and ok(rv)]
         c.sort(key=lambda x:x[1])
         if maxkm is not None:
             near=[x for x in c if x[1]<=maxkm]
@@ -209,9 +213,10 @@ def main():
                     pin=[r for r in (hnt.get("pin") or []) if r in rest]
                     # 반경 > 중복회피 > 반경확장 순으로 완화한다. 반경을 먼저 풀면
                     # "중문 저녁"에 제주시 식당이 끼어든다(실제로 그렇게 샜었다).
-                    pool=near_pool(tgt,14,excl|set(pin),km,strict=True)
-                    if not pool: pool=near_pool(tgt,14,set(pin),km,strict=True)
-                    if not pool: pool=near_pool(tgt,14,excl|set(pin),km)
+                    kind="snack" if hnt["slot"] in ("간식","커피") else "meal"
+                    pool=near_pool(tgt,14,excl|set(pin),km,strict=True,kind=kind)
+                    if not pool: pool=near_pool(tgt,14,set(pin),km,strict=True,kind=kind)
+                    if not pool: pool=near_pool(tgt,14,excl|set(pin),km,kind=kind)
                     cands=(pin+choose_near(pool, max(0,n-len(pin))))[:n]
                     trip_used|=set(cands)
                     mm={"slot":hnt["slot"],"after":hnt.get("after",-1),

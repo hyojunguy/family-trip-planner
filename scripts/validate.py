@@ -55,7 +55,9 @@ for c in cities["cities"]:
         for who in ("adult","child"):
             if isinstance(g.get(who),(int,float)) and isinstance(o.get(who),(int,float)) and o[who] > g[who]:
                 errs.append(f"{btag} 온라인가({o[who]})가 현장가({g[who]})보다 비쌈 — {who}")
-        if not b.get("refund"): warns.append(f"{btag} refund(취소·환불) 없음")
+        free = (g.get("adult") in (0,None)) and (g.get("child") in (0,None)) and not b.get("online")
+        if not b.get("refund") and not free:   # 무료 입장은 환불 규정 자체가 없다
+            warns.append(f"{btag} refund(취소·환불) 없음")
     # ---- 🍊 꼭 먹을 것 ----
     me = (c.get("must_eat") or {})
     for i,x in enumerate(me.get("items") or []):

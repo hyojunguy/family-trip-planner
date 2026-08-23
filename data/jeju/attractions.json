@@ -29,7 +29,17 @@
     "rating": 4.44,
     "reviews": 20000,
     "rsource": "naver",
-    "sentiment": "완만한 코스로 아이와 오르기 쉽고 경관 인상적"
+    "sentiment": "완만한 코스로 아이와 오르기 쉽고 경관 인상적",
+    "booking": {
+      "gate": {
+        "adult": 5000,
+        "child": 2500
+      },
+      "channel": "현장 발권만 (온라인 예약 없음)",
+      "official": "https://www.visitjeju.net/kr/detail/view?contentsid=CONT_000000000500349",
+      "refund": "현장 결제라 해당 없습니다.",
+      "caution": "9월(춘추절기) 05:00~19:00, 매표 마감 18:00. 정기휴무는 매달 첫째 월요일이라 9/23(수)은 정상입니다. 음식물 반입 금지."
+    }
   },
   "seopjikoji": {
     "name": "섭지코지",
@@ -47,7 +57,16 @@
     "rating": 4.46,
     "reviews": 14000,
     "rsource": "naver",
-    "sentiment": "평탄한 산책로, 등대·해안 전망 좋음"
+    "sentiment": "평탄한 산책로, 등대·해안 전망 좋음",
+    "booking": {
+      "gate": {
+        "adult": 0,
+        "child": 0
+      },
+      "channel": "입장료 없음",
+      "official": "https://www.visitjeju.net/u/6yx",
+      "caution": "입장은 무료고 주차료만 냅니다 — 30분 1,000원, 이후 15분당 500원, 하루 최대 3,000원."
+    }
   },
   "hyeopjae": {
     "name": "협재해수욕장",
@@ -93,7 +112,16 @@
     "kid_fit": "중",
     "naver": "https://map.naver.com/p/search/%EC%98%A4%EC%84%A4%EB%A1%9D%20%ED%8B%B0%EB%AE%A4%EC%A7%80%EC%97%84",
     "review": "https://map.naver.com/p/search/%EC%98%A4%EC%84%A4%EB%A1%9D%20%ED%8B%B0%EB%AE%A4%EC%A7%80%EC%97%84",
-    "price4": 0
+    "price4": 0,
+    "booking": {
+      "gate": {
+        "adult": 0,
+        "child": 0
+      },
+      "channel": "예약 불요 · 본관 무료",
+      "official": "https://www.osulloc.com/kr/ko/store-introduction/2",
+      "caution": "본관 관람은 무료라는 출처가 여럿 일치하나 공식 원문 확인은 못 했습니다. 유료 티코스는 80분 6만원/1인이라 초등 자매 동반엔 과합니다 — 녹차 아이스크림과 차밭 산책으로 충분합니다."
+    }
   },
   "camellia": {
     "name": "카멜리아힐",
@@ -125,7 +153,17 @@
     "kid_fit": "중",
     "naver": "https://map.naver.com/p/search/%EB%A7%8C%EC%9E%A5%EA%B5%B4",
     "review": "https://map.naver.com/p/search/%EB%A7%8C%EC%9E%A5%EA%B5%B4",
-    "price4": 12000
+    "price4": 12000,
+    "booking": {
+      "gate": {
+        "adult": 4000,
+        "child": 2000
+      },
+      "channel": "현장 발권만 (온라인 예약 없음)",
+      "official": "https://www.jeju.go.kr/jejuwnh/heritage/lavatube/manjanggul.htm",
+      "refund": "현장 결제라 해당 없습니다.",
+      "caution": "매표 09:00~17:00, 관람 18:00까지. 휴관은 매월 첫째 수요일이라 여행 기간엔 해당 없습니다. 제2입구 약 1km 구간만 개방합니다. 2023년 낙석으로 닫혔다가 2026년 5월 재개방했습니다."
+    }
   },
   "aquaplanet": {
     "name": "아쿠아플라넷 제주",
@@ -143,7 +181,24 @@
     "rating": 4.5,
     "reviews": 67000,
     "rsource": "naver",
-    "sentiment": "대형 수족관·공연, 실내 명소"
+    "sentiment": "대형 수족관·공연, 실내 명소",
+    "booking": {
+      "gate": {
+        "adult": 45500,
+        "child": 41400
+      },
+      "online": {
+        "adult": 37600
+      },
+      "channel": "공식몰 또는 탐나오",
+      "discount": "어른 약 17%",
+      "url": "https://mall.aquaplanet.co.kr/index.do",
+      "official": "https://www.aquaplanet.co.kr/jeju/information/use_price.do",
+      "phone": "1833-7001",
+      "refund": "공식몰 약관에 '청약철회 7일 이내' 조항만 있고 입장권 등급별 환불표는 없습니다. 전화로 확인하세요.",
+      "validity": "확인 시점 특가가 '~08/31' 창이었습니다 — 9월 상품은 따로 열립니다.",
+      "caution": "⛔ 지금 예약하지 마세요. 9월 초에 공식몰·네이버예약 가격을 다시 비교해 잡는 게 맞습니다. 09:30~18:00, 매표 마감 17:00. 재입장 불가, 관람 2시간~2시간 20분. 오션아레나 공연시간은 시기마다 달라 방문 전 공식 앱 확인."
+    }
   },
   "ecoland": {
     "name": "에코랜드 테마파크",
@@ -198,7 +253,17 @@
     "rating": 4.3,
     "reviews": 68,
     "rsource": "tripadvisor",
-    "sentiment": "실내 전시, 비 오는 날 좋음"
+    "sentiment": "실내 전시, 비 오는 날 좋음",
+    "booking": {
+      "gate": {
+        "adult": 10000,
+        "child": 8000
+      },
+      "channel": "온라인 할인 확인 못 함",
+      "official": "https://www.jdc-jam.com/visit/info.do",
+      "refund": "규정을 확인하지 못했습니다.",
+      "caution": "09:00~18:00, 입장 마감 17:00. 휴관은 매월 셋째 월요일이라 9/24(목)은 정상 운영입니다. 4D 체험은 별도 2,000~4,000원이고 예약 없이 당일 현장 선착순입니다."
+    }
   },
   "hamdeok": {
     "name": "함덕해수욕장",
@@ -271,7 +336,24 @@
     "reviews": 648,
     "rsource": "kakao",
     "sentiment": "실내 전시, 사진 좋아 아이들이 좋아함",
-    "photo": "assets/img/teddybear.png"
+    "photo": "assets/img/teddybear.png",
+    "booking": {
+      "gate": {
+        "adult": 12000,
+        "child": 10000
+      },
+      "online": {
+        "adult": 9000,
+        "child": 7200
+      },
+      "channel": "야놀자(NOL)",
+      "discount": "25~28%",
+      "url": "https://leisure-web.yanolja.com/leisure/10141711",
+      "official": "https://www.teddybearmuseum.kr/",
+      "refund": "야놀자 기준 미사용 티켓은 유효기간이 지나도 100% 환불됩니다. 사용 완료분만 환불이 안 됩니다.",
+      "validity": "2026.12.31까지 쓰는 오픈권 (날짜 지정 아님)",
+      "caution": "09:00~18:00 연중무휴, 입장 마감 17:30. teddybearmuseum.com(.com) 은 인증서가 만료됐으니 .kr 로 들어가세요."
+    }
   },
   "udo": {
     "name": "우도(성산항 도항선)",
@@ -331,7 +413,23 @@
     "naver": "https://map.naver.com/p/search/%EB%8C%80%ED%8F%AC%EC%A3%BC%EC%83%81%EC%A0%88%EB%A6%AC%EB%8C%80",
     "review": "https://map.naver.com/p/search/%EB%8C%80%ED%8F%AC%EC%A3%BC%EC%83%81%EC%A0%88%EB%A6%AC%EB%8C%80",
     "price4": 6000,
-    "sentiment": "짧고 임팩트 큼. 난간 아래는 절벽이라 아이 손 꼭"
+    "sentiment": "짧고 임팩트 큼. 난간 아래는 절벽이라 아이 손 꼭",
+    "booking": {
+      "gate": {
+        "adult": 2000,
+        "child": 1000
+      },
+      "online": {
+        "adult": 2000,
+        "child": 1000
+      },
+      "channel": "서귀포시 e-티켓",
+      "discount": "할인 없음 · 대기 회피용",
+      "url": "https://eticket.seogwipo.go.kr/contents?bmcode=joosang",
+      "refund": "규정 조항을 확인하지 못했습니다.",
+      "validity": "날짜 지정",
+      "caution": "온라인으로 사도 값은 같습니다 — 줄을 안 서려는 목적일 때만 의미가 있습니다. 연중무휴 09:00~17:50, 입장 마감 17:30. 주차 무료, 6세 이하 무료."
+    }
   },
   "submarine": {
     "name": "서귀포 잠수함",
@@ -347,7 +445,25 @@
     "review": "https://map.naver.com/p/search/%EC%84%9C%EA%B7%80%ED%8F%AC%EC%9E%A0%EC%88%98%ED%95%A8",
     "price4": 160000,
     "phone": "064-732-6060",
-    "note_book": "18세 미만은 신분증(등본·여권 등), 소인은 가족관계증명서를 지참해야 승선됩니다. 풍랑주의보면 결항."
+    "note_book": "18세 미만은 신분증(등본·여권 등), 소인은 가족관계증명서를 지참해야 승선됩니다. 풍랑주의보면 결항.",
+    "booking": {
+      "gate": {
+        "adult": 65000,
+        "child": 44000
+      },
+      "online": {
+        "adult": 54000,
+        "child": 37000
+      },
+      "channel": "야놀자 (미사용 100% 환불)",
+      "discount": "15~16%",
+      "url": "https://leisure-web.yanolja.com/leisure/10184216",
+      "official": "https://www.submarine.co.kr/",
+      "phone": "064-732-6060",
+      "refund": "채널마다 다릅니다. 야놀자는 미사용 시 100% 환불, 마이리얼트립은 방문 1일 전까지만 100%이고 당일 취소는 원칙적으로 불가합니다.",
+      "validity": "니모투어 기준 구매일로부터 30일",
+      "caution": "⛔ 이 여행에서 취소 리스크가 가장 큰 곳입니다. 풍랑 결항 시 환불 규정을 어느 채널에서도 확인하지 못했습니다. 예약 전에 전화로 '결항 시 전액 환불인가'를 묻고, 답을 못 받으면 현장 발권이 안전합니다. 초4·초2 둘 다 소인 구간이고 해양공원 승선료가 따로 붙습니다(어른 1,000 / 소인 500원)."
+    }
   },
   "jungmun-horse": {
     "name": "중문승마공원",
@@ -363,7 +479,22 @@
     "review": "https://map.naver.com/p/search/%EC%A4%91%EB%AC%B8%EC%8A%B9%EB%A7%88%EA%B3%B5%EC%9B%90",
     "price4": 100000,
     "phone": "064-738-1942",
-    "note_book": "공식 홈페이지가 없어 OTA(투어비스·탐나오 등) 또는 전화 예약. 방문 전 운영시간을 전화로 확인하세요."
+    "note_book": "공식 홈페이지가 없어 OTA(투어비스·탐나오 등) 또는 전화 예약. 방문 전 운영시간을 전화로 확인하세요.",
+    "booking": {
+      "gate": {
+        "adult": 25000,
+        "child": 25000
+      },
+      "online": {
+        "adult": 24000,
+        "child": 24000
+      },
+      "channel": "마이리얼트립 (더블코스 기준)",
+      "discount": "약 4%",
+      "phone": "064-738-1942",
+      "refund": "마이리얼트립 기준 유효기간 내 미사용은 100% 환불, 부분 환불은 안 됩니다.",
+      "caution": "5세부터 단독 탑승이라 자매 둘 다 됩니다. 다만 더블코스는 7~8분으로 매우 짧습니다 — 제대로 태우려면 산책(35,000) 이상. 말 먹이주기는 5,000원 별도. 운영시간이 09:20~17:30 과 10:00~17:00 로 출처가 갈려 전화 확인이 필요합니다."
+    }
   },
   "mapark": {
     "name": "더마파크 (승마·기마공연)",
@@ -379,7 +510,14 @@
     "review": "https://map.naver.com/p/search/%EB%8D%94%EB%A7%88%ED%8C%8C%ED%81%AC",
     "price4": 105000,
     "phone": "064-795-8080",
-    "note_book": "협재해수욕장에서 차로 10분대. 서부 일정과 묶으면 이동이 거의 없습니다."
+    "note_book": "협재해수욕장에서 차로 10분대. 서부 일정과 묶으면 이동이 거의 없습니다.",
+    "booking": {
+      "channel": "탐나오 (확인된 최저 16,500원부터)",
+      "url": "https://www.tamnao.com/web/sp/detailPrdt.do?prdtNum=SP00002029",
+      "phone": "064-795-8080",
+      "refund": "우천·휴연 시 환불 규정을 확인하지 못했습니다.",
+      "caution": "⛔ 이번 조사에서 신뢰도가 가장 낮은 곳입니다. 공식 홈페이지가 열리지 않고 공연 시간표가 출처마다 어긋납니다(10:30/14:30/17:00 vs 10:30/14:00/16:30). 예약보다 전화가 먼저입니다 — 9/24 그날 회차를 확인하지 않으면 헛걸음합니다. 2022년 자료 기준 현장가 어른 20,000 / 어린이 15,000원."
+    }
   },
   "gunsan": {
     "name": "군산오름",
@@ -424,7 +562,24 @@
     "naver": "https://map.naver.com/p/search/%EC%82%B0%EA%B5%BC%EB%B6%80%EB%A6%AC",
     "review": "https://map.naver.com/p/search/%EC%82%B0%EA%B5%BC%EB%B6%80%EB%A6%AC",
     "price4": 20000,
-    "note_book": "계단 일부 말고는 평지 둘레길이라 유아차도 다닙니다. 성산에서 중문으로 돌아오는 길에 들르는 위치."
+    "note_book": "계단 일부 말고는 평지 둘레길이라 유아차도 다닙니다. 성산에서 중문으로 돌아오는 길에 들르는 위치.",
+    "booking": {
+      "gate": {
+        "adult": 7000,
+        "child": 6000
+      },
+      "online": {
+        "adult": 5900,
+        "child": 5900
+      },
+      "channel": "야놀자(NOL)",
+      "discount": "어른 15%",
+      "url": "https://leisure-web.yanolja.com/leisure/10256775",
+      "official": "https://www.sangumburi.net/",
+      "refund": "야놀자 기준 미사용 티켓 100% 환불. 사용분은 불가하고 중복할인도 안 됩니다.",
+      "validity": "구매일로부터 30일 오픈권",
+      "caution": "9월 09:00~18:40, 입장 마감 18:00. 연중무휴. 구매하면 카톡·문자로 바코드가 오고 현장 매표소에 보여주면 됩니다."
+    }
   },
   "geumoreum": {
     "name": "금오름",
@@ -440,5 +595,83 @@
     "review": "https://map.naver.com/p/search/%EA%B8%88%EC%98%A4%EB%A6%84",
     "price4": 0,
     "note_book": "주차 요금 정보는 확인되지 않았습니다. 그늘이 없어 모자 필요."
+  },
+  "myeongwol": {
+    "name": "명월국민학교",
+    "category": "experience",
+    "kid_fit": "상",
+    "lat": 33.3888,
+    "lon": 126.2649,
+    "price4": 0,
+    "blurb": "1993년 폐교된 초등학교를 그대로 살린 카페입니다. 옛 교실 칠판과 나무 책상, 운동장 철봉과 구령대가 남아 있어 아이에겐 카페가 아니라 놀이터예요. \"아빠 어릴 때 학교\"라는 설정이 초등학생에게 통합니다. 협재에서 1km라 동선에 자연스럽게 붙고, 30분이면 교실 구경 + 운동장 + 사진이 다 끝납니다. 음료값만 내면 되니 입장료 부담도 없어요.",
+    "naver": "https://map.naver.com/p/search/%EB%AA%85%EC%9B%94%EA%B5%AD%EB%AF%BC%ED%95%99%EA%B5%90",
+    "booking": {
+      "gate": {
+        "adult": 0,
+        "child": 0
+      },
+      "channel": "예약 불요 · 음료값만",
+      "phone": "070-8803-1955",
+      "caution": "영업시간 자료가 갈립니다 — 10:30~19:00 과 11:00~20:00 두 가지가 나옵니다. 추석 연휴 영업 여부와 함께 전화로 확인하세요."
+    }
+  },
+  "tesiphon": {
+    "name": "성이시돌목장 테쉬폰",
+    "category": "view",
+    "kid_fit": "상",
+    "lat": 33.346,
+    "lon": 126.3216,
+    "price4": 0,
+    "blurb": "이라크 테쉬폰 양식의 곡선 아치 건축물이 초원 위에 서 있습니다. 건물이 낮고 옆이 트여 있어 아이를 세워 찍기 좋고, 목장이라 말도 볼 수 있어요. 무료에 상시 개방이라 추석 연휴와 무관합니다 — 15분이면 충분합니다. 더마파크에서 7.4km. ⚠️ 좌표는 검증되지 않아 오차가 있을 수 있으니 네이버 지도로 최종 확인하세요.",
+    "naver": "https://map.naver.com/p/search/%EC%84%B1%EC%9D%B4%EC%8B%9C%EB%8F%8C%20%ED%85%8C%EC%89%AC%ED%8F%B0",
+    "booking": {
+      "gate": {
+        "adult": 0,
+        "child": 0
+      },
+      "channel": "무료 · 상시 개방",
+      "caution": "야외라 우천 시엔 의미가 없습니다. 좌표 미검증."
+    }
+  },
+  "jmoa": {
+    "name": "제주현대미술관",
+    "category": "museum",
+    "kid_fit": "중",
+    "lat": 33.3398,
+    "lon": 126.2657,
+    "price4": 5000,
+    "blurb": "저지오름 숲에 둘러싸인 노출콘크리트 미술관입니다. 규모가 작아 아이가 지루해지기 전에 끝나고 4인 5,000원이라 부담이 없어요. 맞은편 문화예술공공수장고에서 20분 간격으로 대형 스크린 미디어아트(약 10분)를 트는데 저학년 반응은 거기서 나옵니다. 김창열미술관이 도보 5분이라 둘을 묶으면 1시간입니다.",
+    "naver": "https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%ED%98%84%EB%8C%80%EB%AF%B8%EC%88%A0%EA%B4%80",
+    "booking": {
+      "gate": {
+        "adult": 2000,
+        "child": 500
+      },
+      "channel": "현장 발권",
+      "phone": "064-710-7801",
+      "official": "https://www.jeju.go.kr/jmoa/index.htm",
+      "refund": "현장 결제라 해당 없습니다.",
+      "caution": "⛔ 월요일·설날·추석 휴관입니다. 9/24는 추석 연휴라 문을 안 열 가능성이 큽니다 — 가시려면 전화로 먼저 확인하세요. 09:00~18:00, 매표 17:30 마감. 좌표가 출처별로 300m 편차가 있습니다."
+    }
+  },
+  "kimtschangyeul": {
+    "name": "제주도립 김창열미술관",
+    "category": "museum",
+    "kid_fit": "중",
+    "lat": 33.3389,
+    "lon": 126.2682,
+    "price4": 5000,
+    "blurb": "물방울을 형상화한 검은 콘크리트 건축입니다. 안에 걸린 극사실주의 물방울 그림을 보면 아이가 \"진짜 물방울 같다\"고 바로 반응해요 — 추상미술보다 저학년 접근성이 훨씬 좋습니다. 제주현대미술관에서 도보 5분이라 둘을 4인 1만원에 묶을 수 있습니다.",
+    "naver": "https://map.naver.com/p/search/%EA%B9%80%EC%B0%BD%EC%97%B4%EB%AF%B8%EC%88%A0%EA%B4%80",
+    "booking": {
+      "gate": {
+        "adult": 2000,
+        "child": 500
+      },
+      "channel": "현장 발권",
+      "official": "https://kimtschang-yeul.jeju.go.kr",
+      "refund": "현장 결제라 해당 없습니다.",
+      "caution": "⛔ 월요일 휴관이고 추석 휴관 여부는 확인하지 못했습니다. 9/24는 추석 연휴라 전화 확인이 필요합니다. 7~9월은 09:00~19:00, 입장 마감 18:30."
+    }
   }
 }

@@ -15,7 +15,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국물·면 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "현지 인기 한식"
+    "sentiment": "현지 인기 한식",
+    "kind": "meal"
   },
   "dc-je-02": {
     "name": "자매국수",
@@ -33,7 +34,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국수라 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "제주 고기국수 인기집"
+    "sentiment": "제주 고기국수 인기집",
+    "kind": "meal"
   },
   "dc-je-03": {
     "name": "오는정김밥",
@@ -51,7 +53,8 @@
     "rsource": "diningcode",
     "kid_note": "아이가 좋아하는 분식",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "길거리·분식 인기"
+    "sentiment": "길거리·분식 인기",
+    "kind": "meal"
   },
   "dc-je-04": {
     "name": "올래국수",
@@ -69,7 +72,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국수라 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "제주 고기국수 인기집"
+    "sentiment": "제주 고기국수 인기집",
+    "kind": "meal"
   },
   "dc-je-05": {
     "name": "아베베베이커리",
@@ -87,7 +91,8 @@
     "rsource": "diningcode",
     "kid_note": "디저트·간식·음료",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "분위기·디저트로 인기"
+    "sentiment": "분위기·디저트로 인기",
+    "kind": "snack"
   },
   "dc-je-06": {
     "name": "런던베이글뮤지엄",
@@ -105,7 +110,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국물·면 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "현지 인기 한식"
+    "sentiment": "현지 인기 한식",
+    "kind": "snack"
   },
   "dc-je-07": {
     "name": "가시아방국수",
@@ -123,7 +129,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국수라 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "제주 고기국수 인기집"
+    "sentiment": "제주 고기국수 인기집",
+    "kind": "meal"
   },
   "dc-je-08": {
     "name": "숙성도",
@@ -141,7 +148,8 @@
     "rsource": "diningcode",
     "kid_note": "아이는 볶음밥·계란찜",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "제주 흑돼지 인기집"
+    "sentiment": "제주 흑돼지 인기집",
+    "kind": "meal"
   },
   "dc-je-09": {
     "name": "연돈",
@@ -159,7 +167,8 @@
     "rsource": "diningcode",
     "kid_note": "돈까스·우동 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "일식 인기집"
+    "sentiment": "일식 인기집",
+    "kind": "meal"
   },
   "dc-je-10": {
     "name": "중문수두리보말칼국수",
@@ -177,7 +186,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국물·면 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "현지 인기 한식"
+    "sentiment": "현지 인기 한식",
+    "kind": "meal"
   },
   "dc-je-11": {
     "name": "오드랑베이커리",
@@ -195,7 +205,8 @@
     "rsource": "diningcode",
     "kid_note": "디저트·간식·음료",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "분위기·디저트로 인기"
+    "sentiment": "분위기·디저트로 인기",
+    "kind": "snack"
   },
   "dc-je-12": {
     "name": "수우동",
@@ -213,7 +224,8 @@
     "rsource": "diningcode",
     "kid_note": "회 못 먹는 아이는 구이·탕·죽으로",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "신선한 해산물로 인기"
+    "sentiment": "신선한 해산물로 인기",
+    "kind": "meal"
   },
   "dc-je-13": {
     "name": "소금바치 순이네",
@@ -231,7 +243,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국물·면 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "현지 인기 한식"
+    "sentiment": "현지 인기 한식",
+    "kind": "meal"
   },
   "dc-je-14": {
     "name": "네거리식당",
@@ -249,7 +262,8 @@
     "rsource": "diningcode",
     "kid_note": "회 못 먹는 아이는 구이·탕·죽으로",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "신선한 해산물로 인기"
+    "sentiment": "신선한 해산물로 인기",
+    "kind": "meal"
   },
   "dc-je-15": {
     "name": "랜디스도넛",
@@ -267,7 +281,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국물·면 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "현지 인기 한식"
+    "sentiment": "현지 인기 한식",
+    "kind": "snack"
   },
   "dc-je-16": {
     "name": "하하호호",
@@ -285,7 +300,8 @@
     "rsource": "diningcode",
     "kid_note": "파스타·돈까스 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "양식 인기집"
+    "sentiment": "양식 인기집",
+    "kind": "meal"
   },
   "dc-je-17": {
     "name": "맛나식당",
@@ -303,7 +319,8 @@
     "rsource": "diningcode",
     "kid_note": "회 못 먹는 아이는 구이·탕·죽으로",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "신선한 해산물로 인기"
+    "sentiment": "신선한 해산물로 인기",
+    "kind": "meal"
   },
   "dc-je-18": {
     "name": "유동커피",
@@ -321,7 +338,8 @@
     "rsource": "diningcode",
     "kid_note": "디저트·간식·음료",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "분위기·디저트로 인기"
+    "sentiment": "분위기·디저트로 인기",
+    "kind": "snack"
   },
   "dc-je-19": {
     "name": "제주미담",
@@ -339,7 +357,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국수라 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "제주 고기국수 인기집"
+    "sentiment": "제주 고기국수 인기집",
+    "kind": "meal"
   },
   "dc-je-20": {
     "name": "이재모피자",
@@ -357,7 +376,8 @@
     "rsource": "diningcode",
     "kid_note": "파스타·돈까스 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "양식 인기집"
+    "sentiment": "양식 인기집",
+    "kind": "meal"
   },
   "dc-je-21": {
     "name": "뽈살집",
@@ -375,7 +395,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국물·면 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "현지 인기 한식"
+    "sentiment": "현지 인기 한식",
+    "kind": "meal"
   },
   "dc-je-22": {
     "name": "협재칼국수",
@@ -393,7 +414,8 @@
     "rsource": "diningcode",
     "kid_note": "순한 국물·면 아이 무난",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "현지 인기 한식"
+    "sentiment": "현지 인기 한식",
+    "kind": "meal"
   },
   "dc-je-23": {
     "name": "호텔샌드",
@@ -411,7 +433,8 @@
     "rsource": "diningcode",
     "kid_note": "디저트·간식·음료",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "분위기·디저트로 인기"
+    "sentiment": "분위기·디저트로 인기",
+    "kind": "snack"
   },
   "dc-je-24": {
     "name": "일통이반",
@@ -429,7 +452,8 @@
     "rsource": "diningcode",
     "kid_note": "회 못 먹는 아이는 구이·탕·죽으로",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "신선한 해산물로 인기"
+    "sentiment": "신선한 해산물로 인기",
+    "kind": "meal"
   },
   "dc-je-25": {
     "name": "아줄레주",
@@ -447,7 +471,8 @@
     "rsource": "diningcode",
     "kid_note": "디저트·간식·음료",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "분위기·디저트로 인기"
+    "sentiment": "분위기·디저트로 인기",
+    "kind": "snack"
   },
   "dc-je-26": {
     "name": "이춘옥원조고등어쌈밥",
@@ -465,7 +490,8 @@
     "rsource": "diningcode",
     "kid_note": "회 못 먹는 아이는 구이·탕·죽으로",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "신선한 해산물로 인기"
+    "sentiment": "신선한 해산물로 인기",
+    "kind": "meal"
   },
   "dc-je-27": {
     "name": "바다속고등어쌈밥",
@@ -483,7 +509,8 @@
     "rsource": "diningcode",
     "kid_note": "회 못 먹는 아이는 구이·탕·죽으로",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "신선한 해산물로 인기"
+    "sentiment": "신선한 해산물로 인기",
+    "kind": "meal"
   },
   "dc-je-28": {
     "name": "다정이네 올레시장",
@@ -501,6 +528,163 @@
     "rsource": "diningcode",
     "kid_note": "아이가 좋아하는 분식",
     "wait": "인기점, 식사시간 대기 가능",
-    "sentiment": "길거리·분식 인기"
+    "sentiment": "길거리·분식 인기",
+    "kind": "meal"
+  },
+  "sn-je-01": {
+    "name": "더클리프",
+    "area": "중문색달해변",
+    "lat": 33.244,
+    "lon": 126.4155,
+    "category": "카페",
+    "menu": "음료·커피 · 클리프 올레 버거 24,000원 · 피자 32,000원",
+    "price": "음료 별도 · 음식 16,000~32,000원",
+    "rating": 4.0,
+    "reviews": 46,
+    "rsource": "diningcode",
+    "kid_note": "중문색달해변 바로 앞 야외 데크입니다. 다트·포켓볼 같은 놀거리가 있어 아이가 음료 나오는 동안 지루해하지 않아요. 저녁엔 펍 성격이 강해지니 오후에 들르세요.",
+    "wait": "선셋 시간대는 붐빌 수 있습니다",
+    "hours": "카페 10:00~24:00 · 음식 11:30~22:00",
+    "parking": "전용 무료주차장",
+    "kind": "snack"
+  },
+  "sn-je-02": {
+    "name": "델리카한스",
+    "area": "중문 롯데호텔 제주 내",
+    "lat": 33.2484,
+    "lon": 126.4107,
+    "category": "카페",
+    "menu": "베이커리·페이스트리·커피",
+    "price": "[확인필요]",
+    "kid_note": "호텔 밖으로 안 나가도 되는 유일한 카드입니다. 아이가 지쳤거나 저녁 뒤 출출할 때.",
+    "hours": "[확인필요 — 프런트 문의]",
+    "parking": "호텔 주차장",
+    "kind": "snack"
+  },
+  "sn-je-03": {
+    "name": "서귀피안 베이커리",
+    "area": "성산",
+    "lat": 33.4353,
+    "lon": 126.9219,
+    "category": "카페",
+    "menu": "소금빵 4,500원 · 크로아상 6,000원 · 에이드 8,500원",
+    "price": "4,500~8,500원",
+    "rating": 4.5,
+    "reviews": 23,
+    "rsource": "diningcode",
+    "kid_note": "1~3층 대형 베이커리에 오션뷰입니다. 빵 종류가 많아 자매가 각자 직접 고르는 재미가 있어요.",
+    "hours": "08:00~20:00 (L.O. 19:15)",
+    "parking": "무료 전용주차장",
+    "kind": "snack"
+  },
+  "sn-je-04": {
+    "name": "카페인섭지코지",
+    "area": "섭지코지",
+    "lat": 33.4371,
+    "lon": 126.9224,
+    "category": "카페",
+    "menu": "땅콩크림라떼 · 한라봉스무디 · 수제케이크",
+    "price": "[확인필요]",
+    "kid_note": "2층에서 성산일출봉이 정면으로 보입니다. 제주 특산 음료가 많아 커피 못 마시는 아이 선택지가 넉넉해요.",
+    "wait": "⚠️ 매주 목요일 휴무 — 9/23(수)은 정상, 9/24(목)엔 못 갑니다",
+    "hours": "11:00~20:00 · 목요일 휴무",
+    "parking": "주차장 있음",
+    "kind": "snack"
+  },
+  "sn-je-05": {
+    "name": "문어빵 굽는 문빵9",
+    "area": "서귀포 매일올레시장",
+    "lat": 33.2497,
+    "lon": 126.5641,
+    "category": "분식",
+    "menu": "문어빵 2,500원",
+    "price": "2,500원",
+    "kid_note": "통문어가 통째로 박힌 붕어빵입니다. 비주얼만으로 아이가 좋아하고 걸어 다니며 먹기 좋아요.",
+    "wait": "굽는 동안 대기가 있습니다",
+    "parking": "시장 공영주차장",
+    "kind": "snack"
+  },
+  "sn-je-06": {
+    "name": "귤하르방",
+    "area": "서귀포 매일올레시장",
+    "lat": 33.2498,
+    "lon": 126.5634,
+    "category": "분식",
+    "menu": "귤하르방빵 (감귤·돌하르방 모양 풀빵)",
+    "price": "[확인필요]",
+    "kid_note": "돌하르방 모양이라 먹기 전에 사진부터 찍게 됩니다. 오메기떡과 함께 올레시장 대표 간식이에요.",
+    "parking": "시장 공영주차장",
+    "kind": "snack"
+  },
+  "sn-je-07": {
+    "name": "우무 한림본점",
+    "area": "한림",
+    "lat": 33.4059,
+    "lon": 126.2565,
+    "category": "카페",
+    "menu": "커스터드 푸딩 7,300원 · 말차/초코/우도땅콩/망고코코넛",
+    "price": "7,300원",
+    "rating": 4.1,
+    "reviews": 67,
+    "rsource": "diningcode",
+    "kid_note": "해녀가 딴 우뭇가사리로 굳힌 푸딩입니다. 유리병째 떠먹는 형태라 아이 반응이 좋아요.",
+    "wait": "⚠️ 주차 불가(인근 공영주차장) · 포장 전용이고 보존제가 없어 1시간 안에 먹어야 합니다 — 차에서 바로 먹이는 용도",
+    "hours": "09:00~20:00 · 비정기 휴무",
+    "parking": "불가 — 공영주차장",
+    "kind": "snack"
+  },
+  "sn-je-08": {
+    "name": "이니스프리 제주하우스",
+    "area": "안덕 서광 (오설록 옆)",
+    "lat": 33.3064,
+    "lon": 126.2905,
+    "category": "카페",
+    "menu": "감귤 아이스크림 5,000원 · 브런치 · 녹차 디저트",
+    "price": "5,000원~",
+    "kid_note": "오설록에서 도보 30초입니다. 녹차를 싫어하는 아이용 감귤 아이스크림이 여기 있어요.",
+    "phone": "064-794-5351",
+    "parking": "오설록과 같은 주차장",
+    "kind": "snack"
+  },
+  "sn-je-09": {
+    "name": "허니문하우스",
+    "area": "서귀포 토평",
+    "lat": 33.2459,
+    "lon": 126.5786,
+    "category": "카페",
+    "menu": "커피·음료 (오션뷰)",
+    "price": "[확인필요]",
+    "kid_note": "옛 파라다이스호텔을 개조한 카페입니다. 주차장에서 숲길 300m를 걸어 들어가는데 그 산책 자체가 아이에겐 놀이가 돼요.",
+    "wait": "⚠️ 18:30 마감(L.O. 18:00) — 저녁 경유로는 못 씁니다. 늦은 오후에만.",
+    "hours": "10:00~18:30",
+    "parking": "자체 주차장",
+    "kind": "snack"
+  },
+  "sn-je-10": {
+    "name": "앤트러사이트 제주 한림",
+    "area": "한림",
+    "lat": 33.4078,
+    "lon": 126.258,
+    "category": "카페",
+    "menu": "스페셜티 커피 (로스터리)",
+    "price": "[확인필요]",
+    "kid_note": "옛 전분공장을 개조한 대형 로스터리라 공간이 넓어 아이가 돌아다닐 여지가 있습니다. 다만 디저트는 적어 아빠 커피용에 가까워요.",
+    "hours": "[확인필요]",
+    "kind": "snack"
+  },
+  "sn-je-11": {
+    "name": "마노르블랑",
+    "area": "안덕 덕수리",
+    "lat": 33.2542,
+    "lon": 126.2947,
+    "category": "카페",
+    "menu": "음료 (정원 카페) · 1인 1음료",
+    "price": "[확인필요]",
+    "kid_note": "2,000평 정원과 산책로가 있습니다. 9월 하순이면 핑크뮬리 초입이라 사진이 예쁘게 나와요.",
+    "wait": "오설록에서 남쪽 12km — 협재로 북상하는 동선과는 반대입니다. 중문↔오설록 왕복에 끼우세요.",
+    "hours": "09:00~18:30 (L.O. 18:00)",
+    "phone": "064-794-0999",
+    "parking": "자체 주차장",
+    "kind": "snack"
   }
 }

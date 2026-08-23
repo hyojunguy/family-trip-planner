@@ -131,24 +131,32 @@ function dealsRefs(p){ const seen=new Set(), out=[];
 
 function dealsCard(p){ const rows=dealsRefs(p); if(!rows.length) return "";
   const party=(p.trip||{}).party||{}, ad=party.adults??2, kd=party.kids??2;
-  const sum=(b,k)=>{ const o=b[k]||{}; const a=+o.adult||0, c=+o.child||0;
-    return (a||c)?(a*ad+c*kd):null; };
-  let save=0, unknown=0;
+  /* 어른·아이 중 한쪽 값만 있으면 합계를 내지 않는다. 반쪽 숫자로 총액을 내면
+     "온라인이 더 싸다"를 과장하거나 축소한다 — 모르면 모른다고 적는다. */
+  const sum=b=>{ const o=b||{}; if(typeof o.adult!=="number"||typeof o.child!=="number") return null;
+    return o.adult*ad + o.child*kd; };
+  let save=0, partial=0;
   const body=rows.map(([id,a])=>{ const b=a.booking||{};
-    const g=sum(b,"gate"), o=sum(b,"online");
-    if(g!=null&&o!=null&&o<g) save+=g-o; else if(g==null&&o==null) unknown++;
-    const money=(g!=null||o!=null)?`<div class="dl-pr">${g!=null?`<s>${won(g)}원</s>`:""}${o!=null?`<b>${won(o)}원</b>`:""}${(g!=null&&o!=null&&o<g)?`<span class="dl-sv">−${won(g-o)}</span>`:""}<i>${ad}인+아이${kd}</i></div>`:`<div class="dl-pr none">요금 확인 필요</div>`;
+    const g=sum(b.gate), o=sum(b.online), cut=(g!=null&&o!=null&&o<g)?g-o:0;
+    if(cut) save+=cut; else if(b.online&&o==null) partial++;
+    const money = (g==null&&o==null)
+      ? `<div class="dl-pr none">요금 미확인 — 전화로 확인하세요</div>`
+      : `<div class="dl-pr">${g!=null?(cut?`<s>${won(g)}원</s>`:`<b>${won(g)}원</b>`):""}
+          ${cut?`<b>${won(o)}원</b><span class="dl-sv">−${won(cut)}</span>`:""}
+          <i>어른${ad}+아이${kd} 합계</i></div>
+         ${(b.online&&o==null)?`<div class="dl-ct">온라인가가 한쪽(어른 또는 아이)만 확인돼 합계를 내지 않았습니다.</div>`:""}`;
     return `<details class="dl">
       <summary><span class="dl-nm">${a.name}</span>${b.channel?`<span class="dl-ch">${b.channel}</span>`:""}${b.discount?`<span class="dl-dc">${b.discount}</span>`:""}</summary>
       <div class="dl-in">${money}
         ${b.refund?`<div class="dl-rf"><b>취소·환불</b> ${b.refund}</div>`:""}
         ${b.validity?`<div class="dl-vd"><b>유효기간</b> ${b.validity}</div>`:""}
         ${b.caution?`<div class="dl-ct">⚠️ ${b.caution}</div>`:""}
-        <div class="lnks">${b.url?`<a class="lnk go" href="${b.url}" target="_blank" rel="noopener">🎟️ 바로 예약</a>`:""}${b.official?`<a class="lnk" href="${b.official}" target="_blank" rel="noopener">공식</a>`:""}<a class="lnk" href="https://map.naver.com/p/search/${enc(a.name)}" target="_blank" rel="noopener">네이버 지도</a></div>
+        <div class="lnks">${b.url?`<a class="lnk go" href="${b.url}" target="_blank" rel="noopener">🎟️ 바로 예약</a>`:""}${b.official?`<a class="lnk" href="${b.official}" target="_blank" rel="noopener">공식</a>`:""}<a class="lnk" href="https://map.naver.com/p/search/${enc(a.name)}" target="_blank" rel="noopener">네이버 지도</a>${b.phone?`<a class="lnk" href="tel:${b.phone.replace(/[^0-9]/g,"")}">📞 ${b.phone}</a>`:""}</div>
       </div></details>`; }).join("");
   return `<div class="card deals" id="deals"><div class="dl-hd">🎟️ 온라인 예약 · 취소/환불
-      <span class="deck-sub">현장가 대비 절감 ${save?`약 ${won(save)}원`:"확인 중"}${unknown?` · 미확인 ${unknown}곳`:""}</span></div>
-    <p class="me-no">현장 매표보다 싼 곳만 모았습니다. 환불 규정이 시설마다 달라 아이가 아플 때를 대비해 같이 적어 두었어요.</p>
+      <span class="deck-sub">확인된 절감 ${save?`약 ${won(save)}원`:"없음"}${partial?` · 부분확인 ${partial}곳`:""}</span></div>
+    <p class="me-no">네이버 예약 링크는 이번에 확보하지 못했습니다(네이버 도메인 접근 차단). 아래 "네이버 지도"로 시설을 열어 <b>예약</b> 탭을 직접 확인하세요. 가격은 실제로 열어 본 채널 기준이고, 확인 못 한 것은 비워 뒀습니다.</p>
+    <p class="me-no">⚠️ 9월 하순 제주는 태풍 영향권이 남습니다. 야외·해상 시설은 <b>날짜지정권을 사지 말고</b> "미사용 100% 환불" 오픈권으로 사세요.</p>
     ${body}</div>`; }
 
 /* ---------- ✈️ 출발 공항 허브(김포) — 게이트 전에 뭘 먹나 ------------------ */
@@ -403,7 +411,7 @@ function tripCards(p){ const t=p.trip; if(!t) return "";
     ${rc.return_note?`<p class="rc-no ret"><b>반납</b> ${rc.return_note}</p>`:""}</div>`;
 
   if(t.alerts&&t.alerts.length) out+=`<div class="card alerts">${t.alerts.map(a=>
-    `<div class="al ${a.level||"info"}"><b>${a.level==="warn"?"⚠️":"ℹ️"} ${a.title}</b><p>${a.body}</p></div>`).join("")}</div>`;
+    `<div class="al ${a.level||"info"}"><b>${{crit:"⛔",warn:"⚠️"}[a.level]||"ℹ️"} ${a.title}</b><p>${a.body}</p></div>`).join("")}</div>`;
 
   const kp=t.kid_play;
   if(kp&&kp.games) out+=`<div class="card kidplay"><div class="kp-hd">🎲 ${kp.title||"차 안에서 노는 법"}</div>

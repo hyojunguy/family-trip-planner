@@ -101,7 +101,7 @@ main{max-width:1180px; margin:0 auto; padding:var(--s5) var(--s5) 96px}
 /* ---------- 일정 바로가기 (긴 컬럼용 sticky 점프바) ---------- */
 /* 점프 대상이 고정바 아래에 놓이게. --topbar-h 는 app.js 가 실측해 넣는다
    (모바일 137px / 태블릿 100px 로 달라 하드코딩하면 헤더가 가려진다). */
-.day-block,.stop,.meal{scroll-margin-top:calc(var(--topbar-h,104px) + 62px)}
+.day-block,.stop,.meal,.must,.deals,.hub{scroll-margin-top:calc(var(--topbar-h,104px) + 62px)}
 .daynav{position:sticky; top:calc(var(--topbar-h,104px) + 6px); z-index:5; display:flex; gap:6px; flex-wrap:wrap;
   padding:8px; background:color-mix(in srgb,var(--card) 92%,transparent);
   backdrop-filter:blur(8px); border:1px solid var(--line); border-radius:var(--r-sm); box-shadow:var(--shadow)}
@@ -1040,3 +1040,6 @@ body.pl-open{overflow:hidden}
   border-radius:999px; padding:1px 7px}
 .ht-p{font-size:12.5px; font-weight:700; color:var(--ink); margin-top:2px; font-variant-numeric:tabular-nums}
 .ht-w{font-size:12px; color:var(--soft); margin-top:2px}
+/* 추석처럼 일정 전체를 흔드는 사실은 warn 4개 사이에 묻히면 안 된다 */
+.al.crit{background:#FBE4DE; border-color:#8C2A12; border-left-width:6px}
+.al.crit b{color:#8C2A12; font-size:15px}
