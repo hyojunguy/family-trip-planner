@@ -22,6 +22,8 @@ const roleName=w=>((REC&&REC.roles)||{})[w]||w;
 const revoke=()=>{ urls.forEach(u=>URL.revokeObjectURL(u)); urls=[]; };
 const objURL=b=>{ const u=URL.createObjectURL(b); urls.push(u); return u; };
 const dayOf=el=>el.closest(".day-block").dataset.date;
+/* 전역 "나는 누구" — 사진 담기 전용이던 rec_who 를 앱 전체 역할로 승격했다 */
+const meNow=()=>localStorage.getItem("rec_who")||"dad";
 
 /* ---------------- mount: renderSide 직후 day 카드에 주입 ---------------- */
 async function mount(plan){
@@ -40,7 +42,7 @@ async function mount(plan){
       st.querySelector(".body").insertAdjacentHTML("beforeend",
         `<div class="rec-ms">${ms.map(m=>`
           <label class="rec-m${m.star?" star":""}">
-            <input type="checkbox" data-mid="${m.id}" ${done[m.id]?"checked":""}>
+            <input type="checkbox" data-mid="${m.id}" data-w="${meNow()}" ${R.missionDone(d.date,m.id,meNow())?"checked":""}>
             <span class="rm-k">${KIND[m.k]||"•"}${m.shot?`<i>${SHOT[m.shot]||""}</i>`:""}</span>
             <span class="rm-t">${esc(m.t)}<em>${esc(roleName(m.who))}</em></span>
           </label>`).join("")}</div>`);
@@ -85,6 +87,12 @@ function panelHtml(d){
       <button type="button" class="rp-exp">⬇️ 오늘 기록 내보내기</button>
     </div>
     <p class="rp-stat"></p>
+    <div class="rp-warn"><b>📵 이 사진들은 어디에도 안 올라갑니다</b>
+      <p>구글 포토·드라이브·서버 어디와도 연결돼 있지 않습니다. <b>이 기기의 브라우저 안에만</b>
+      저장돼요. 그래서 아빠 폰에 담은 사진은 딸 폰에서 안 보이고, 그 반대도 마찬가지입니다.</p>
+      <p>⚠️ 아이폰 사파리는 사이트를 한동안 안 열면 저장분을 지웁니다. 브라우저 데이터를 지워도
+      사라져요. <b>원본은 사진첩에 그대로 있으니</b> 잃는 건 여기서 고른 선택과 캡션입니다 —
+      그러니 <b>매일 밤 마감할 때 아래 내보내기를 꼭 누르세요.</b> 그게 유일한 백업입니다.</p></div>
     <p class="rp-next">내보낸 zip 을 맥으로 옮기면 그날의 <b>일기 PDF</b>와 <b>리캡 영상</b>이 만들어집니다.
       <code>python3 scripts/make_recap_video.py jeju-${d.date}.zip</code></p></div>`;
 }
@@ -107,7 +115,8 @@ async function paintShots(date){
 /* ---------------- 이벤트 ---------------- */
 function bind(){
   document.querySelectorAll('.rec-ms input[data-mid]').forEach(cb=>cb.onchange=()=>{
-    R.toggleMission(dayOf(cb),cb.dataset.mid); syncProgress(); });
+    R.toggleMission(dayOf(cb),cb.dataset.mid,cb.dataset.w||null); syncProgress();
+    document.dispatchEvent(new CustomEvent("missionchange")); });
 
   document.querySelectorAll(".rp-w").forEach(b=>b.onclick=()=>{
     localStorage.setItem("rec_who",b.dataset.who);

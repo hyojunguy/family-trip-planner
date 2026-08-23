@@ -53,7 +53,26 @@ const K=(day,k)=>`rec_${day}_${k}`;
 const getJ=(k,d)=>{ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } };
 const setJ=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const missions=day=>getJ(K(day,"missions"),{});
-const toggleMission=(day,id)=>{ const m=missions(day); m[id]=!m[id]; setJ(K(day,"missions"),m); return m[id]; };
+/* 미션 완료는 **사람별**로 센다. 'both'(언니·동생 각자) 미션을 공용 체크 하나로 두면
+   먼저 누른 아이가 다른 아이 몫까지 지워 버린다 — 자매가 각자 자기 걸 하려면 who 가 필요하다.
+   저장 모양: m[id] = true(과거 공용) | {k1:true, k2:false, ...}
+   과거 boolean 은 "그 미션 주인이 한 것"으로 읽어 기존 체크를 잃지 않는다. */
+const WHO_ALL=["k1","k2","dad"];
+function missionDone(day,id,who){ const v=missions(day)[id];
+  if(v===true) return true;                       // legacy: 누가 했든 완료로 본다
+  return !!(v && typeof v==="object" && v[who]); }
+function toggleMission(day,id,who){
+  const m=missions(day); const v=m[id];
+  if(!who){ m[id]=!(v===true||(v&&typeof v==="object"&&Object.values(v).some(Boolean))); }
+  else{
+    let o = (v===true) ? Object.fromEntries(WHO_ALL.map(w=>[w,true]))
+          : (v && typeof v==="object") ? {...v} : {};
+    o[who]=!o[who]; m[id]=o;
+  }
+  setJ(K(day,"missions"),m); return who?!!m[id][who]:!!m[id]; }
+/* 이 미션이 누구 몫인가 — 'both'=자매 둘, 'all'=셋 다, 그 외는 그 사람만 */
+const missionOwners=w => w==="both" ? ["k1","k2"] : w==="all" ? WHO_ALL : [w];
+const missionMine=(w,me) => missionOwners(w).includes(me);
 const notes=day=>getJ(K(day,"notes"),{});
 const setNote=(day,who,field,val)=>{ const n=notes(day); n[who]=n[who]||{}; n[who][field]=val; setJ(K(day,"notes"),n); };
 const stars=day=>getJ(K(day,"stars"),{});
@@ -62,7 +81,8 @@ const closed=day=>!!localStorage.getItem(K(day,"closed"));
 const close=day=>localStorage.setItem(K(day,"closed"),new Date().toISOString());
 
 window.TripRecord={db,putShot,delShot,dayShots,allShots,shrink,
-  missions,toggleMission,notes,setNote,stars,setStars,closed,close,K,getJ,setJ,MAXPX};
+  missions,toggleMission,missionDone,missionOwners,missionMine,WHO_ALL,
+  notes,setNote,stars,setStars,closed,close,K,getJ,setJ,MAXPX};
 
 /* ============================ ZIP (store, 무압축) ==========================
    JPEG 은 이미 압축돼 있어 deflate 이득이 거의 없다. 외부 라이브러리를 붙이는

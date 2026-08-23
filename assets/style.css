@@ -1043,3 +1043,106 @@ body.pl-open{overflow:hidden}
 /* 추석처럼 일정 전체를 흔드는 사실은 warn 4개 사이에 묻히면 안 된다 */
 .al.crit{background:#FBE4DE; border-color:#8C2A12; border-left-width:6px}
 .al.crit b{color:#8C2A12; font-size:15px}
+
+/* ---------- 📍 지금 — 아이 손에 쥐어 주는 화면 -----------------------------
+   모바일 우선. 터치 타깃 44px 이상, 한 손 엄지로 닿는 아래쪽에 버튼을 둔다. */
+.nowbtn{position:fixed; right:14px; bottom:calc(14px + env(safe-area-inset-bottom));
+  z-index:900; border:0; border-radius:999px; cursor:pointer;
+  background:var(--coral); color:#fff; font-weight:800; font-size:15px;
+  min-height:52px; padding:0 20px; box-shadow:0 6px 20px rgba(225,90,56,.4)}
+.nowbtn:hover{background:#C64A2C}
+.nowbtn:focus-visible{outline:3px solid var(--sea); outline-offset:3px}
+body.nw-open{overflow:hidden}
+/* ⛔ display 를 무조건 flex 로 주면 [hidden] 의 display:none 을 덮어써서
+   '숨긴' 시트가 화면 전체를 덮고 모든 클릭을 가로챈다(렌더 검증이 잡음).
+   hidden 속성을 쓰는 요소에 display 를 줄 때는 반드시 :not([hidden]) 로 건다. */
+.nw{position:fixed; inset:0; z-index:1000; background:var(--ground); flex-direction:column}
+.nw:not([hidden]){display:flex}
+.nw[hidden]{display:none}
+.nw-top{flex:none; display:flex; align-items:center; justify-content:space-between;
+  padding:calc(12px + env(safe-area-inset-top)) var(--s4) 12px; background:var(--card);
+  border-bottom:1px solid var(--line)}
+.nw-top b{font-size:17px}
+.nw-x{width:44px; height:44px; border:1px solid var(--line); border-radius:10px;
+  background:var(--card); font-size:17px; cursor:pointer}
+.nw-x:focus-visible{outline:2px solid var(--sea); outline-offset:2px}
+.nw-body{flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:var(--s4) var(--s4) calc(40px + env(safe-area-inset-bottom)); display:flex;
+  flex-direction:column; gap:var(--s3)}
+/* flex 자식은 기본이 shrink 라 진행률 바 같은 짧은 블록의 글자가 잘린다(실측).
+   세로 스크롤 컨테이너의 자식은 전부 flex:none 으로 자기 높이를 지킨다. */
+.nw-body > *{flex:none}
+/* 나는 누구 */
+.nw-who{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.nw-w{display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer;
+  min-height:64px; padding:8px 4px; border:2px solid var(--line); border-radius:12px;
+  background:var(--card); font-weight:700}
+.nw-w b{font-size:24px; line-height:1}
+.nw-w span{font-size:12px; color:var(--soft)}
+.nw-w.on{border-color:var(--sea); background:var(--sea-tint)}
+.nw-w.on span{color:var(--sea-deep)}
+.nw-w:focus-visible{outline:2px solid var(--sea); outline-offset:2px}
+/* 상태 배너 */
+.nw-live{background:#FBE9E4; color:#A8331A; font-weight:700; font-size:13.5px;
+  border-radius:10px; padding:10px var(--s3)}
+.nw-prev{background:var(--sea-tint); color:var(--sea-deep); font-size:13px;
+  border-radius:10px; padding:10px var(--s3)}
+.nw-days{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
+.nw-d{min-height:40px; padding:0 12px; border:1px solid var(--line); border-radius:999px;
+  background:var(--card); font-size:12.5px; font-weight:700; cursor:pointer}
+.nw-d.on{background:var(--sea); color:#fff; border-color:var(--sea)}
+/* 진행률 */
+.nw-pg{position:relative; background:var(--card); border:1px solid var(--line);
+  border-radius:10px; padding:10px var(--s3); overflow:hidden}
+.nw-pgb{position:absolute; inset:0 auto 0 0; background:#E3F3E8; transition:width .3s}
+.nw-pg span{position:relative; font-size:13px; font-weight:800; color:#1E6B3A}
+/* 미리보기 타임라인 */
+.nw-tl{display:flex; flex-direction:column; gap:4px}
+.nw-tli{display:flex; align-items:center; gap:10px; min-height:46px; padding:6px var(--s3);
+  border:1px solid var(--line); border-radius:10px; background:var(--card); cursor:pointer; text-align:left}
+.nw-tli i{font-style:normal; font-weight:800; font-variant-numeric:tabular-nums;
+  font-size:13px; color:var(--soft); flex:none; width:44px}
+.nw-tli span{flex:1; font-size:13.5px; font-weight:700; min-width:0;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.nw-tli em{flex:none; font-style:normal; font-size:11px; font-weight:800; color:#fff;
+  background:var(--coral); border-radius:999px; padding:1px 7px}
+.nw-tli.on{border-color:var(--sea); background:var(--sea-tint)}
+/* 지금 / 다음 */
+.nw-item{background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:var(--s4)}
+.nw-item.cur{border:2px solid var(--coral)}
+.nw-hd{display:flex; align-items:center; justify-content:space-between; margin-bottom:4px}
+.nw-lb{font-size:11.5px; font-weight:800; color:#fff; background:var(--coral);
+  border-radius:999px; padding:2px 10px}
+.nw-item.nxt .nw-lb{background:var(--soft)}
+.nw-tm{font-size:14px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--ink)}
+.nw-item h3{margin:0; font-size:19px}
+.nw-eat{font-size:13px; color:var(--sea-deep); font-weight:700; margin-top:4px}
+.nw-no{font-size:12.5px; color:var(--soft); margin-top:6px; line-height:1.6}
+.nw-nom{font-size:13px; color:var(--soft); margin-top:10px}
+/* 미션 카드 — 크게, 한 손으로 */
+.nw-ms{display:flex; flex-direction:column; gap:8px; margin-top:var(--s3)}
+.nw-m{display:flex; align-items:center; gap:10px; cursor:pointer; min-height:56px;
+  padding:10px var(--s3); border:2px solid var(--line); border-radius:12px; background:#FFF9EE}
+.nw-m input{width:26px; height:26px; flex:none; accent-color:var(--sea)}
+.nw-k{font-size:20px; flex:none}
+.nw-t{flex:1; font-size:14.5px; font-weight:700; line-height:1.45; min-width:0}
+.nw-st{flex:none}
+.nw-m.on{background:#E3F3E8; border-color:#1E6B3A}
+.nw-m.on .nw-t{color:#1E6B3A; text-decoration:line-through; text-decoration-thickness:2px}
+.nw-m.star{border-color:var(--gold)}
+.nw-m.star.on{border-color:#1E6B3A}
+.nw-m:focus-within{outline:2px solid var(--sea); outline-offset:2px}
+.nw-jump{min-height:48px; border:1px solid var(--line); border-radius:12px;
+  background:var(--card); font-size:14px; font-weight:700; cursor:pointer}
+.nw-empty{font-size:13px; color:var(--soft); text-align:center; padding:var(--s5)}
+@media (min-width:760px){
+  .nw{inset:auto 0 0 auto; width:420px; height:100dvh; box-shadow:-8px 0 30px rgba(24,53,51,.18)}
+}
+@media (prefers-reduced-motion:reduce){ .nw-pgb{transition:none} }
+/* 사진이 어디 저장되는지는 추측하게 두면 안 된다 — 기기 안에만 있고 지워질 수 있다 */
+.rp-warn{background:#FBE9E4; border-left:4px solid #A8331A; border-radius:var(--r-sm);
+  padding:var(--s3); margin:var(--s2) 0}
+.rp-warn b{display:block; color:#A8331A; font-size:13.5px; margin-bottom:4px}
+.rp-warn p{font-size:12.5px; line-height:1.6; color:var(--ink); margin:0 0 5px}
+.rp-warn p:last-child{margin-bottom:0}
+.rp-warn p b{display:inline; font-size:inherit}

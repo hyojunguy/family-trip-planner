@@ -175,7 +175,7 @@ for c in cities["cities"]:
                 warns.append(f"{tag} 미션이 {len(mids)}개뿐 (하루 4개 미만)")
 
 # app.js syntax
-for js in ("app.js","record.js","record-ui.js","calc.js"):
+for js in ("app.js","record.js","record-ui.js","calc.js","now.js"):
     fpj = p("assets", js)
     if not os.path.exists(fpj): errs.append(f"assets/{js} 없음"); continue
     r = subprocess.run(["node","--check",fpj], capture_output=True, text=True)

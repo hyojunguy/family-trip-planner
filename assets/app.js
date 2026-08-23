@@ -210,6 +210,10 @@ async function selectCity(id, wantPlan){
   selectPlan(wantPlan && S.plans.find(p=>p.id===wantPlan) ? wantPlan : S.plans[0].id);
 }
 
+/* "지금" 화면이 장소·맛집 이름을 물어볼 수 있게 접근자를 노출한다.
+   S 를 통째로 열지 않는 이유: 읽기 전용 조회 두 개면 충분하다. */
+window.__tripPlace=ref=>place(ref);
+window.__tripRest=id=>S.rest[id];
 function place(ref){ if(ref.startsWith("hotel:")){ const h=S.hotels[ref.slice(6)]; return h&&{...h,_type:"hotel"}; }
   const a=S.at[ref]; return a&&{...a,_type:"poi"}; }
 
@@ -482,7 +486,8 @@ function renderSide(p){ const el=$("#side"); el.innerHTML="";
   bindPicks(el,p); bindFavs(el); fillLive(p); syncStickyH();
   // 기록 레이어(미션·사진·하루 마감)는 별도 파일이 소유한다. 없으면 그냥 지나간다.
   window.__tripPlace=place;
-  if(window.TripRecordUI) window.TripRecordUI.mount(p).catch(e=>console.error("record mount",e)); }
+  if(window.TripRecordUI) window.TripRecordUI.mount(p).catch(e=>console.error("record mount",e));
+  if(window.TripNow) window.TripNow.mount(p); }
 function numFor(p,day,idx){ let n=0; for(const d of p.days){ for(let i=0;i<d.stops.length;i++){ if(!d.stops[i].ref.startsWith("hotel:")) n++; if(d===day&&i===idx) return n; } } return n; }
 
 function renderCost(p){ const el=$("#cost"); if(!p.cost||!p.cost.length){ el.innerHTML=""; return; }

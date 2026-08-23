@@ -67,6 +67,54 @@ if (!got.musteat || !got.mustItems) warns.push('필수 음식 카드가 비어 �
 if (!got.deals || !got.dealItems) warns.push('예약 할인 카드가 비어 있음');
 if (!got.hub) warns.push('출발 허브(공항) 카드 없음');
 
+// ---- 📍 지금 시트: 아이가 실제로 쓰는 경로를 375px 에서 태운다 ----
+await page.setViewportSize({ width: 375, height: 780 });
+await page.waitForTimeout(400);
+const nowRes = await (async () => {
+  const btn = await page.$('#nowBtn');
+  if (!btn) return { ok: false, why: '지금 버튼 없음' };
+  await btn.click();
+  await page.waitForTimeout(600);
+  const shown = await page.evaluate(() => {
+    const b = document.getElementById('nowSheet');
+    return b && !b.hidden && document.querySelectorAll('#nowSheet .nw-w').length;
+  });
+  if (!shown) return { ok: false, why: '시트가 안 열림' };
+  // 동생(k2)으로 전환 → 그 아이 미션만 나오는지
+  const perChild = await page.evaluate(async () => {
+    const pick = w => document.querySelector(`#nowSheet .nw-w[data-w="${w}"]`)?.click();
+    const missionsOf = () => [...document.querySelectorAll('#nowSheet .nw-m .nw-t')].map(e => e.textContent.trim());
+    pick('k1'); await new Promise(r => setTimeout(r, 250));
+    const a = missionsOf();
+    pick('k2'); await new Promise(r => setTimeout(r, 250));
+    const b = missionsOf();
+    // 아무 미션 하나 체크 → 저장되고 일정 카드와 맞물리는지
+    const cb = document.querySelector('#nowSheet .nw-m input');
+    let synced = null, mid = null;
+    if (cb) { mid = cb.dataset.mid; cb.click(); await new Promise(r => setTimeout(r, 250));
+      const other = document.querySelector(`.rec-ms input[data-mid="${mid}"]`);
+      synced = other ? other.checked : 'no-day-card';
+      const again = document.querySelector(`#nowSheet .nw-m input[data-mid="${mid}"]`);
+      if (again) { again.click(); await new Promise(r => setTimeout(r, 200)); } }
+    return { k1: a, k2: b, checked: !!cb, synced, mid };
+  });
+  const ov = await page.evaluate(() => {
+    const b = document.getElementById('nowSheet');
+    return { sw: b.scrollWidth, cw: b.clientWidth };
+  });
+  await page.evaluate(() => document.querySelector('#nowSheet .nw-x')?.click());
+  await page.waitForTimeout(300);
+  return { ok: true, ...perChild, ov };
+})();
+if (!nowRes.ok) errs.push(`지금 시트: ${nowRes.why}`);
+else {
+  if (!nowRes.k1.length && !nowRes.k2.length) warns.push('지금 시트에 미션이 하나도 안 뜸(미리보기 모드에서는 정상일 수 있음)');
+  if (nowRes.k1.length && nowRes.k2.length && JSON.stringify(nowRes.k1) === JSON.stringify(nowRes.k2))
+    warns.push('언니/동생 미션 목록이 동일 — 역할 분리가 안 먹었을 수 있음');
+  if (nowRes.checked && nowRes.synced === false) errs.push('지금 시트에서 체크한 미션이 일정 카드와 동기화되지 않음');
+  if (nowRes.ov.sw > nowRes.ov.cw + 1) errs.push(`지금 시트 가로 오버플로 ${nowRes.ov.sw - nowRes.ov.cw}px`);
+}
+
 for (const w of [320, 375, 768, 1440]) {
   await page.setViewportSize({ width: w, height: 900 });
   await page.waitForTimeout(350);
@@ -83,7 +131,9 @@ await browser.close(); server.close();
 console.log('=== RENDER CHECK ===');
 console.log(JSON.stringify({ plan: got.plan, days: got.days, meals: got.meals.length,
   breakfasts: bfast.length, snacks: snacks.length, mustEat: got.mustItems,
-  deals: got.dealItems, hubFood: got.hubFood, dealSub: got.dealSub }, null, 1));
+  deals: got.dealItems, hubFood: got.hubFood, dealSub: got.dealSub,
+  now: { opened: nowRes.ok, k1: (nowRes.k1||[]).length, k2: (nowRes.k2||[]).length,
+         synced: nowRes.synced } }, null, 1));
 for (const w of warns) console.log('WARN:', w);
 for (const e of errs) console.log('FAIL:', e);
 console.log(errs.length ? `RESULT: RED (${errs.length} errors)` : `RESULT: GREEN (0 errors, ${warns.length} warns)`);
