@@ -148,6 +148,17 @@ for(const [iso,label,step,want] of [
   await ctx.close();
 }
 
+// ── 요일 중복 회귀 (go.js·build_print.mjs 둘 다 같은 실수를 했다) ──
+{
+  const pg=await browser.newPage({viewport:{width:390,height:844}});
+  await pg.goto(`${base}/go.html`,{waitUntil:'networkidle'});
+  await pg.waitForSelector('.stop');
+  const t=await pg.locator('#dayDate').textContent();
+  const dup=(t.match(/\((월|화|수|목|금|토|일)\)/g)||[]).length;
+  if(dup>1) errs.push(`날짜에 요일 중복: ${t}`); else info.push(`날짜 표기 OK: ${t.trim()}`);
+  await pg.close();
+}
+
 await browser.close(); server.close();
 info.forEach(i=>console.log('  ·',i));
 if(errs.length){console.log('\nRESULT: RED');errs.forEach(e=>console.log('  ✗',e));process.exit(1);}
