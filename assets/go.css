@@ -1,104 +1,146 @@
-/* 제주 GO — 현장용. 큰 글자 · 한 손 조작 · 야외 가독성 */
+/* 제주 GO v2 — 야외용 계기판. 라이트 퍼스트 · Dynamic Type · 즉시 피드백 */
 :root{
-  --bg:#0E1513; --card:#182220; --card2:#1F2B28; --ink:#F2F7F5; --ink2:#C3D2CE;
-  --dim:#8FA5A0; --line:#2C3A37; --go:#2FB88A; --go-ink:#06231A;
-  --warn:#FFB84D; --crit:#FF6B57; --k1:#7FC8FF; --k2:#FFA6D5; --all:#FFD86B;
-  --r:18px; --pad:18px;
-  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+  /* 라이트 = 기본 (직사광선) */
+  --bg:#FFFFFF; --card:#F5F8F7; --card2:#EAF0EE; --line:#D6E0DD;
+  --ink:#0B1220; --ink2:#31423E; --dim:#5E716C;
+  --go:#0A7A55; --go-ink:#FFFFFF; --late:#A8331A; --soon:#8A5A00;
+  --k1:#0B5A86; --k1bg:#D6ECF9; --k2:#8A2560; --k2bg:#FBDDEE;
+  --dad:#3A4A46; --dadbg:#E3EAE8; --all:#7A5A00; --allbg:#FBEFC9;
+  --r:16px; --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme:light){
-  :root{--bg:#F4F8F6;--card:#FFF;--card2:#EDF3F1;--ink:#101917;--ink2:#31423E;
-        --dim:#5E716C;--line:#D8E3DF;--go:#12855F;--go-ink:#FFF;}
+:root[data-theme="night"]{
+  --bg:#0E1513; --card:#182220; --card2:#1F2B28; --line:#2C3A37;
+  --ink:#F2F7F5; --ink2:#C3D2CE; --dim:#8FA5A0;
+  --go:#2FB88A; --go-ink:#06231A; --late:#FF6B57; --soon:#FFB84D;
+  --k1:#BFE4FA; --k1bg:#14384D; --k2:#FBD0E6; --k2bg:#4A1633;
+  --dad:#C9D6D2; --dadbg:#2A3734; --all:#FFE08A; --allbg:#453612;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;overscroll-behavior:none}
 body{background:var(--bg);color:var(--ink);
-  font:500 19px/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif;
-  -webkit-text-size-adjust:100%}
+  font:500 1.0625rem/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif;}
 #app{display:flex;flex-direction:column;height:100dvh;padding-top:var(--safe-t)}
 
-/* ── 상단 날짜 ── */
-#bar{display:flex;align-items:center;gap:8px;padding:10px 12px 8px;border-bottom:1px solid var(--line);background:var(--bg)}
-#dayInfo{flex:1;min-width:0;text-align:center}
-#dayDate{font-size:23px;font-weight:800;letter-spacing:-.4px}
-#dayLabel{font-size:15px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.daynav{width:52px;height:52px;flex:0 0 52px;border:1px solid var(--line);background:var(--card);
-  color:var(--ink);border-radius:14px;font-size:30px;line-height:1;font-weight:700}
-.daynav:disabled{opacity:.3}
-#goalbar{padding:9px 16px;font-size:16px;color:var(--ink2);background:var(--card2);
-  border-bottom:1px solid var(--line)}
-#goalbar b{color:var(--go)}
+/* ── 상단: translucent, 콘텐츠가 밑으로 흐른다 ── */
+#bar{position:relative;z-index:5;padding:8px 12px 0;
+  background:color-mix(in srgb,var(--bg) 78%,transparent);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%)}
+#row1{display:flex;align-items:center;gap:8px}
+#dayDate{flex:1;min-width:0;font-size:1.1rem;font-weight:800;letter-spacing:-.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dayLabel{font-size:.9rem;color:var(--dim);letter-spacing:.02em;padding:0 2px 6px}
+.icobtn{width:44px;height:44px;flex:0 0 44px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink);border-radius:12px;font-size:1.2rem;line-height:1;display:grid;place-items:center}
+.icobtn:active{transform:scale(.94);background:var(--card2)}
+.daynav{font-size:1.5rem;font-weight:700}
+.daynav:disabled{opacity:.25}
 
-/* ── 카드 덱 (가로 스와이프) ── */
+/* 사람 필터 */
+#who{display:flex;gap:6px;padding:2px 0 8px;overflow-x:auto;scrollbar-width:none}
+#who::-webkit-scrollbar{display:none}
+.wf{flex:0 0 auto;min-height:44px;padding:0 15px;border-radius:999px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink2);font-size:1rem;font-weight:700;letter-spacing:.01em}
+.wf:active{transform:scale(.96)}
+.wf.on{background:var(--go);border-color:var(--go);color:var(--go-ink)}
+
+/* 시간 인지 스트립 */
+#clock{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:1.05rem;font-weight:700;
+  background:var(--card2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  color:var(--ink2)}
+#clock.late{background:color-mix(in srgb,var(--late) 14%,var(--bg));color:var(--late)}
+#clock.soon{background:color-mix(in srgb,var(--soon) 15%,var(--bg));color:var(--soon)}
+#clock b{font-variant-numeric:tabular-nums}
+
+/* ── 카드 덱 ── */
 #deck{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
 #deck::-webkit-scrollbar{display:none}
 .stop{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;
-  overflow-y:auto;padding:16px 16px 28px;-webkit-overflow-scrolling:touch}
-.stop.is-meal .ttl{color:var(--warn)}
+  overflow-y:auto;padding:14px 16px 26px;-webkit-overflow-scrolling:touch}
 
-.tag{display:inline-block;font-size:14px;font-weight:800;letter-spacing:.4px;
-  color:var(--go);background:color-mix(in srgb,var(--go) 18%,transparent);
-  border-radius:999px;padding:4px 12px;margin-bottom:8px}
-.time{font-size:40px;font-weight:800;letter-spacing:-1.5px;line-height:1}
-.ttl{font-size:31px;font-weight:800;letter-spacing:-.8px;margin:6px 0 2px;line-height:1.2}
-.sub{font-size:16px;color:var(--dim)}
+.tag{display:inline-block;font-size:.9rem;font-weight:800;letter-spacing:.02em;
+  color:var(--go);background:color-mix(in srgb,var(--go) 13%,transparent);
+  border-radius:999px;padding:4px 12px;margin-bottom:10px}
+.stop.is-meal .tag{color:var(--soon);background:color-mix(in srgb,var(--soon) 15%,transparent)}
+.time{font-size:clamp(1.9rem,7vw,2.6rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;
+  font-variant-numeric:tabular-nums}
+.ttl{font-size:clamp(1.6rem,6vw,2.1rem);font-weight:800;letter-spacing:-.02em;
+  line-height:1.15;margin:4px 0 2px}
+.sub{font-size:1rem;color:var(--dim);line-height:1.4}
 
-.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-.act{display:flex;align-items:center;justify-content:center;gap:7px;min-height:62px;
-  border-radius:16px;border:0;font-size:19px;font-weight:800;padding:0 10px;
-  background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.acts{display:grid;gap:9px;margin:15px 0}
+.acts.two{grid-template-columns:1fr 1fr}
+.act{display:flex;align-items:center;justify-content:center;gap:7px;min-height:60px;
+  border-radius:15px;font-size:1.1rem;font-weight:800;padding:0 10px;
+  background:var(--card);color:var(--ink);border:1.5px solid var(--line)}
+.act:active{transform:scale(.97);background:var(--card2)}
 .act.go{background:var(--go);color:var(--go-ink);border-color:transparent}
-.act.wide{grid-column:1/-1}
+.act.go:active{background:color-mix(in srgb,var(--go) 85%,#000)}
 
 .note{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:15px 16px;font-size:18px;line-height:1.65;color:var(--ink2);margin-bottom:16px}
+  padding:14px 15px;font-size:1.12rem;line-height:1.62;color:var(--ink2);margin-bottom:15px}
 
-h3.mh{font-size:15px;letter-spacing:.6px;color:var(--dim);margin:20px 0 10px;font-weight:800}
-.mi{display:flex;gap:13px;align-items:flex-start;width:100%;text-align:left;
-  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:15px 15px;margin-bottom:10px;color:var(--ink);font:inherit}
-.mi .bx{flex:0 0 34px;width:34px;height:34px;border:2.5px solid var(--dim);border-radius:9px;
-  display:grid;place-items:center;font-size:21px;margin-top:1px}
-.mi.on{background:color-mix(in srgb,var(--go) 14%,var(--card));border-color:var(--go)}
-.mi.on .bx{background:var(--go);border-color:var(--go);color:var(--go-ink)}
-.mi.on .mt{text-decoration:line-through;opacity:.55}
-.mt{font-size:18.5px;line-height:1.45;font-weight:600}
-.who{font-size:13.5px;font-weight:800;padding:2px 9px;border-radius:999px;margin-left:6px;
-  display:inline-block;vertical-align:2px}
-.who.k1{background:var(--k1);color:#04202F}.who.k2{background:var(--k2);color:#3A0C25}
-.who.all,.who.both{background:var(--all);color:#33280A}.who.dad{background:var(--dim);color:#0B1412}
-.star{color:var(--all);font-size:17px}
+h3.mh{font-size:.9rem;letter-spacing:.04em;color:var(--dim);margin:18px 0 9px;font-weight:800;
+  display:flex;justify-content:space-between;align-items:baseline}
+h3.mh span{font-variant-numeric:tabular-nums;color:var(--go)}
+.mi{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:14px;margin-bottom:9px;color:var(--ink);font:inherit;
+  transition:background .12s ease,border-color .12s ease}
+.mi:active{transform:scale(.985)}
+.mi .bx{flex:0 0 32px;width:32px;height:32px;border:2.5px solid var(--dim);border-radius:9px;
+  display:grid;place-items:center;font-size:1.25rem;margin-top:1px;
+  transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .15s ease}
+.mi.on{background:color-mix(in srgb,var(--go) 11%,var(--card));border-color:var(--go)}
+.mi.on .bx{background:var(--go);border-color:var(--go);color:var(--go-ink);transform:scale(1.12)}
+.mi.on .mt{text-decoration:line-through;opacity:.5}
+.mt{font-size:1.08rem;line-height:1.48;font-weight:600}
+.who{font-size:.82rem;font-weight:800;padding:2px 9px;border-radius:999px;margin-left:5px;
+  display:inline-block;vertical-align:1px;letter-spacing:.01em}
+.who.k1{background:var(--k1bg);color:var(--k1)}.who.k2{background:var(--k2bg);color:var(--k2)}
+.who.all,.who.both{background:var(--allbg);color:var(--all)}
+.who.dad{background:var(--dadbg);color:var(--dad)}
+.star{color:var(--soon)}
+.empty{padding:14px;color:var(--dim);font-size:1rem;text-align:center}
 
-/* ── 하단 ── */
-#stepbar{display:flex;align-items:center;gap:10px;padding:8px 12px 4px}
-.sbtn{flex:0 0 66px;height:52px;border-radius:14px;border:1px solid var(--line);
-  background:var(--card);color:var(--ink);font-size:22px;font-weight:800}
-.sbtn:disabled{opacity:.28}
-#sProg{flex:1;height:52px;border-radius:14px;background:var(--card2);border:1px solid var(--line);
+/* ── 하단 (한 손 도달) ── */
+#stepbar{display:flex;align-items:center;gap:9px;padding:7px 12px 3px}
+.sbtn{flex:0 0 64px;height:52px;border-radius:14px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink);font-size:1.3rem;font-weight:800}
+.sbtn:active{transform:scale(.95);background:var(--card2)}
+.sbtn:disabled{opacity:.25}
+#sProg{flex:1;height:52px;border-radius:14px;background:var(--card2);border:1.5px solid var(--line);
   position:relative;overflow:hidden;display:grid;place-items:center}
-#sFill{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--go) 32%,transparent);
+#sFill{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--go) 26%,transparent);
   transition:width .25s ease}
-#sNum{position:relative;font-size:18px;font-weight:800;letter-spacing:.3px}
-#foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 12px calc(10px + var(--safe-b));
-  border-top:1px solid var(--line)}
-.fbtn{min-height:54px;border-radius:14px;border:1px solid var(--line);background:var(--card);
-  color:var(--ink);font-size:16px;font-weight:700}
+#sNum{position:relative;font-size:1.05rem;font-weight:800;font-variant-numeric:tabular-nums}
+#foot{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;
+  padding:7px 12px calc(9px + var(--safe-b))}
+.fbtn{min-height:50px;border-radius:13px;border:1.5px solid var(--line);background:var(--card);
+  color:var(--ink);font-size:.98rem;font-weight:700}
+.fbtn:active{transform:scale(.96);background:var(--card2)}
 
 /* ── 시트 ── */
-#sheet{border:0;padding:0;background:var(--card);color:var(--ink);border-radius:22px 22px 0 0;
-  width:100%;max-width:100%;margin:auto auto 0;max-height:86dvh}
-#sheet::backdrop{background:#000C}
-#sheetBody{padding:22px 18px 8px;overflow-y:auto;max-height:70dvh;font-size:18px;line-height:1.6}
-#sheetBody h2{font-size:24px;margin:0 0 14px}
-#sheetBody h4{font-size:19px;margin:18px 0 6px}
-#sheetBody p{margin:0 0 12px;color:var(--ink2)}
-.al{border-left:5px solid var(--line);padding:11px 13px;margin-bottom:12px;border-radius:0 12px 12px 0;background:var(--card2)}
-.al.crit{border-color:var(--crit)}.al.warn{border-color:var(--warn)}
-.al b{display:block;margin-bottom:5px;font-size:18px}
-.sheetx{width:calc(100% - 36px);margin:10px 18px calc(18px + var(--safe-b));min-height:58px;
-  border:0;border-radius:15px;background:var(--go);color:var(--go-ink);font-size:19px;font-weight:800}
-.qa textarea{width:100%;min-height:82px;font:inherit;font-size:18px;padding:12px;border-radius:13px;
-  border:1px solid var(--line);background:var(--bg);color:var(--ink);margin-bottom:6px}
+#sheet{border:0;padding:0;background:var(--bg);color:var(--ink);border-radius:20px 20px 0 0;
+  width:100%;max-width:100%;margin:auto auto 0;max-height:88dvh}
+#sheet::backdrop{background:#0009;backdrop-filter:blur(3px)}
+#sheetBody{padding:20px 18px 8px;overflow-y:auto;max-height:72dvh;font-size:1.12rem;line-height:1.6}
+#sheetBody h2{font-size:1.4rem;margin:0 0 12px;letter-spacing:-.02em}
+#sheetBody h4{font-size:1.1rem;margin:16px 0 5px}
+#sheetBody p{margin:0 0 11px;color:var(--ink2)}
+.al{border-left:5px solid var(--line);padding:11px 13px;margin-bottom:11px;
+  border-radius:0 12px 12px 0;background:var(--card)}
+.al.crit{border-color:var(--late)}.al.warn{border-color:var(--soon)}
+.al b{display:block;margin-bottom:4px;font-size:1.12rem}
+.sheetx{width:calc(100% - 36px);margin:10px 18px calc(16px + var(--safe-b));min-height:56px;
+  border:0;border-radius:15px;background:var(--go);color:var(--go-ink);font-size:1.1rem;font-weight:800}
+.sheetx:active{transform:scale(.98)}
+.qa textarea{width:100%;min-height:80px;font:inherit;font-size:1.05rem;padding:12px;border-radius:13px;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);margin-bottom:6px}
+.err{padding:28px 20px;color:var(--late);font-size:1.05rem}
 .loading #deck::before{content:"불러오는 중…";margin:auto;color:var(--dim)}
-.err{padding:30px 20px;color:var(--crit);font-size:19px}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important}
+  .act:active,.mi:active,.sbtn:active,.icobtn:active,.wf:active{transform:none}
+}

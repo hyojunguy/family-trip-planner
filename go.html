@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme="day">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>제주 GO</title>
-<meta name="theme-color" content="#0E1513">
+<meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="제주 GO">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="assets/img/go-icon-192.png">
@@ -16,16 +16,18 @@
 <body>
 <div id="app" class="loading">
   <header id="bar">
-    <button id="dayPrev" class="daynav" aria-label="이전 날">‹</button>
-    <div id="dayInfo">
+    <div id="row1">
+      <button id="dayPrev" class="icobtn daynav" aria-label="이전 날">‹</button>
       <div id="dayDate">불러오는 중</div>
-      <div id="dayLabel"></div>
+      <button id="dayNext" class="icobtn daynav" aria-label="다음 날">›</button>
+      <button id="theme" class="icobtn" aria-label="밤 모드">🌙</button>
     </div>
-    <button id="dayNext" class="daynav" aria-label="다음 날">›</button>
+    <div id="dayLabel"></div>
+    <div id="who" role="group" aria-label="누구의 미션"></div>
   </header>
-  <div id="goalbar"></div>
-  <main id="deck" tabindex="-1"></main>
-  <nav id="stepbar" aria-label="스톱 이동">
+  <div id="clock" aria-live="polite"></div>
+  <main id="deck"></main>
+  <nav id="stepbar" aria-label="단계 이동">
     <button id="sPrev" class="sbtn" aria-label="이전 단계">◀</button>
     <div id="sProg"><div id="sFill"></div><span id="sNum">1 / 1</span></div>
     <button id="sNext" class="sbtn" aria-label="다음 단계">▶</button>
