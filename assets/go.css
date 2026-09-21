@@ -1,0 +1,104 @@
+/* 제주 GO — 현장용. 큰 글자 · 한 손 조작 · 야외 가독성 */
+:root{
+  --bg:#0E1513; --card:#182220; --card2:#1F2B28; --ink:#F2F7F5; --ink2:#C3D2CE;
+  --dim:#8FA5A0; --line:#2C3A37; --go:#2FB88A; --go-ink:#06231A;
+  --warn:#FFB84D; --crit:#FF6B57; --k1:#7FC8FF; --k2:#FFA6D5; --all:#FFD86B;
+  --r:18px; --pad:18px;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:light){
+  :root{--bg:#F4F8F6;--card:#FFF;--card2:#EDF3F1;--ink:#101917;--ink2:#31423E;
+        --dim:#5E716C;--line:#D8E3DF;--go:#12855F;--go-ink:#FFF;}
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overscroll-behavior:none}
+body{background:var(--bg);color:var(--ink);
+  font:500 19px/1.55 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif;
+  -webkit-text-size-adjust:100%}
+#app{display:flex;flex-direction:column;height:100dvh;padding-top:var(--safe-t)}
+
+/* ── 상단 날짜 ── */
+#bar{display:flex;align-items:center;gap:8px;padding:10px 12px 8px;border-bottom:1px solid var(--line);background:var(--bg)}
+#dayInfo{flex:1;min-width:0;text-align:center}
+#dayDate{font-size:23px;font-weight:800;letter-spacing:-.4px}
+#dayLabel{font-size:15px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.daynav{width:52px;height:52px;flex:0 0 52px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink);border-radius:14px;font-size:30px;line-height:1;font-weight:700}
+.daynav:disabled{opacity:.3}
+#goalbar{padding:9px 16px;font-size:16px;color:var(--ink2);background:var(--card2);
+  border-bottom:1px solid var(--line)}
+#goalbar b{color:var(--go)}
+
+/* ── 카드 덱 (가로 스와이프) ── */
+#deck{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#deck::-webkit-scrollbar{display:none}
+.stop{flex:0 0 100%;scroll-snap-align:center;scroll-snap-stop:always;
+  overflow-y:auto;padding:16px 16px 28px;-webkit-overflow-scrolling:touch}
+.stop.is-meal .ttl{color:var(--warn)}
+
+.tag{display:inline-block;font-size:14px;font-weight:800;letter-spacing:.4px;
+  color:var(--go);background:color-mix(in srgb,var(--go) 18%,transparent);
+  border-radius:999px;padding:4px 12px;margin-bottom:8px}
+.time{font-size:40px;font-weight:800;letter-spacing:-1.5px;line-height:1}
+.ttl{font-size:31px;font-weight:800;letter-spacing:-.8px;margin:6px 0 2px;line-height:1.2}
+.sub{font-size:16px;color:var(--dim)}
+
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.act{display:flex;align-items:center;justify-content:center;gap:7px;min-height:62px;
+  border-radius:16px;border:0;font-size:19px;font-weight:800;padding:0 10px;
+  background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.act.go{background:var(--go);color:var(--go-ink);border-color:transparent}
+.act.wide{grid-column:1/-1}
+
+.note{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;font-size:18px;line-height:1.65;color:var(--ink2);margin-bottom:16px}
+
+h3.mh{font-size:15px;letter-spacing:.6px;color:var(--dim);margin:20px 0 10px;font-weight:800}
+.mi{display:flex;gap:13px;align-items:flex-start;width:100%;text-align:left;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 15px;margin-bottom:10px;color:var(--ink);font:inherit}
+.mi .bx{flex:0 0 34px;width:34px;height:34px;border:2.5px solid var(--dim);border-radius:9px;
+  display:grid;place-items:center;font-size:21px;margin-top:1px}
+.mi.on{background:color-mix(in srgb,var(--go) 14%,var(--card));border-color:var(--go)}
+.mi.on .bx{background:var(--go);border-color:var(--go);color:var(--go-ink)}
+.mi.on .mt{text-decoration:line-through;opacity:.55}
+.mt{font-size:18.5px;line-height:1.45;font-weight:600}
+.who{font-size:13.5px;font-weight:800;padding:2px 9px;border-radius:999px;margin-left:6px;
+  display:inline-block;vertical-align:2px}
+.who.k1{background:var(--k1);color:#04202F}.who.k2{background:var(--k2);color:#3A0C25}
+.who.all,.who.both{background:var(--all);color:#33280A}.who.dad{background:var(--dim);color:#0B1412}
+.star{color:var(--all);font-size:17px}
+
+/* ── 하단 ── */
+#stepbar{display:flex;align-items:center;gap:10px;padding:8px 12px 4px}
+.sbtn{flex:0 0 66px;height:52px;border-radius:14px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);font-size:22px;font-weight:800}
+.sbtn:disabled{opacity:.28}
+#sProg{flex:1;height:52px;border-radius:14px;background:var(--card2);border:1px solid var(--line);
+  position:relative;overflow:hidden;display:grid;place-items:center}
+#sFill{position:absolute;inset:0 auto 0 0;width:0;background:color-mix(in srgb,var(--go) 32%,transparent);
+  transition:width .25s ease}
+#sNum{position:relative;font-size:18px;font-weight:800;letter-spacing:.3px}
+#foot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 12px calc(10px + var(--safe-b));
+  border-top:1px solid var(--line)}
+.fbtn{min-height:54px;border-radius:14px;border:1px solid var(--line);background:var(--card);
+  color:var(--ink);font-size:16px;font-weight:700}
+
+/* ── 시트 ── */
+#sheet{border:0;padding:0;background:var(--card);color:var(--ink);border-radius:22px 22px 0 0;
+  width:100%;max-width:100%;margin:auto auto 0;max-height:86dvh}
+#sheet::backdrop{background:#000C}
+#sheetBody{padding:22px 18px 8px;overflow-y:auto;max-height:70dvh;font-size:18px;line-height:1.6}
+#sheetBody h2{font-size:24px;margin:0 0 14px}
+#sheetBody h4{font-size:19px;margin:18px 0 6px}
+#sheetBody p{margin:0 0 12px;color:var(--ink2)}
+.al{border-left:5px solid var(--line);padding:11px 13px;margin-bottom:12px;border-radius:0 12px 12px 0;background:var(--card2)}
+.al.crit{border-color:var(--crit)}.al.warn{border-color:var(--warn)}
+.al b{display:block;margin-bottom:5px;font-size:18px}
+.sheetx{width:calc(100% - 36px);margin:10px 18px calc(18px + var(--safe-b));min-height:58px;
+  border:0;border-radius:15px;background:var(--go);color:var(--go-ink);font-size:19px;font-weight:800}
+.qa textarea{width:100%;min-height:82px;font:inherit;font-size:18px;padding:12px;border-radius:13px;
+  border:1px solid var(--line);background:var(--bg);color:var(--ink);margin-bottom:6px}
+.loading #deck::before{content:"불러오는 중…";margin:auto;color:var(--dim)}
+.err{padding:30px 20px;color:var(--crit);font-size:19px}

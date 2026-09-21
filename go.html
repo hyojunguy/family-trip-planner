@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<title>제주 GO</title>
+<meta name="theme-color" content="#0E1513">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="제주 GO">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/img/go-icon-192.png">
+<link rel="apple-touch-icon" href="assets/img/go-icon-180.png">
+<link rel="stylesheet" href="assets/go.css">
+</head>
+<body>
+<div id="app" class="loading">
+  <header id="bar">
+    <button id="dayPrev" class="daynav" aria-label="이전 날">‹</button>
+    <div id="dayInfo">
+      <div id="dayDate">불러오는 중</div>
+      <div id="dayLabel"></div>
+    </div>
+    <button id="dayNext" class="daynav" aria-label="다음 날">›</button>
+  </header>
+  <div id="goalbar"></div>
+  <main id="deck" tabindex="-1"></main>
+  <nav id="stepbar" aria-label="스톱 이동">
+    <button id="sPrev" class="sbtn" aria-label="이전 단계">◀</button>
+    <div id="sProg"><div id="sFill"></div><span id="sNum">1 / 1</span></div>
+    <button id="sNext" class="sbtn" aria-label="다음 단계">▶</button>
+  </nav>
+  <footer id="foot">
+    <button id="btnAlerts" class="fbtn">⚠️ 주의</button>
+    <button id="btnPlay"   class="fbtn">🚗 차놀이</button>
+    <button id="btnClose"  class="fbtn">🌙 하루 마감</button>
+  </footer>
+</div>
+<dialog id="sheet"><div id="sheetBody"></div><button id="sheetX" class="sheetx">닫기</button></dialog>
+<script src="assets/go.js"></script>
+</body>
+</html>
